@@ -1,1 +1,0 @@
-export default "Person2";

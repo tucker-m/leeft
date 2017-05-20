@@ -1,3 +1,7 @@
 {
-    "sourceMap": true
+    "sourceMap": true,
+    "compilerOptions": {
+        "allowJs": true
+    },
+    "target": "ES6"
 }

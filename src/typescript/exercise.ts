@@ -1,18 +1,6 @@
-const enum ExerciseTypes {
-    SetsAndReps,
-    Reps,
-    Time
-};
-
-const ExerciseTypeNames = new Map([
-    [ExerciseTypes.SetsAndReps, 'Sets and reps'],
-    [ExerciseTypes.Reps, 'Reps'],
-    [ExerciseTypes.Time, 'Time']
-]);
-
 interface Exercise {
     name: string,
-    type: ExerciseTypes
+    type: 'Sets and reps' | 'Reps' | 'Time'
 };
 
-export {Exercise, ExerciseTypes, ExerciseTypeNames};
+export default Exercise;

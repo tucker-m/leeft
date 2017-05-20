@@ -1,8 +1,8 @@
 import * as m from "mithril";
 import * as pouchdb from "pouchdb";
-import {Exercise, ExerciseTypes} from "./exercise";
+import Exercise from "./exercise";
 
-var db = pouchdb('leeft');
+let db = new pouchdb('leeft');
 
 let app = {
     view: function() {
@@ -12,17 +12,13 @@ let app = {
 
 let exerciseAddForm = {
     view: function() {
-        let newExercise: Exercise = {name: '', type: ExerciseTypes.SetsAndReps};
+        let newExercise: Exercise = {name: '', type: 'Sets and reps'};
         return m('div', [
             m('form', [
                 m('input[type=text][placeholder="Exercise name"]', {
                     oninput: m.withAttr('value', function(value) {newExercise.name = value;}),
                     value: newExercise.name
                 }),
-                m('select', ExerciseTypes.map(function(et) {
-                        return m('option', et);
-                    })
-                ),
                 m('button[type=submit]', 'Add')
             ])
         ]);

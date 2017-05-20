@@ -1,6 +1,16 @@
-interface Exercise {
-    name: string,
-    type: 'Sets and reps' | 'Reps' | 'Time'
+const enum RecordType {
+    SetsAndReps,
+    Reps,
+    Time
 };
 
-export default Exercise;
+const RecordTypeNames = {
+    SetsAndReps: 'Sets and reps'
+};
+
+interface Exercise {
+    name: string,
+    type: RecordType
+};
+
+export { Exercise, RecordType, RecordTypeNames };

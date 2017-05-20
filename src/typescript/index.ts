@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import * as pouchdb from "pouchdb";
-import Exercise from "./exercise";
+import {Exercise, RecordType, RecordTypeNames} from "./exercise";
 
 let db = new pouchdb('leeft');
 
@@ -9,10 +9,10 @@ let app = {
         return m(exerciseAddForm);
     }
 };
-
+let map = new Map();
 let exerciseAddForm = {
     view: function() {
-        let newExercise: Exercise = {name: '', type: 'Sets and reps'};
+        let newExercise: Exercise = {name: '', type: RecordType.SetsAndReps};
         return m('div', [
             m('form', [
                 m('input[type=text][placeholder="Exercise name"]', {

@@ -1,6 +1,10 @@
 {
     "sourceMap": true,
     "compilerOptions": {
-        "allowJs": true
+        "allowJs": true,
+        "lib": [
+            "dom",
+            "es6"
+        ]
     }
 }

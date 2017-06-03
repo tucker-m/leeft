@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import * as pouchdb from "pouchdb";
-import {Exercise, RecordType, RecordTypeNames} from "./exercise";
+import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription} from "./exercise";
 import ExerciseList from './exerciseList';
 
 let db = new pouchdb('leeft');
@@ -10,9 +10,13 @@ let app = {
         return m(exerciseAddForm);
     }
 };
-let newExercise: Exercise = {_id: '', name: '', type: RecordType.SetsAndReps};
+let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 let allExercises:Array<Exercise> = [];
-
+let newPrescription: ExercisePrescription = {
+    exercise: null,
+    sets: 0,
+    amount: 0
+};
 db.allDocs({include_docs: true}).then(function(docs) {
     allExercises = docs.rows.map(function(row) {
         return row.doc;
@@ -22,14 +26,20 @@ db.allDocs({include_docs: true}).then(function(docs) {
 
 let exerciseAddForm = {
     view: function() {
+        let label = '';
+        if (newPrescription.exercise != null) {
+            if (newPrescription.exercise.setUnits == SetUnits.Weight) { label = 'Reps' };
+            if (newPrescription.exercise.setUnits == SetUnits.Time) { label = 'Time (seconds)' };
+        }
         return m('div', [
+            m('h1', 'Add Exercise'),
             m('form', {
                 onsubmit: function(event) {
                     event.preventDefault();
                     newExercise._id = Date.now().toString() + newExercise.name;
                     allExercises.push(newExercise);
                     db.put(newExercise);
-                    newExercise = {_id: '', name: '', type: RecordType.SetsAndReps};
+                    newExercise = {_id: '', name: '', setUnits: SetUnits.Weight};
                 }
             }, [
                 m('input[type=text][placeholder="Exercise name"]', {
@@ -39,13 +49,42 @@ let exerciseAddForm = {
                 m('select', {
                     onchange: m.withAttr('value', function(value:string) {
                         let newValue = parseInt(value);
-                        newExercise.type = newValue;
+                        newExercise.setUnits = newValue;
                     })
                 }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
                     return m('option[value=' + tuple[0] + ']', tuple[1]);
                 })),
                 m('button[type=submit]', 'Add'),
                 m(ExerciseList, {allExercises: allExercises})
+            ]),
+            m('h1', 'Add Prescription'),
+            m('form', {
+
+            }, [
+                m('div', [
+                    m('label[for=select-exercise]', 'Exercise'),
+                    m('select#select-exercise', {
+                        onchange: function(event) {
+                            let selectedIndex = event.target.selectedIndex;
+                            let selectedExercise = allExercises[event.target.options[selectedIndex].value];
+                            newPrescription = {
+                                exercise: selectedExercise,
+                                sets: 0,
+                                amount: 0
+                            }
+                        }
+                    }, allExercises.map(function(exercise, index) {
+                        return m('option[value=' + index + ']', exercise.name);
+                    }))
+                ]),
+                m('div', [
+                    m('label[for=select-exercise-sets]', 'Sets'),
+                    m('input#select-exercise-sets[type=number]')
+                ]),
+                m('div', [
+                    m('label[for=select-exercise-amount]', label),
+                    m('input#select-exercise-amount[type=number]')
+                ])
             ])
         ]);
     }

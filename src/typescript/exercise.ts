@@ -1,19 +1,32 @@
-const enum RecordType {
-    SetsAndReps,
-    Reps,
+enum SetUnits {
+    Weight,
+    None,
     Time
 };
 
-const RecordTypeNames:Map<RecordType, string> = new Map([
-    [RecordType.SetsAndReps, 'Sets and reps'],
-    [RecordType.Reps, 'Reps'],
-    [RecordType.Time, 'Time']
+interface ExerciseSetLog {
+    exerciseName: string,
+    amount: number,
+    unit: SetUnits,
+    reps: number
+};
+
+const RecordTypeNames:Map<SetUnits, string> = new Map([
+    [SetUnits.Weight, 'pounds'],
+    [SetUnits.None, 'N/A'],
+    [SetUnits.Time, 'seconds']
 ]);
 
 interface Exercise {
     _id: string,
     name: string,
-    type: RecordType
+    setUnits: SetUnits
 };
 
-export { Exercise, RecordType, RecordTypeNames };
+interface ExercisePrescription {
+    exercise: Exercise,
+    sets: number,
+    amount: number,
+};
+
+export { Exercise, SetUnits, RecordTypeNames, ExercisePrescription };

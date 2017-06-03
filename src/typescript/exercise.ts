@@ -19,6 +19,7 @@ const RecordTypeNames:Map<SetUnits, string> = new Map([
 
 interface Exercise {
     _id: string,
+    _rev?: string,
     name: string,
     setUnits: SetUnits
 };

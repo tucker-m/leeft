@@ -17,7 +17,7 @@ let newPrescription: ExercisePrescription = {
     sets: 0,
     amount: 0
 };
-db.allDocs({include_docs: true}).then(function(docs) {
+db.allDocs({startkey: 'exercise_', include_docs: true}).then(function(docs) {
     allExercises = docs.rows.map(function(row) {
         return row.doc;
     });
@@ -36,9 +36,12 @@ let exerciseAddForm = {
             m('form', {
                 onsubmit: function(event) {
                     event.preventDefault();
-                    newExercise._id = Date.now().toString() + newExercise.name;
-                    allExercises.push(newExercise);
-                    db.put(newExercise);
+                    newExercise._id = 'exercise_' + Date.now().toString() + newExercise.name;
+                    const indexAdded = allExercises.push(newExercise) - 1;
+                    db.put(newExercise).then(function(response) {
+                        allExercises[indexAdded]._rev = response.rev;
+                        m.redraw();
+                    }.bind(this));
                     newExercise = {_id: '', name: '', setUnits: SetUnits.Weight};
                 }
             }, [
@@ -54,9 +57,9 @@ let exerciseAddForm = {
                 }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
                     return m('option[value=' + tuple[0] + ']', tuple[1]);
                 })),
-                m('button[type=submit]', 'Add'),
-                m(ExerciseList, {allExercises: allExercises})
+                m('button[type=submit]', 'Add')
             ]),
+            m(ExerciseList, {allExercises, db}),
             m('h1', 'Add Prescription'),
             m('form', {
 

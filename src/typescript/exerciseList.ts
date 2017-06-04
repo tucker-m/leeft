@@ -1,14 +1,22 @@
 import * as m from 'mithril';
+import * as pouchdb from 'pouchdb';
 import {Exercise, RecordTypeNames} from './exercise';
 
-// How can we define that vnode.attrs.allExercises is an array of Exercise?
-// db is also being passed in. Can we define these in an interface?
-let exerciseList = {
-    view: function(vnode) {
+interface ExerciseListAttrs {
+    allExercises: Array<Exercise>,
+    db: pouchdb
+};
+
+interface ExerciseListVnode {
+    attrs: ExerciseListAttrs
+};
+
+let ExerciseList = {
+    view: function(vnode: ExerciseListVnode) {
         return m('ul', vnode.attrs.allExercises.map(function(exercise: Exercise, index: number) {
             let deleteDisabledString = exercise._rev == null ? 'disabled=disabled' : '';
             return m('li', [
-                m('p', exercise.name + ' ' + RecordTypeNames.get(exercise.setUnits)),
+                m('p', exercise.name + ' | ' + RecordTypeNames.get(exercise.setUnits)),
                 m('button[' + deleteDisabledString + ']', {
                     onclick: function(event) {
                         event.preventDefault();
@@ -23,4 +31,4 @@ let exerciseList = {
     }
 };
 
-export default exerciseList;
+export {ExerciseList, ExerciseListAttrs};

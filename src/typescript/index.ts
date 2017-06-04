@@ -1,7 +1,7 @@
 import * as m from "mithril";
 import * as pouchdb from "pouchdb";
 import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription} from "./exercise";
-import ExerciseList from './exerciseList';
+import {ExerciseList, ExerciseListAttrs} from './exerciseList';
 
 let db = new pouchdb('leeft');
 
@@ -31,6 +31,10 @@ let exerciseAddForm = {
             if (newPrescription.exercise.setUnits == SetUnits.Weight) { label = 'Reps' };
             if (newPrescription.exercise.setUnits == SetUnits.Time) { label = 'Time (seconds)' };
         }
+        const exerciseListAttrs: ExerciseListAttrs = {
+            allExercises,
+            db
+        };
         return m('div', [
             m('h1', 'Add Exercise'),
             m('form', {
@@ -59,7 +63,7 @@ let exerciseAddForm = {
                 })),
                 m('button[type=submit]', 'Add')
             ]),
-            m(ExerciseList, {allExercises, db}),
+            m(ExerciseList, exerciseListAttrs),
             m('h1', 'Add Prescription'),
             m('form', {
 

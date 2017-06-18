@@ -30,4 +30,15 @@ interface ExercisePrescription {
     amount: number,
 };
 
+interface Workout {
+    _id: string,
+    _rev?: string,
+    prescriptions: Array<ExercisePrescription>
+};
+
+interface WorkoutLog {
+    workout: Workout,
+    date: Date
+};
+
 export { Exercise, SetUnits, RecordTypeNames, ExercisePrescription };

@@ -13,6 +13,7 @@ let app = {
 let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 let allExercises:Array<Exercise> = [];
 let newPrescription: ExercisePrescription = {
+    _id: '',
     exercise: null,
     sets: 0,
     amount: 0
@@ -66,7 +67,10 @@ let exerciseAddForm = {
             m(ExerciseList, exerciseListAttrs),
             m('h1', 'Add Prescription'),
             m('form', {
-
+                onsubmit: function(event) {
+                    event.preventDefault();
+                    
+                }
             }, [
                 m('div', [
                     m('label[for=select-exercise]', 'Exercise'),
@@ -74,11 +78,7 @@ let exerciseAddForm = {
                         onchange: function(event) {
                             let selectedIndex = event.target.selectedIndex;
                             let selectedExercise = allExercises[event.target.options[selectedIndex].value];
-                            newPrescription = {
-                                exercise: selectedExercise,
-                                sets: 0,
-                                amount: 0
-                            }
+                            newPrescription.exercise = selectedExercise;
                         }
                     }, allExercises.map(function(exercise, index) {
                         return m('option[value=' + index + ']', exercise.name);
@@ -91,7 +91,8 @@ let exerciseAddForm = {
                 m('div', [
                     m('label[for=select-exercise-amount]', label),
                     m('input#select-exercise-amount[type=number]')
-                ])
+                ]),
+                m('button[type=submit]', 'Add')
             ])
         ]);
     }

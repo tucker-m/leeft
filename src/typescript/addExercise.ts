@@ -7,35 +7,35 @@ import {
 } from './exercise';
 
 interface AddExerciseAttrs {
-    newExercise: Exercise,
-        allExercises: Array < Exercise > ,
-        db: pouchdb
+    allExercises: Array<Exercise>,
+    db: pouchdb
 };
 
 interface AddExerciseVnode {
     attrs: AddExerciseAttrs
 };
 
+let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
+
 const AddExercise = {
     view: function(vnode: AddExerciseVnode) {
-        let newExercise = vnode.attrs.newExercise;
-        let allExercises = vnode.attrs.allExercises;
         let db = vnode.attrs.db;
         return m('form', {
             onsubmit: function(event) {
                 event.preventDefault();
                 newExercise._id = 'exercise_' + Date.now().toString() + newExercise.name;
-                const indexAdded = allExercises.push(newExercise) - 1;
+                const indexAdded = vnode.attrs.allExercises.push(newExercise) - 1;
                 db.put(newExercise).then(function(response) {
-                    allExercises[indexAdded]._rev = response.rev;
+                    vnode.attrs.allExercises[indexAdded]._rev = response.rev;
                     m.redraw();
                 }.bind(this));
+
                 newExercise = {
                     _id: '',
                     name: '',
                     setUnits: SetUnits.Weight
                 };
-            }
+            }.bind(this)
         }, [
             m('input[type=text][placeholder="Exercise name"]', {
                 oninput: m.withAttr('value', function(value: string) {
@@ -57,4 +57,4 @@ const AddExercise = {
 };
 
 
-export default AddExercise;
+export {AddExercise, AddExerciseAttrs};

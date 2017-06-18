@@ -2,7 +2,7 @@ import * as m from "mithril";
 import * as pouchdb from "pouchdb";
 import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription} from "./exercise";
 import {ExerciseList, ExerciseListAttrs} from './exerciseList';
-import AddExercise from './addExercise';
+import {AddExercise, AddExerciseAttrs} from './addExercise';
 
 let db = new pouchdb('leeft');
 
@@ -11,7 +11,6 @@ let app = {
         return m(exerciseAddForm);
     }
 };
-let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 let allExercises:Array<Exercise> = [];
 let newPrescription: ExercisePrescription = {
     exercise: null,
@@ -36,9 +35,13 @@ let exerciseAddForm = {
             allExercises,
             db
         };
+        const addExerciseAttrs: AddExerciseAttrs = {
+            allExercises,
+            db
+        };
         return m('div', [
             m('h1', 'Add Exercise'),
-            m(AddExercise),
+            m(AddExercise, addExerciseAttrs),
             m(ExerciseList, exerciseListAttrs),
             m('h1', 'Add Prescription'),
             m('form', {

@@ -13,7 +13,6 @@ let app = {
 let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 let allExercises:Array<Exercise> = [];
 let newPrescription: ExercisePrescription = {
-    _id: '',
     exercise: null,
     sets: 0,
     amount: 0

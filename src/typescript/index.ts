@@ -2,6 +2,7 @@ import * as m from "mithril";
 import * as pouchdb from "pouchdb";
 import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription} from "./exercise";
 import {ExerciseList, ExerciseListAttrs} from './exerciseList';
+import AddExercise from './addExercise';
 
 let db = new pouchdb('leeft');
 
@@ -37,32 +38,7 @@ let exerciseAddForm = {
         };
         return m('div', [
             m('h1', 'Add Exercise'),
-            m('form', {
-                onsubmit: function(event) {
-                    event.preventDefault();
-                    newExercise._id = 'exercise_' + Date.now().toString() + newExercise.name;
-                    const indexAdded = allExercises.push(newExercise) - 1;
-                    db.put(newExercise).then(function(response) {
-                        allExercises[indexAdded]._rev = response.rev;
-                        m.redraw();
-                    }.bind(this));
-                    newExercise = {_id: '', name: '', setUnits: SetUnits.Weight};
-                }
-            }, [
-                m('input[type=text][placeholder="Exercise name"]', {
-                    oninput: m.withAttr('value', function(value:string) {newExercise.name = value;}),
-                    value: newExercise.name
-                }),
-                m('select', {
-                    onchange: m.withAttr('value', function(value:string) {
-                        let newValue = parseInt(value);
-                        newExercise.setUnits = newValue;
-                    })
-                }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
-                    return m('option[value=' + tuple[0] + ']', tuple[1]);
-                })),
-                m('button[type=submit]', 'Add')
-            ]),
+            m(AddExercise),
             m(ExerciseList, exerciseListAttrs),
             m('h1', 'Add Prescription'),
             m('form', {

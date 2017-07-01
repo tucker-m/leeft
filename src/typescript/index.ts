@@ -4,6 +4,7 @@ import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription} from "./exerc
 import {ExerciseList, ExerciseListAttrs} from './exerciseList';
 import {AddExercise, AddExerciseAttrs} from './addExercise';
 import {AddPrescription, AddPrescriptionAttrs} from './addPrescription';
+import {AddWorkout, AddWorkoutAttrs} from './addWorkout';
 
 let db = new pouchdb('leeft');
 
@@ -33,11 +34,15 @@ let exerciseAddForm = {
         const addPrescriptionAttrs: AddPrescriptionAttrs = {
             allExercises
         };
+        const addWorkoutAttrs: AddWorkoutAttrs = {
+            allExercises
+        };
         return m('div', [
             m('h1', 'Add Exercise'),
             m(AddExercise, addExerciseAttrs),
             m(ExerciseList, exerciseListAttrs),
-            m(AddPrescription, addPrescriptionAttrs)
+            m(AddPrescription, addPrescriptionAttrs),
+            m(AddWorkout, addWorkoutAttrs)
         ]);
     }
 };

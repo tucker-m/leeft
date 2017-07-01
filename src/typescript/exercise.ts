@@ -1,4 +1,4 @@
-enum SetUnits {
+const enum SetUnits {
     Weight,
     None,
     Time
@@ -41,4 +41,4 @@ interface WorkoutLog {
     date: Date
 };
 
-export { Exercise, SetUnits, RecordTypeNames, ExercisePrescription };
+export { Exercise, SetUnits, RecordTypeNames, ExercisePrescription, Workout };

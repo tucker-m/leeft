@@ -44,14 +44,15 @@ const AddExercise = {
                 value: newExercise.name
             }),
             m('select', {
-                    onchange: m.withAttr('value', function(value: string) {
-                        let newValue = parseInt(value);
-                        newExercise.setUnits = newValue;
-                    })
-                }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
-                    return m('option[value=' + tuple[0] + ']', tuple[1]);
+                onchange: m.withAttr('value', function(value: string) {
+                    let newValue = parseInt(value);
+                    newExercise.setUnits = newValue;
                 }),
-                m('button[type=submit]', 'Add'))
+                value: newExercise.setUnits.toString()
+            }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
+                return m('option[value=' + tuple[0] + ']', tuple[1]);
+            }),
+            m('button[type=submit]', 'Add'))
         ]);
     }
 };

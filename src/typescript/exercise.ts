@@ -33,6 +33,7 @@ interface ExercisePrescription {
 interface Workout {
     _id: string,
     _rev?: string,
+    name: string,
     prescriptions: Array<ExercisePrescription>
 };
 

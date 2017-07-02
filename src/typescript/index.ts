@@ -1,10 +1,11 @@
 import * as m from "mithril";
 import * as pouchdb from "pouchdb";
-import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription} from "./exercise";
+import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription, Workout} from "./exercise";
 import {ExerciseList, ExerciseListAttrs} from './exerciseList';
 import {AddExercise, AddExerciseAttrs} from './addExercise';
 import {AddPrescription, AddPrescriptionAttrs} from './addPrescription';
 import {AddWorkout, AddWorkoutAttrs} from './addWorkout';
+import {WorkoutList, WorkoutListAttrs} from './workoutList';
 
 let db = new pouchdb('leeft');
 
@@ -20,6 +21,13 @@ db.allDocs({startkey: 'exercise_', include_docs: true}).then(function(docs) {
     });
     m.redraw();
 });
+let allWorkouts:Array<Workout> = [];
+db.allDocs({startkey: 'workout_', include_docs: true}).then(function(docs) {
+    allWorkouts = docs.rows.map(function(row) {
+        return row.doc;
+    });
+    m.redraw();
+});
 
 let exerciseAddForm = {
     view: function() {
@@ -31,18 +39,21 @@ let exerciseAddForm = {
             allExercises,
             db
         };
-        const addPrescriptionAttrs: AddPrescriptionAttrs = {
-            allExercises
-        };
         const addWorkoutAttrs: AddWorkoutAttrs = {
-            allExercises
+            allExercises,
+            allWorkouts,
+            db
+        };
+        const workoutListAttrs: WorkoutListAttrs = {
+            allWorkouts,
+            db
         };
         return m('div', [
             m('h1', 'Add Exercise'),
             m(AddExercise, addExerciseAttrs),
             m(ExerciseList, exerciseListAttrs),
-            m(AddPrescription, addPrescriptionAttrs),
-            m(AddWorkout, addWorkoutAttrs)
+            m(AddWorkout, addWorkoutAttrs),
+            m(WorkoutList, workoutListAttrs)
         ]);
     }
 };

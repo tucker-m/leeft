@@ -1,8 +1,12 @@
 import * as m from 'mithril';
+import * as pouchdb from 'pouchdb';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
+import {AddPrescription, AddPrescriptionAttrs} from './addPrescription';
 
 interface AddWorkoutAttrs {
-    allExercises: Array<Exercise>
+    allExercises: Array<Exercise>,
+    allWorkouts: Array<Workout>,
+    db: pouchdb
 };
 
 interface AddWorkoutVnode {
@@ -11,41 +15,70 @@ interface AddWorkoutVnode {
 
 let newWorkout: Workout = {
     _id: 'workout_' + Date.now(), // TODO: add a random number in here
+    name: '',
     prescriptions: []
 };
 
 const getTableAndInput = function(prescriptions: Array<ExercisePrescription>, allExercises: Array<Exercise>) {
-    const table = prescriptions.map(function(prescription) {
+    const tableRows = prescriptions.map(function(prescription) {
         return m('tr', [
             m('td', prescription.exercise.name),
             m('td', prescription.sets),
             m('td', prescription.amount)
         ]);
     });
-    const inputRow = m('tr', [
-        m('td', m('select', allExercises.map(function(exercise) {
-            return m('option', exercise.name);
-        }))),
-        m('td', 'input here'),
-        m('td', 'reps here')
+    const tableBody = m('tbody', tableRows);
+    const table = m('table', [
+        m('thead', [
+            m('tr', [
+                m('td', 'Exercise'),
+                m('td', 'Sets'),
+                m('td', 'Reps')
+            ])
+        ]),
+        tableBody
     ]);
-    return table.concat(inputRow);
-}
+    const submitFunction = function(newPrescription) {
+        newWorkout.prescriptions.push(newPrescription);
+    }
+    const addPrescriptionAttrs: AddPrescriptionAttrs = {
+        allExercises,
+        submitFunction
+    };
+    const addPrescription = m(AddPrescription, addPrescriptionAttrs);
+    return [table, addPrescription];
+};
 
 const AddWorkout = {
     view: function(vnode: AddWorkoutVnode) {
+        const db = vnode.attrs.db;
         return m('div', [
             m('h1', 'New Workout'),
-            m('table', [
-                m('thead', [
-                    m('tr', [
-                        m('td', 'Exercise'),
-                        m('td', 'Sets'),
-                        m('td', 'Reps')
-                    ])
-                ]),
-                m('tbody', getTableAndInput(newWorkout.prescriptions, vnode.attrs.allExercises))
-            ])]);
+            m('input[type=text]', {
+                onchange: m.withAttr('value', function(value) {
+                    newWorkout.name = value;
+                }),
+                value: newWorkout.name
+            }),
+            ...getTableAndInput(newWorkout.prescriptions, vnode.attrs.allExercises),
+            m('button', {
+                onclick: function(event) {
+                    event.preventDefault();
+                    newWorkout._id = 'workout_' + Date.now().toString() + newWorkout.name;
+                    const indexAdded = vnode.attrs.allWorkouts.push(newWorkout) + 1;
+                    db.put(newWorkout).then(function(response) {
+                        vnode.attrs.allWorkouts[indexAdded]._rev = response.rev;
+                        m.redraw();
+                    }.bind(this));
+
+                    newWorkout = {
+                        _id: '',
+                        name: '',
+                        prescriptions: []
+                    };
+                }
+            }, 'Save Workout')
+        ]);
     }
 };
 

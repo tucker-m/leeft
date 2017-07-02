@@ -18,7 +18,8 @@ if (newPrescription.exercise != null) {
 }
 
 interface AddPrescriptionAttrs {
-    allExercises: Array<Exercise>
+    allExercises: Array<Exercise>,
+    submitFunction: (prescription: ExercisePrescription) => void
 };
 
 interface AddPrescriptionVnode {
@@ -26,11 +27,15 @@ interface AddPrescriptionVnode {
 };
 const AddPrescription = {
     view: function(vnode: AddPrescriptionVnode) {
-        return m('h1', 'Add Prescription'),
-            m('form', {
+        return m('form', {
                 onsubmit: function(event) {
                     event.preventDefault();
-                    // add to the workout here. A prescription should belong to a workout.
+                    vnode.attrs.submitFunction(newPrescription);
+                    newPrescription = {
+                        exercise: null,
+                        sets: 0,
+                        amount: 0
+                    };
                 }
             }, [
                 m('div', [
@@ -47,11 +52,21 @@ const AddPrescription = {
                 ]),
                 m('div', [
                     m('label[for=select-exercise-sets]', 'Sets'),
-                    m('input#select-exercise-sets[type=number]')
+                    m('input#select-exercise-sets[type=number]', {
+                        onchange: m.withAttr('value', function(value: string) {
+                            newPrescription.sets = parseInt(value);
+                        }),
+                        value: newPrescription.sets
+                    })
                 ]),
                 m('div', [
                     m('label[for=select-exercise-amount]', label),
-                    m('input#select-exercise-amount[type=number]')
+                    m('input#select-exercise-amount[type=number]', {
+                        onchange: m.withAttr('value', function(value: string) {
+                            newPrescription.amount = parseInt(value)
+                        }),
+                        value: newPrescription.amount
+                    })
                 ]),
                 m('button[type=submit]', 'Add')
             ]

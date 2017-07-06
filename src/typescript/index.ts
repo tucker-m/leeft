@@ -3,7 +3,7 @@ import * as pouchdb from "pouchdb";
 import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription, Workout} from "./exercise";
 import {ExerciseList, ExerciseListAttrs} from './exerciseList';
 import {AddExercise, AddExerciseAttrs} from './addExercise';
-import {AddPrescription, AddPrescriptionAttrs} from './addPrescription';
+import {AddPrescription} from './addPrescription';
 import {AddWorkout, AddWorkoutAttrs} from './addWorkout';
 import {WorkoutList, WorkoutListAttrs} from './workoutList';
 

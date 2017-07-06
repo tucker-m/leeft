@@ -18,7 +18,7 @@ const RecordTypeNames:Map<SetUnits, string> = new Map([
 ]);
 
 interface Exercise {
-    _id: string,
+    _id?: string, // ideally, this should not be optional. All saveables need an _id.
     _rev?: string,
     name: string,
     setUnits: SetUnits

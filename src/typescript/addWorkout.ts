@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import * as pouchdb from 'pouchdb';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
-import {AddPrescription, AddPrescriptionAttrs} from './addPrescription';
+import {AddPrescription} from './addPrescription';
 
 interface AddWorkoutAttrs {
     allExercises: Array<Exercise>,
@@ -41,11 +41,7 @@ const getTableAndInput = function(prescriptions: Array<ExercisePrescription>, al
     const submitFunction = function(newPrescription) {
         newWorkout.prescriptions.push(newPrescription);
     }
-    const addPrescriptionAttrs: AddPrescriptionAttrs = {
-        allExercises,
-        submitFunction
-    };
-    const addPrescription = m(AddPrescription, addPrescriptionAttrs);
+    const addPrescription = AddPrescription(allExercises, submitFunction);
     return [table, addPrescription];
 };
 
@@ -65,7 +61,7 @@ const AddWorkout = {
                 onclick: function(event) {
                     event.preventDefault();
                     newWorkout._id = 'workout_' + Date.now().toString() + newWorkout.name;
-                    const indexAdded = vnode.attrs.allWorkouts.push(newWorkout) + 1;
+                    const indexAdded = vnode.attrs.allWorkouts.push(newWorkout) - 1;
                     db.put(newWorkout).then(function(response) {
                         vnode.attrs.allWorkouts[indexAdded]._rev = response.rev;
                         m.redraw();

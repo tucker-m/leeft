@@ -15,9 +15,27 @@ let WorkoutList = {
     view: function(vnode: WorkoutListVnode) {
         return m('div', [
             m('h1', 'All Workouts'),
-            m('ul', vnode.attrs.allWorkouts.map(function(workout) {
-                return m('li', workout.name);
-            }))
+            vnode.attrs.allWorkouts.map(function(workout) {
+                return m('div', [
+                    m('h2', workout.name),
+                    m('table', [
+                        m('thead', [
+                            m('tr', [
+                                m('td', 'Exercise name'),
+                                m('td', 'Sets'),
+                                m('td', 'Amount')
+                            ])
+                        ]),
+                        m('tbody', workout.prescriptions.map(function(prescription) {
+                            return m('tr', [
+                                m('td', prescription.exercise.name),
+                                m('td', prescription.sets),
+                                m('td', prescription.amount)
+                            ]);
+                        }))
+                    ])
+                ]);
+            })
         ])
     }
 };

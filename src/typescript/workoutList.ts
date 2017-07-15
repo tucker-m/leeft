@@ -17,7 +17,7 @@ let WorkoutList = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
             return m('div', [
-                m('h1', 'All Workouts'),
+                m('h2', 'All Workouts'),
                 vnode.attrs.allWorkouts.map(function(workout) {
                     const attrs: WorkoutDisplayAttrs = {
                         db: vnode.attrs.db,

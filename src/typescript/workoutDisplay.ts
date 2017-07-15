@@ -14,16 +14,16 @@ const WorkoutDisplay = function(vnode) {
     let workout = vnode.attrs.workout;
     let beingEdited = false;
     const editWorkoutSubmitFunction = function(workout: Workout) {
-        const indexAdded = vnode.attrs.allWorkouts.push(workout) - 1;
+        // TODO: do something if the db save fails here.
+        beingEdited = false;
         vnode.attrs.db.put(workout).then((function(response) {
-            vnode.attrs.allWorkouts[indexAdded]._rev = response.rev;
             m.redraw();
         }).bind(this));
     };
     return {
         view: function(vnode) {
             let elements = [
-                m('h2', workout.name),
+                m('h3', workout.name),
                 m('div', {
                     style: 'display: ' + (beingEdited ? 'none' : 'block') + ';'
                 }, [

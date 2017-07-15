@@ -2,6 +2,7 @@ import * as m from 'mithril';
 import * as pouchdb from 'pouchdb';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
 import {AddPrescription} from './addPrescription';
+import {AddExercise, AddExerciseAttrs} from './addExercise';
 
 interface EditWorkoutAttrs {
     workout?: Workout,
@@ -43,10 +44,11 @@ const getTableAndInput = function(prescriptions: Array<ExercisePrescription>, al
 
 const EditWorkout = function(vnode: EditWorkoutVnode) {
     let workout = {
-        _id: 'workout_' + Date.now(), // TODO: put this somewhere else
+        _id: 'workout_' + Date.now(), // TODO: add a random number in here
         name: '',
         prescriptions: []
     };
+    let addingExercise = false;
     return {
         oninit: function(vnode: EditWorkoutVnode) {
             if (vnode.attrs.workout) {
@@ -59,20 +61,42 @@ const EditWorkout = function(vnode: EditWorkoutVnode) {
             }
         },
         view: function(vnode: EditWorkoutVnode) {
+            let addExerciseComponent = m('div');
+            if (addingExercise) {
+                const addExerciseAttrs = {
+                    allExercises: vnode.attrs.allExercises,
+                    submitFunction: function(newExercise: Exercise) {
+                        const indexAdded = vnode.attrs.allExercises.push(newExercise) - 1;
+                        vnode.attrs.db.put(newExercise).then(function(response) {
+                            vnode.attrs.allExercises[indexAdded]._rev = response.rev;
+                            m.redraw();
+                            // TODO: set the current exercise in the option box to the
+                            // newly-created one.
+                        }.bind(this));
+                        addingExercise = false;
+                    }
+                };
+                addExerciseComponent = m(AddExercise, addExerciseAttrs);
+            }
             const db = vnode.attrs.db;
             return m('div', [
-                m('h1', 'New Workout'),
                 m('input[type=text]', {
                     onchange: m.withAttr('value', function(value) {
                         workout.name = value;
                     }),
                     value: workout.name
                 }),
+                m('button', {
+                    onclick: function(event) {
+                        event.preventDefault();
+                        addingExercise = true;
+                    }
+                }, 'Create new exercise'),
+                addExerciseComponent,
                 ...getTableAndInput(workout.prescriptions, vnode.attrs.allExercises, workout),
                 m('button', {
                     onclick: function(event) {
                         event.preventDefault();
-                        workout._id = 'workout_' + Date.now().toString() + workout.name;
                         vnode.attrs.submitFunction(workout);
                         workout = {
                             _id: '',

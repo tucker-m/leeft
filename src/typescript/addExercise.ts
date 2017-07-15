@@ -1,5 +1,4 @@
 import * as m from 'mithril';
-import * as pouchdb from 'pouchdb';
 import {
     Exercise,
     SetUnits,
@@ -8,52 +7,44 @@ import {
 
 interface AddExerciseAttrs {
     allExercises: Array<Exercise>,
-    db: pouchdb
+    submitFunction: (Exercise) => void
 };
 
 interface AddExerciseVnode {
     attrs: AddExerciseAttrs
 };
 
-let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 
-const AddExercise = {
-    view: function(vnode: AddExerciseVnode) {
-        let db = vnode.attrs.db;
-        return m('form', {
-            onsubmit: function(event) {
-                event.preventDefault();
-                newExercise._id = 'exercise_' + Date.now().toString() + newExercise.name;
-                const indexAdded = vnode.attrs.allExercises.push(newExercise) - 1;
-                db.put(newExercise).then(function(response) {
-                    vnode.attrs.allExercises[indexAdded]._rev = response.rev;
-                    m.redraw();
-                }.bind(this));
+const AddExercise = function(vnode: AddExerciseVnode) {
+    let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 
-                newExercise = {
-                    _id: '',
-                    name: '',
-                    setUnits: SetUnits.Weight
-                };
-            }.bind(this)
-        }, [
-            m('input[type=text][placeholder="Exercise name"]', {
-                oninput: m.withAttr('value', function(value: string) {
-                    newExercise.name = value;
+    return {
+        view: function(vnode: AddExerciseVnode) {
+            return m('form', {
+                onsubmit: function(event) {
+                    event.preventDefault();
+                    newExercise._id = 'exercise_' + Date.now().toString() + newExercise.name;
+                    vnode.attrs.submitFunction(newExercise);
+                }
+            }, [
+                m('input[type=text][placeholder="Exercise name"]', {
+                    oninput: m.withAttr('value', function(value: string) {
+                        newExercise.name = value;
+                    }),
+                    value: newExercise.name
                 }),
-                value: newExercise.name
-            }),
-            m('select', {
-                onchange: m.withAttr('value', function(value: string) {
-                    let newValue = parseInt(value);
-                    newExercise.setUnits = newValue;
-                }),
-                value: newExercise.setUnits.toString()
-            }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
-                return m('option[value=' + tuple[0] + ']', tuple[1]);
-            }),
-            m('button[type=submit]', 'Add'))
-        ]);
+                m('select', {
+                    onchange: m.withAttr('value', function(value: string) {
+                        let newValue = parseInt(value);
+                        newExercise.setUnits = newValue;
+                    }),
+                    value: newExercise.setUnits.toString()
+                }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
+                    return m('option[value=' + tuple[0] + ']', tuple[1]);
+                })),
+                m('button[type=submit]', 'Add')
+            ]);
+        }
     }
 };
 

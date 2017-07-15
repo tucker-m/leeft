@@ -4,7 +4,7 @@ import {Exercise, SetUnits, RecordTypeNames, ExercisePrescription, Workout} from
 import {ExerciseList, ExerciseListAttrs} from './exerciseList';
 import {AddExercise, AddExerciseAttrs} from './addExercise';
 import {AddPrescription} from './addPrescription';
-import {AddWorkout, AddWorkoutAttrs} from './addWorkout';
+import {EditWorkout, EditWorkoutAttrs} from './editWorkout';
 import {WorkoutList, WorkoutListAttrs} from './workoutList';
 
 let db = new pouchdb('leeft');
@@ -15,14 +15,14 @@ let app = {
     }
 };
 let allExercises:Array<Exercise> = [];
-db.allDocs({startkey: 'exercise_', include_docs: true}).then(function(docs) {
+db.allDocs({startkey: 'exercise_', endkey: 'exercise_\uffff', include_docs: true}).then(function(docs) {
     allExercises = docs.rows.map(function(row) {
         return row.doc;
     });
     m.redraw();
 });
 let allWorkouts:Array<Workout> = [];
-db.allDocs({startkey: 'workout_', include_docs: true}).then(function(docs) {
+db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true}).then(function(docs) {
     allWorkouts = docs.rows.map(function(row) {
         return row.doc;
     });
@@ -39,20 +39,28 @@ let exerciseAddForm = {
             allExercises,
             db
         };
-        const addWorkoutAttrs: AddWorkoutAttrs = {
-            allExercises,
-            allWorkouts,
-            db
+        const editWorkoutAttrs: EditWorkoutAttrs = {
+            allExercises: allExercises,
+            allWorkouts: allWorkouts,
+            db: db,
+            submitFunction: function(workout: Workout) {
+                const indexAdded = allWorkouts.push(workout) - 1;
+                db.put(workout).then(function(response) {
+                    allWorkouts[indexAdded]._rev = response.rev;
+                    m.redraw();
+                }).bind(this);
+            }.bind(this)
         };
         const workoutListAttrs: WorkoutListAttrs = {
             allWorkouts,
+            allExercises,
             db
         };
         return m('div', [
             m('h1', 'Add Exercise'),
             m(AddExercise, addExerciseAttrs),
             m(ExerciseList, exerciseListAttrs),
-            m(AddWorkout, addWorkoutAttrs),
+            m(EditWorkout, editWorkoutAttrs),
             m(WorkoutList, workoutListAttrs)
         ]);
     }

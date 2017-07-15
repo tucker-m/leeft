@@ -1,12 +1,13 @@
 import * as m from 'mithril';
 import {ExercisePrescription, SetUnits, Exercise} from './exercise';
-import {AddPrescriptionView} from './addPrescriptionView';
+import {AddPrescriptionView, AddPrescriptionViewAttrs} from './addPrescriptionView';
 
 let AddPrescription = function(allExercises: Array<Exercise>, submitFunction){
-
-    return m(AddPrescriptionView, {
+    const addPrescriptionViewAttrs = {
         allExercises,
         submitFunction
-    });
+    };
+
+    return m(AddPrescriptionView, addPrescriptionViewAttrs);
 };
 export {AddPrescription};

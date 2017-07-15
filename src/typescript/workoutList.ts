@@ -1,9 +1,11 @@
 import * as m from 'mithril';
 import * as pouchdb from 'pouchdb';
-import {Workout} from './exercise';
+import {Workout, Exercise} from './exercise';
+import {WorkoutDisplay, WorkoutDisplayAttrs} from './workoutDisplay';
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout>,
+    allExercises: Array<Exercise>,
     db: pouchdb
 };
 
@@ -11,32 +13,22 @@ interface WorkoutListVnode {
     attrs: WorkoutListAttrs
 };
 
-let WorkoutList = {
-    view: function(vnode: WorkoutListVnode) {
-        return m('div', [
-            m('h1', 'All Workouts'),
-            vnode.attrs.allWorkouts.map(function(workout) {
-                return m('div', [
-                    m('h2', workout.name),
-                    m('table', [
-                        m('thead', [
-                            m('tr', [
-                                m('td', 'Exercise name'),
-                                m('td', 'Sets'),
-                                m('td', 'Amount')
-                            ])
-                        ]),
-                        m('tbody', workout.prescriptions.map(function(prescription) {
-                            return m('tr', [
-                                m('td', prescription.exercise.name),
-                                m('td', prescription.sets),
-                                m('td', prescription.amount)
-                            ]);
-                        }))
-                    ])
-                ]);
-            })
-        ])
+let WorkoutList = function(vnode: WorkoutListVnode) {
+    return {
+        view: function(vnode: WorkoutListVnode) {
+            return m('div', [
+                m('h1', 'All Workouts'),
+                vnode.attrs.allWorkouts.map(function(workout) {
+                    const attrs: WorkoutDisplayAttrs = {
+                        db: vnode.attrs.db,
+                        workout: workout,
+                        allExercises: vnode.attrs.allExercises,
+                        allWorkouts: vnode.attrs.allWorkouts
+                    };
+                    return m(WorkoutDisplay, attrs)
+                })
+            ]);
+        }
     }
 };
 

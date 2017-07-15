@@ -1,21 +1,30 @@
 import * as m from 'mithril';
-import {SetUnits, ExercisePrescription} from './exercise';
+import {SetUnits, ExercisePrescription, Exercise} from './exercise';
 
 const exerciseOptionList = function(allExercises) {
     const first = [m('option', {'disabled': 'disabled', 'selected': 'selected'}, 'Select exercise')];
     return first.concat(allExercises.map(function(exercise, index) {
         return m('option[value=' + index + ']', exercise.name);
     }));
-}
+};
 
-let AddPrescriptionView = function(vnode) {
+interface AddPrescriptionViewAttrs {
+    submitFunction: (ExercisePrescription) => void,
+    allExercises: Array<Exercise>
+};
+
+interface AddPrescriptionViewVnode {
+    attrs: AddPrescriptionViewAttrs
+};
+
+let AddPrescriptionView = function(vnode: AddPrescriptionViewVnode) {
     let newPrescription: ExercisePrescription = {
         exercise: null,
         sets: 0,
         amount: 0
     };
     return {
-        view: function(vnode) {
+        view: function(vnode: AddPrescriptionViewVnode) {
             return m('form', {
                 onsubmit: function(event) {
                     event.preventDefault();
@@ -61,4 +70,4 @@ let AddPrescriptionView = function(vnode) {
     }
 };
 
-export {AddPrescriptionView};
+export {AddPrescriptionView, AddPrescriptionViewAttrs};

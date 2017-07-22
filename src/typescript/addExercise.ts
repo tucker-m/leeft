@@ -6,7 +6,7 @@ import {
     RecordTypeNames
 } from './exercise';
 
-interface AddExerciseAttrs {
+interface AddExerciseAttrs extends Object {
     allExercises: Array<Exercise>,
     submitFunction: (Exercise) => void
 };
@@ -14,6 +14,10 @@ interface AddExerciseAttrs {
 interface AddExerciseVnode {
     attrs: AddExerciseAttrs
 };
+
+interface AddExerciseInterface extends MComponent {
+    (attrs: AddExerciseAttrs) : m.Vnode<object, object>;
+}
 
 const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
@@ -48,7 +52,7 @@ const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     }
 };
 
-const AddExercise: MComponent = function(attrs: AddExerciseAttrs) {
+const AddExercise: AddExerciseInterface = function(attrs: AddExerciseAttrs) {
     return m(AddExerciseComponent, attrs);
 };
 

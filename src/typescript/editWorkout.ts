@@ -2,7 +2,7 @@ import * as m from 'mithril';
 import * as pouchdb from 'pouchdb';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
 import {AddPrescription} from './addPrescription';
-import {AddExercise, AddExerciseAttrs} from './addExercise';
+import {AddExercise} from './addExercise';
 
 interface EditWorkoutAttrs {
     workout?: Workout,
@@ -76,7 +76,7 @@ const EditWorkout = function(vnode: EditWorkoutVnode) {
                         addingExercise = false;
                     }
                 };
-                addExerciseComponent = m(AddExercise, addExerciseAttrs);
+                addExerciseComponent = AddExercise(addExerciseAttrs);
             }
             const db = vnode.attrs.db;
             return m('div', [

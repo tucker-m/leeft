@@ -14,8 +14,13 @@ interface AddExerciseVnode {
     attrs: AddExerciseAttrs
 };
 
+// An MComponent is a function that takes in the attributes an an argument
+// and returns a Mithril component.
+interface MComponent {
+    (attributes: object) : m.Vnode<object, object>;
+};
 
-const AddExercise = function(vnode: AddExerciseVnode) {
+const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 
     return {
@@ -48,5 +53,9 @@ const AddExercise = function(vnode: AddExerciseVnode) {
     }
 };
 
+const AddExercise: MComponent = function(attrs: AddExerciseAttrs) {
+    return m(AddExerciseComponent, attrs);
+};
 
-export {AddExercise, AddExerciseAttrs};
+
+export {AddExercise};

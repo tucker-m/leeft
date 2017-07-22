@@ -1,5 +1,6 @@
 import * as m from 'mithril';
 import * as pouchdb from 'pouchdb';
+import {MComponent} from './mcomponent';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
 import {AddPrescription} from './addPrescription';
 import {AddExercise} from './addExercise';
@@ -42,7 +43,7 @@ const getTableAndInput = function(prescriptions: Array<ExercisePrescription>, al
     return [table, addPrescription];
 };
 
-const EditWorkout = function(vnode: EditWorkoutVnode) {
+const EditWorkoutComponent = function(vnode: EditWorkoutVnode) {
     let workout = {
         _id: 'workout_' + Date.now(), // TODO: add a random number in here
         name: '',
@@ -110,4 +111,8 @@ const EditWorkout = function(vnode: EditWorkoutVnode) {
     }
 };
 
-export {EditWorkout, EditWorkoutAttrs};
+const EditWorkout: MComponent = function(attrs: EditWorkoutAttrs) {
+    return m(EditWorkoutComponent, attrs);
+};
+
+export {EditWorkout};

@@ -1,4 +1,5 @@
 import * as m from 'mithril';
+import {MComponent} from './mcomponent';
 import {
     Exercise,
     SetUnits,
@@ -12,12 +13,6 @@ interface AddExerciseAttrs {
 
 interface AddExerciseVnode {
     attrs: AddExerciseAttrs
-};
-
-// An MComponent is a function that takes in the attributes an an argument
-// and returns a Mithril component.
-interface MComponent {
-    (attributes: object) : m.Vnode<object, object>;
 };
 
 const AddExerciseComponent = function(vnode: AddExerciseVnode) {

@@ -2,7 +2,7 @@ import * as m from "mithril";
 import * as pouchdb from "pouchdb";
 import {Exercise, SetUnits, RecordTypeNames, Workout} from "./exercise";
 import {ExerciseList, ExerciseListAttrs} from './exerciseList';
-import {EditWorkout, EditWorkoutAttrs} from './editWorkout';
+import {EditWorkout} from './editWorkout';
 import {WorkoutList, WorkoutListAttrs} from './workoutList';
 
 let db = new pouchdb('leeft');
@@ -33,7 +33,7 @@ let exerciseAddForm = {
             allExercises,
             db
         };
-        const editWorkoutAttrs: EditWorkoutAttrs = {
+        const editWorkoutAttrs = {
             allExercises: allExercises,
             allWorkouts: allWorkouts,
             db: db,
@@ -53,7 +53,7 @@ let exerciseAddForm = {
         return m('div', [
             m(ExerciseList, exerciseListAttrs),
             m('h2', 'New Workout'),
-            m(EditWorkout, editWorkoutAttrs),
+            EditWorkout(editWorkoutAttrs),
             m(WorkoutList, workoutListAttrs)
         ]);
     }

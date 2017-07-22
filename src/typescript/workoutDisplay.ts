@@ -1,6 +1,6 @@
 import * as pouchdb from 'pouchdb';
 import * as m from 'mithril';
-import {EditWorkout, EditWorkoutAttrs} from './editWorkout';
+import {EditWorkout} from './editWorkout';
 import {Workout, Exercise} from './exercise';
 
 interface WorkoutDisplayAttrs {
@@ -53,14 +53,14 @@ const WorkoutDisplay = function(vnode) {
                 ])
             ];
             if (beingEdited) {
-                const attrs: EditWorkoutAttrs = {
+                const attrs = {
                     db: vnode.attrs.db,
                     allExercises: vnode.attrs.allExercises,
                     allWorkouts: vnode.attrs.allWorkouts,
                     workout: workout,
                     submitFunction: editWorkoutSubmitFunction
                 };
-                elements.push(m(EditWorkout, attrs));
+                elements.push(EditWorkout(attrs));
             }
             return elements;
         }

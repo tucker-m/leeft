@@ -46,7 +46,7 @@ let componentList = {
                 db.put(workout).then(function(response) {
                     allWorkouts[indexAdded]._rev = response.rev;
                     m.redraw();
-                }).bind(this);
+                }.bind(this));
             }.bind(this)
         };
         const workoutListAttrs = {

@@ -1,17 +1,21 @@
 import * as m from 'mithril';
-import * as pouchdb from 'pouchdb';
+import PouchDB from 'pouchdb';
 import {Exercise, RecordTypeNames} from './exercise';
 
 interface ExerciseListAttrs {
     allExercises: Array<Exercise>,
-    db: pouchdb
+    db: PouchDB.Database
 };
 
 interface ExerciseListVnode {
     attrs: ExerciseListAttrs
 };
 
-let ExerciseList = {
+interface ExerciseListInterface {
+    (attrs: ExerciseListAttrs) : m.Vnode<object, object>
+};
+
+let ExerciseListComponent = {
     view: function(vnode: ExerciseListVnode) {
         return m('ul', vnode.attrs.allExercises.map(function(exercise: Exercise, index: number) {
             let deleteDisabledString = exercise._rev == null ? 'disabled=disabled' : '';
@@ -31,4 +35,8 @@ let ExerciseList = {
     }
 };
 
-export {ExerciseList, ExerciseListAttrs};
+const ExerciseList: ExerciseListInterface = function(attrs: ExerciseListAttrs) {
+    return m(ExerciseListComponent, attrs);
+};
+
+export {ExerciseList};

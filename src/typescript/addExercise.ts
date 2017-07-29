@@ -1,23 +1,22 @@
 import * as m from 'mithril';
-import {MComponent} from './mcomponent';
 import {
     Exercise,
     SetUnits,
     RecordTypeNames
 } from './exercise';
 
-interface AddExerciseAttrs extends Object {
+interface AddExerciseAttrs {
     allExercises: Array<Exercise>,
-    submitFunction: (Exercise) => void
+    submitFunction: (exercise: Exercise) => void
 };
 
 interface AddExerciseVnode {
     attrs: AddExerciseAttrs
 };
 
-interface AddExerciseInterface extends MComponent {
+interface AddExerciseInterface {
     (attrs: AddExerciseAttrs) : m.Vnode<object, object>;
-}
+};
 
 const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
@@ -25,7 +24,7 @@ const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     return {
         view: function(vnode: AddExerciseVnode) {
             return m('form', {
-                onsubmit: function(event) {
+                onsubmit: function(event: Event) {
                     event.preventDefault();
                     newExercise._id = 'exercise_' + Date.now().toString() + newExercise.name;
                     vnode.attrs.submitFunction(newExercise);
@@ -55,6 +54,5 @@ const AddExerciseComponent = function(vnode: AddExerciseVnode) {
 const AddExercise: AddExerciseInterface = function(attrs: AddExerciseAttrs) {
     return m(AddExerciseComponent, attrs);
 };
-
 
 export {AddExercise};

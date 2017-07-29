@@ -1,10 +1,10 @@
-import * as pouchdb from 'pouchdb';
+import PouchDB from 'pouchdb';
 import * as m from 'mithril';
 import {EditWorkout} from './editWorkout';
 import {Workout, Exercise} from './exercise';
 
 interface WorkoutDisplayAttrs {
-    db: pouchdb
+    db: PouchDB.Database
     workout: Workout,
     allExercises: Array<Exercise>,
     allWorkouts: Array<Workout>,
@@ -28,7 +28,7 @@ const WorkoutDisplay = function(vnode) {
                     style: 'display: ' + (beingEdited ? 'none' : 'block') + ';'
                 }, [
                     m('a', {
-                        onclick: function(event) {
+                        onclick: function(event: Event) {
                             event.preventDefault();
                             beingEdited = true;
                         }.bind(this),

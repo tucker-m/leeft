@@ -1,35 +1,39 @@
 import * as m from "mithril";
-import * as pouchdb from "pouchdb";
+import PouchDB from "pouchdb";
 import {Exercise, SetUnits, RecordTypeNames, Workout} from "./exercise";
-import {ExerciseList, ExerciseListAttrs} from './exerciseList';
+import {ExerciseList} from './exerciseList';
 import {EditWorkout} from './editWorkout';
-import {WorkoutList, WorkoutListAttrs} from './workoutList';
+import {WorkoutList} from './workoutList';
 
-let db = new pouchdb('leeft');
+let db = new PouchDB('leeft');
 
 let app = {
     view: function() {
-        return m(exerciseAddForm);
+        return m(componentList);
     }
 };
-let allExercises:Array<Exercise> = [];
-db.allDocs({startkey: 'exercise_', endkey: 'exercise_\uffff', include_docs: true}).then(function(docs) {
-    allExercises = docs.rows.map(function(row) {
-        return row.doc;
-    });
-    m.redraw();
-});
-let allWorkouts:Array<Workout> = [];
-db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true}).then(function(docs) {
-    allWorkouts = docs.rows.map(function(row) {
-        return row.doc;
-    });
-    m.redraw();
-});
 
-let exerciseAddForm = {
+let allExercises:Array<Exercise> = [];
+db.allDocs({startkey: 'exercise_', endkey: 'exercise_\uffff', include_docs: true})
+    .then(function(docs: PouchDB.Core.AllDocsResponse<Exercise>) {
+        allExercises = docs.rows.map(function(row) {
+            return row.doc;
+        });
+        m.redraw();
+    });
+
+let allWorkouts:Array<Workout> = [];
+db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true})
+    .then(function(docs: PouchDB.Core.AllDocsResponse<Workout>) {
+        allWorkouts = docs.rows.map(function(row) {
+            return row.doc;
+        });
+        m.redraw();
+    });
+
+let componentList = {
     view: function() {
-        const exerciseListAttrs: ExerciseListAttrs = {
+        const exerciseListAttrs = {
             allExercises,
             db
         };
@@ -45,22 +49,17 @@ let exerciseAddForm = {
                 }).bind(this);
             }.bind(this)
         };
-        const workoutListAttrs: WorkoutListAttrs = {
+        const workoutListAttrs = {
             allWorkouts,
             allExercises,
             db
         };
         return m('div', [
-            m(ExerciseList, exerciseListAttrs),
-            m('h2', 'New Workout'),
+            ExerciseList(exerciseListAttrs),
             EditWorkout(editWorkoutAttrs),
-            m(WorkoutList, workoutListAttrs)
+            WorkoutList(workoutListAttrs)
         ]);
     }
 };
 
 m.mount(document.getElementById('main'), app);
-
-if (module.hot) {
-    module.hot.accept();
-}

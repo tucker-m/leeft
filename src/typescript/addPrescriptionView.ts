@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import {SetUnits, ExercisePrescription, Exercise} from './exercise';
 
-const exerciseOptionList = function(allExercises) {
+const exerciseOptionList = function(allExercises: Exercise[]) {
     const first = [m('option', {'disabled': 'disabled', 'selected': 'selected'}, 'Select exercise')];
     return first.concat(allExercises.map(function(exercise, index) {
         return m('option[value=' + index + ']', exercise.name);
@@ -9,7 +9,7 @@ const exerciseOptionList = function(allExercises) {
 };
 
 interface AddPrescriptionViewAttrs {
-    submitFunction: (ExercisePrescription) => void,
+    submitFunction: (prescription: ExercisePrescription) => void,
     allExercises: Array<Exercise>
 };
 
@@ -26,7 +26,7 @@ let AddPrescriptionView = function(vnode: AddPrescriptionViewVnode) {
     return {
         view: function(vnode: AddPrescriptionViewVnode) {
             return m('form', {
-                onsubmit: function(event) {
+                onsubmit: function(event: Event) {
                     event.preventDefault();
                     vnode.attrs.submitFunction(newPrescription);
                     newPrescription = {
@@ -39,9 +39,10 @@ let AddPrescriptionView = function(vnode: AddPrescriptionViewVnode) {
                 m('div', [
                     m('label[for=select-exercise]', 'Exercise'),
                     m('select#select-exercise', {
-                        onchange: function(event) {
-                            let selectedIndex = event.target.selectedIndex;
-                            let selectedExercise = vnode.attrs.allExercises[event.target.options[selectedIndex].value];
+                        onchange: function(event: Event) {
+                            let target = <HTMLSelectElement>event.target;
+                            let selectedIndex = target.selectedIndex;
+                            let selectedExercise = vnode.attrs.allExercises[parseInt(target.options[selectedIndex].value)];
                             newPrescription.exercise = selectedExercise;
                         },
                     }, exerciseOptionList(vnode.attrs.allExercises))

@@ -1,19 +1,23 @@
 import * as m from 'mithril';
-import * as pouchdb from 'pouchdb';
+import PouchDB from "pouchdb";
 import {Workout, Exercise} from './exercise';
 import {WorkoutDisplay, WorkoutDisplayAttrs} from './workoutDisplay';
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout>,
     allExercises: Array<Exercise>,
-    db: pouchdb
+    db: PouchDB
 };
 
 interface WorkoutListVnode {
     attrs: WorkoutListAttrs
 };
 
-let WorkoutList = function(vnode: WorkoutListVnode) {
+interface WorkoutListInterface {
+    (attrs: WorkoutListAttrs) : m.Vnode<object, object>
+};
+
+let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
             return m('div', [
@@ -32,4 +36,8 @@ let WorkoutList = function(vnode: WorkoutListVnode) {
     }
 };
 
-export {WorkoutListAttrs, WorkoutList};
+const WorkoutList: WorkoutListInterface = function(attrs: WorkoutListAttrs) {
+    return m(WorkoutListComponent, attrs);
+};
+
+export {WorkoutList};

@@ -11,10 +11,6 @@ interface ExerciseListVnode {
     attrs: ExerciseListAttrs
 };
 
-interface ExerciseListInterface {
-    (attrs: ExerciseListAttrs) : m.Vnode<object, object>
-};
-
 let ExerciseListComponent = {
     view: function(vnode: ExerciseListVnode) {
         return m('ul', vnode.attrs.allExercises.map(function(exercise: Exercise, index: number) {
@@ -35,7 +31,7 @@ let ExerciseListComponent = {
     }
 };
 
-const ExerciseList: ExerciseListInterface = function(attrs: ExerciseListAttrs) {
+const ExerciseList = function(attrs: ExerciseListAttrs) {
     return m(ExerciseListComponent, attrs);
 };
 

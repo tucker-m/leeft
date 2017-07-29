@@ -13,10 +13,6 @@ interface WorkoutListVnode {
     attrs: WorkoutListAttrs
 };
 
-interface WorkoutListInterface {
-    (attrs: WorkoutListAttrs) : m.Vnode<object, object>
-};
-
 let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
@@ -36,7 +32,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     }
 };
 
-const WorkoutList: WorkoutListInterface = function(attrs: WorkoutListAttrs) {
+const WorkoutList = function(attrs: WorkoutListAttrs) {
     return m(WorkoutListComponent, attrs);
 };
 

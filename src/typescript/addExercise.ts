@@ -14,10 +14,6 @@ interface AddExerciseVnode {
     attrs: AddExerciseAttrs
 };
 
-interface AddExerciseInterface {
-    (attrs: AddExerciseAttrs) : m.Vnode<object, object>;
-};
-
 const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
 
@@ -51,7 +47,7 @@ const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     }
 };
 
-const AddExercise: AddExerciseInterface = function(attrs: AddExerciseAttrs) {
+const AddExercise = function(attrs: AddExerciseAttrs) {
     return m(AddExerciseComponent, attrs);
 };
 

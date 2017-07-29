@@ -16,10 +16,6 @@ interface EditWorkoutVnode{
     attrs: EditWorkoutAttrs
 };
 
-interface EditWorkoutInterface {
-    (attrs: EditWorkoutAttrs) : m.Vnode<object, object>;
-}
-
 const getTableAndInput = function(prescriptions: Array<ExercisePrescription>, allExercises: Array<Exercise>, workout: Workout) {
     const tableRows = prescriptions.map(function(prescription) {
         return m('tr', [
@@ -115,7 +111,7 @@ const EditWorkoutComponent = function(vnode: EditWorkoutVnode) {
     }
 };
 
-const EditWorkout: EditWorkoutInterface = function(attrs: EditWorkoutAttrs) {
+const EditWorkout = function(attrs: EditWorkoutAttrs) {
     return m(EditWorkoutComponent, attrs);
 };
 

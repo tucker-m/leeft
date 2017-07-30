@@ -1,5 +1,6 @@
 import * as m from 'mithril';
 import {SetUnits, ExercisePrescription, Exercise} from './exercise';
+import preventDefault from './preventDefaultFunction';
 
 const exerciseOptionList = function(allExercises: Exercise[]) {
     const first = [m('option', {'disabled': 'disabled', 'selected': 'selected'}, 'Select exercise')];
@@ -26,15 +27,14 @@ let AddPrescriptionViewComponent = function(vnode: AddPrescriptionViewVnode) {
     return {
         view: function(vnode: AddPrescriptionViewVnode) {
             return m('form', {
-                onsubmit: function(event: Event) {
-                    event.preventDefault();
+                onsubmit: preventDefault(function() {
                     vnode.attrs.submitFunction(newPrescription);
                     newPrescription = {
                         exercise: null,
                         sets: 0,
                         amount: 0
                     };
-                }
+                })
             }, [
                 m('div', [
                     m('label[for=select-exercise]', 'Exercise'),

@@ -4,6 +4,7 @@ import {
     SetUnits,
     RecordTypeNames
 } from './exercise';
+import preventDefault from './preventDefaultFunction';
 
 interface AddExerciseAttrs {
     allExercises: Array<Exercise>,
@@ -20,11 +21,10 @@ const AddExerciseComponent = function(vnode: AddExerciseVnode) {
     return {
         view: function(vnode: AddExerciseVnode) {
             return m('form', {
-                onsubmit: function(event: Event) {
-                    event.preventDefault();
+                onsubmit: preventDefault(function() {
                     newExercise._id = 'exercise_' + Date.now().toString() + newExercise.name;
                     vnode.attrs.submitFunction(newExercise);
-                }
+                })
             }, [
                 m('input[type=text][placeholder="Exercise name"]', {
                     oninput: m.withAttr('value', function(value: string) {

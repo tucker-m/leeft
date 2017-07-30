@@ -1,6 +1,7 @@
 import * as m from 'mithril';
 import PouchDB from 'pouchdb';
 import {Exercise, RecordTypeNames} from './exercise';
+import preventDefault from './preventDefaultFunction';
 
 interface ExerciseListAttrs {
     allExercises: Array<Exercise>,
@@ -18,13 +19,12 @@ let ExerciseListComponent = {
             return m('li', [
                 m('p', exercise.name + ' | ' + RecordTypeNames.get(exercise.setUnits)),
                 m('button[' + deleteDisabledString + ']', {
-                    onclick: function(event) {
-                        event.preventDefault();
+                    onclick: preventDefault(function() {
                         vnode.attrs.db.remove(exercise).then(function(response) {
                             vnode.attrs.allExercises.splice(index, 1);
                             m.redraw();
                         });
-                    }.bind(this)
+                    }.bind(this))
                 }, 'Delete')
             ])
         }))

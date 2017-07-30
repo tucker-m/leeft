@@ -3,6 +3,7 @@ import PouchDB from 'pouchdb';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
 import {AddPrescriptionView} from './addPrescriptionView';
 import {AddExercise} from './addExercise';
+import preventDefault from './preventDefaultFunction';
 
 interface EditWorkoutAttrs {
     workout?: Workout,
@@ -88,23 +89,21 @@ const EditWorkoutComponent = function(vnode: EditWorkoutVnode) {
                     value: workout.name
                 }),
                 m('button', {
-                    onclick: function(event: Event) {
-                        event.preventDefault();
+                    onclick: preventDefault(function() {
                         addingExercise = true;
-                    }
+                    })
                 }, 'Create new exercise'),
                 addExerciseComponent,
                 ...getTableAndInput(workout.prescriptions, vnode.attrs.allExercises, workout),
                 m('button', {
-                    onclick: function(event: Event) {
-                        event.preventDefault();
+                    onclick: preventDefault(function() {
                         vnode.attrs.submitFunction(workout);
                         workout = {
                             _id: '',
                             name: '',
                             prescriptions: []
                         };
-                    }
+                    })
                 }, 'Save Workout')
             ]);
         }

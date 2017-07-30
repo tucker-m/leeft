@@ -38,7 +38,7 @@ const getTableAndInput = function(prescriptions: Array<ExercisePrescription>, al
     const submitFunction = function(newPrescription: ExercisePrescription) {
         workout.prescriptions.push(newPrescription);
     }
-    const addPrescription = AddPrescriptionView({allExercises, submitFunction});
+    const addPrescription = AddPrescriptionView({submitFunction, allExercises});
     return [table, addPrescription];
 };
 

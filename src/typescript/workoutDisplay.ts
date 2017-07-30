@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import * as m from 'mithril';
-import {EditWorkout} from './editWorkout';
+import EditWorkout from './editWorkout';
 import {Workout, Exercise} from './exercise';
 import preventDefault from './preventDefaultFunction';
 
@@ -11,7 +11,7 @@ interface WorkoutDisplayAttrs {
     allWorkouts: Array<Workout>,
 };
 
-const WorkoutDisplay = function(vnode) {
+const WorkoutDisplayComponent = function(vnode) {
     let workout = vnode.attrs.workout;
     let beingEdited = false;
     const editWorkoutSubmitFunction = function(workout: Workout) {
@@ -67,4 +67,8 @@ const WorkoutDisplay = function(vnode) {
     };
 };
 
-export {WorkoutDisplay, WorkoutDisplayAttrs};
+const WorkoutDisplay = function(attrs: WorkoutDisplayAttrs) {
+    return m(WorkoutDisplayComponent, attrs);
+};
+
+export default WorkoutDisplay;

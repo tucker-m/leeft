@@ -51,4 +51,4 @@ const AddExercise = function(attrs: AddExerciseAttrs) {
     return m(AddExerciseComponent, attrs);
 };
 
-export {AddExercise};
+export default AddExercise;

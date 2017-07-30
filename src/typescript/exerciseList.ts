@@ -35,4 +35,4 @@ const ExerciseList = function(attrs: ExerciseListAttrs) {
     return m(ExerciseListComponent, attrs);
 };
 
-export {ExerciseList};
+export default ExerciseList;

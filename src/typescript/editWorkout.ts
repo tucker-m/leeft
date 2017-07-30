@@ -1,8 +1,8 @@
 import * as m from 'mithril';
 import PouchDB from 'pouchdb';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
-import {AddPrescriptionView} from './addPrescriptionView';
-import {AddExercise} from './addExercise';
+import AddPrescriptionView from './addPrescriptionView';
+import AddExercise from './addExercise';
 import preventDefault from './preventDefaultFunction';
 
 interface EditWorkoutAttrs {
@@ -114,4 +114,4 @@ const EditWorkout = function(attrs: EditWorkoutAttrs) {
     return m(EditWorkoutComponent, attrs);
 };
 
-export {EditWorkout};
+export default EditWorkout;

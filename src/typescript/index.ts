@@ -1,9 +1,9 @@
 import * as m from "mithril";
 import PouchDB from "pouchdb";
 import {Exercise, SetUnits, RecordTypeNames, Workout} from "./exercise";
-import {ExerciseList} from './exerciseList';
-import {EditWorkout} from './editWorkout';
-import {WorkoutList} from './workoutList';
+import ExerciseList from './exerciseList';
+import EditWorkout from './editWorkout';
+import WorkoutList from './workoutList';
 
 let db = new PouchDB('leeft');
 

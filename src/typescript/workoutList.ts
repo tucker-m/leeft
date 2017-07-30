@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import PouchDB from "pouchdb";
 import {Workout, Exercise} from './exercise';
-import {WorkoutDisplay, WorkoutDisplayAttrs} from './workoutDisplay';
+import WorkoutDisplay from './workoutDisplay';
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout>,
@@ -19,13 +19,13 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
             return m('div', [
                 m('h2', 'All Workouts'),
                 vnode.attrs.allWorkouts.map(function(workout) {
-                    const attrs: WorkoutDisplayAttrs = {
+                    const attrs = {
                         db: vnode.attrs.db,
                         workout: workout,
                         allExercises: vnode.attrs.allExercises,
                         allWorkouts: vnode.attrs.allWorkouts
                     };
-                    return m(WorkoutDisplay, attrs)
+                    return WorkoutDisplay(attrs);
                 })
             ]);
         }
@@ -36,4 +36,4 @@ const WorkoutList = function(attrs: WorkoutListAttrs) {
     return m(WorkoutListComponent, attrs);
 };
 
-export {WorkoutList};
+export default WorkoutList;

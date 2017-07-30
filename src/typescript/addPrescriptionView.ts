@@ -75,4 +75,4 @@ const AddPrescriptionView = function(attrs: AddPrescriptionViewAttrs) {
     return m(AddPrescriptionViewComponent, attrs);
 }
 
-export {AddPrescriptionView};
+export default AddPrescriptionView;

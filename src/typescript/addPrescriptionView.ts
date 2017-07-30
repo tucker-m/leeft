@@ -17,7 +17,7 @@ interface AddPrescriptionViewVnode {
     attrs: AddPrescriptionViewAttrs
 };
 
-let AddPrescriptionView = function(vnode: AddPrescriptionViewVnode) {
+let AddPrescriptionViewComponent = function(vnode: AddPrescriptionViewVnode) {
     let newPrescription: ExercisePrescription = {
         exercise: null,
         sets: 0,
@@ -71,4 +71,8 @@ let AddPrescriptionView = function(vnode: AddPrescriptionViewVnode) {
     }
 };
 
-export {AddPrescriptionView, AddPrescriptionViewAttrs};
+const AddPrescriptionView = function(attrs: AddPrescriptionViewAttrs) {
+    return m(AddPrescriptionViewComponent, attrs);
+}
+
+export {AddPrescriptionView};

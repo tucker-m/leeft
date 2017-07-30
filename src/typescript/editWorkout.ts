@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import PouchDB from 'pouchdb';
 import {Workout, Exercise, ExercisePrescription} from './exercise';
-import {AddPrescription} from './addPrescription';
+import {AddPrescriptionView} from './addPrescriptionView';
 import {AddExercise} from './addExercise';
 
 interface EditWorkoutAttrs {
@@ -38,7 +38,7 @@ const getTableAndInput = function(prescriptions: Array<ExercisePrescription>, al
     const submitFunction = function(newPrescription: ExercisePrescription) {
         workout.prescriptions.push(newPrescription);
     }
-    const addPrescription = AddPrescription(allExercises, submitFunction);
+    const addPrescription = AddPrescriptionView({allExercises, submitFunction});
     return [table, addPrescription];
 };
 

@@ -11,7 +11,11 @@ interface WorkoutDisplayAttrs {
     allWorkouts: Array<Workout>,
 };
 
-const WorkoutDisplayComponent = function(vnode) {
+interface WorkoutDisplayVnode {
+    attrs: WorkoutDisplayAttrs
+};
+
+const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
     let workout = vnode.attrs.workout;
     let beingEdited = false;
     const editWorkoutSubmitFunction = function(workout: Workout) {

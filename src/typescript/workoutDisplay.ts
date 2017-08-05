@@ -17,9 +17,9 @@ const WorkoutDisplayComponent = function(vnode) {
     const editWorkoutSubmitFunction = function(workout: Workout) {
         // TODO: do something if the db save fails here.
         beingEdited = false;
-        vnode.attrs.db.put(workout).then((function(response) {
+        vnode.attrs.db.put(workout).then((response) => {
             m.redraw();
-        }).bind(this));
+        });
     };
     return {
         view: function(vnode) {
@@ -29,9 +29,9 @@ const WorkoutDisplayComponent = function(vnode) {
                     style: 'display: ' + (beingEdited ? 'none' : 'block') + ';'
                 }, [
                     m('a', {
-                        onclick: preventDefault(function() {
+                        onclick: preventDefault(() => {
                             beingEdited = true;
-                        }.bind(this)),
+                        }),
                         href: '#'
                     }, 'Edit'),
                     m('table', [

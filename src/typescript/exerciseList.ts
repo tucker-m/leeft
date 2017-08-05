@@ -19,12 +19,12 @@ let ExerciseListComponent = {
             return m('li', [
                 m('p', exercise.name + ' | ' + RecordTypeNames.get(exercise.setUnits)),
                 m('button[' + deleteDisabledString + ']', {
-                    onclick: preventDefault(function() {
+                    onclick: preventDefault(() => {
                         vnode.attrs.db.remove(exercise).then(function(response) {
                             vnode.attrs.allExercises.splice(index, 1);
                             m.redraw();
                         });
-                    }.bind(this))
+                    })
                 }, 'Delete')
             ])
         }))

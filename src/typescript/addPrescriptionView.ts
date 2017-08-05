@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import {SetUnits, ExercisePrescription, Exercise} from './exercise';
+import {ExercisePrescription, Exercise} from './exercise';
 import preventDefault from './preventDefaultFunction';
 
 const exerciseOptionList = function(allExercises: Exercise[]) {

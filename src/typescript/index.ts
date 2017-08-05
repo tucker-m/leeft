@@ -1,6 +1,6 @@
 import * as m from "mithril";
 import PouchDB from "pouchdb";
-import {Exercise, SetUnits, RecordTypeNames, Workout} from "./exercise";
+import {Exercise, Workout} from "./exercise";
 import ExerciseList from './exerciseList';
 import EditWorkout from './editWorkout';
 import WorkoutList from './workoutList';
@@ -41,13 +41,13 @@ let componentList = {
             allExercises: allExercises,
             allWorkouts: allWorkouts,
             db: db,
-            submitFunction: function(workout: Workout) {
+            submitFunction: (workout: Workout) => {
                 const indexAdded = allWorkouts.push(workout) - 1;
-                db.put(workout).then(function(response) {
+                db.put(workout).then((response) => {
                     allWorkouts[indexAdded]._rev = response.rev;
                     m.redraw();
-                }.bind(this));
-            }.bind(this)
+                });
+            }
         };
         const workoutListAttrs = {
             allWorkouts,

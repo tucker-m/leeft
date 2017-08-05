@@ -68,12 +68,12 @@ const EditWorkoutComponent = function(vnode: EditWorkoutVnode) {
                     allExercises: vnode.attrs.allExercises,
                     submitFunction: function(newExercise: Exercise) {
                         const indexAdded = vnode.attrs.allExercises.push(newExercise) - 1;
-                        vnode.attrs.db.put(newExercise).then(function(response) {
+                        vnode.attrs.db.put(newExercise).then((response) => {
                             vnode.attrs.allExercises[indexAdded]._rev = response.rev;
                             m.redraw();
                             // TODO: set the current exercise in the option box to the
                             // newly-created one.
-                        }.bind(this));
+                        });
                         addingExercise = false;
                     }
                 };

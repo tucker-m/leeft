@@ -48,9 +48,21 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                         ]),
                         m('tbody', workout.prescriptions.map(function(prescription) {
                             return m('tr', [
-                                m('td', prescription.exercise.name),
-                                m('td', prescription.sets),
-                                m('td', prescription.amount)
+                                m('td', m('input', {
+                                    type: 'text',
+                                    value: prescription.exercise.name,
+                                    onchange: m.withAttr('value', function(value) {prescription.exercise.name = value})
+                                })),
+                                m('td', m('input', {
+                                    type: 'text',
+                                    value: prescription.sets,
+                                    onchange: m.withAttr('value', function(value) {prescription.exercise.name = value})
+                                })),
+                                m('td', m('input', {
+                                    type: 'text',
+                                    value: prescription.amount,
+                                    onchange: m.withAttr('value', function(value) {prescription.exercise.name = value})
+                                }))
                             ]);
                         }))
                     ])

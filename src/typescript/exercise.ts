@@ -12,7 +12,7 @@ interface ExerciseSetLog {
 };
 
 const RecordTypeNames:Map<SetUnits, string> = new Map([
-    [SetUnits.Weight, 'pounds'],
+    [SetUnits.Weight, 'reps'],
     [SetUnits.None, 'N/A'],
     [SetUnits.Time, 'seconds']
 ]);

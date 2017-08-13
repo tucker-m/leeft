@@ -2,7 +2,6 @@ import * as m from "mithril";
 import PouchDB from "pouchdb";
 import {Exercise, Workout} from "./exercise";
 import ExerciseList from './exerciseList';
-import EditWorkout from './editWorkout';
 import WorkoutList from './workoutList';
 
 let db = new PouchDB('leeft');
@@ -37,18 +36,6 @@ let componentList = {
             allExercises,
             db
         };
-        const editWorkoutAttrs = {
-            allExercises: allExercises,
-            allWorkouts: allWorkouts,
-            db: db,
-            submitFunction: (workout: Workout) => {
-                const indexAdded = allWorkouts.push(workout) - 1;
-                db.put(workout).then((response) => {
-                    allWorkouts[indexAdded]._rev = response.rev;
-                    m.redraw();
-                });
-            }
-        };
         const workoutListAttrs = {
             allWorkouts,
             allExercises,
@@ -56,7 +43,6 @@ let componentList = {
         };
         return m('div', [
             ExerciseList(exerciseListAttrs),
-            EditWorkout(editWorkoutAttrs),
             WorkoutList(workoutListAttrs)
         ]);
     }

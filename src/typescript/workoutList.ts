@@ -27,7 +27,8 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                             prescriptions: []
                         };
                         vnode.attrs.allWorkouts.push(newWorkout);
-                    })
+                    }),
+                    class: 'button primary'
                 }, 'Add New Workout'),
                 vnode.attrs.allWorkouts.map(function(workout, index) {
                     const attrs = {
@@ -35,9 +36,13 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         workout: workout,
                         allExercises: vnode.attrs.allExercises,
                         allWorkouts: vnode.attrs.allWorkouts,
-                        deleteFunction: function() {
+                        deleteFunction: () => {
                             vnode.attrs.allWorkouts.splice(index, 1);
                             vnode.attrs.db.remove(workout);
+                        },
+                        saveWorkoutFunction: (newWorkout) => {
+                            workout = newWorkout;
+                            vnode.attrs.db.put(workout); //TODO: handle an error here
                         }
                     };
                     return WorkoutDisplay(attrs);

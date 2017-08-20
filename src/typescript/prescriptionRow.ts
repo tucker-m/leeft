@@ -22,7 +22,7 @@ let PrescriptionRow = () => {
         },
         view: function(vnode: PrescriptionRowVnode) {
             return m('tr', [
-                m('td', editable.editableString(vnode.attrs.prescription.exercise.name, (newValue) => {
+                m('td', editable.editableString('span', vnode.attrs.prescription.exercise.name, (newValue) => {
                         vnode.attrs.prescription.exercise.name = newValue;
                         vnode.attrs.editFunction(vnode.attrs.prescription);
                     }, beingEdited),
@@ -42,12 +42,14 @@ let PrescriptionRow = () => {
                     m('button', {
                         onclick: preventDefault(() => {
                             vnode.attrs.deleteFunction();
-                        })
+                        }),
+                        class: 'button alert'
                     }, 'Delete'),
                     m('button', {
                         onclick: preventDefault(() => {
                             beingEdited = !beingEdited;
-                        })
+                        }),
+                        class: 'button secondary',
                     }, 'Edit')
                 ])
             ]);

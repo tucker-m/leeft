@@ -3,13 +3,15 @@ import * as m from 'mithril';
 import {Workout, Exercise, SetUnits, RecordTypeNames} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import PrescriptionRow from './prescriptionRow';
+import WorkoutTitle from './workoutTitle';
 
 interface WorkoutDisplayAttrs {
     db: PouchDB.Database
     workout: Workout,
     allExercises: Array<Exercise>,
     allWorkouts: Array<Workout>,
-    deleteFunction: Function
+    deleteFunction: Function,
+    saveWorkoutFunction: Function
 };
 
 interface WorkoutDisplayVnode {
@@ -24,31 +26,27 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
     // different values.
     return {
         view: function(vnode: WorkoutDisplayVnode) {
+            let titleAttrs = {
+                workout: workout,
+                saveFunction: (newTitle) => {
+                    workout.name = newTitle;
+                    vnode.attrs.saveWorkoutFunction(workout);
+                },
+                beingEdited: false
+            };
             let display = [
-                m('form', {
-                    // TODO: catch unsuccessful save
-                    onsubmit: preventDefault(() => {
-                        vnode.attrs.db.put(workout);
-                    })
-                }, [
-                    m('button[type=submit]', 'Save'),
-                    m('button', {
-                        onclick: preventDefault(() => {
-                            vnode.attrs.deleteFunction();
-                        })
-                    }, 'Delete Workout'),
-                    m('input', {
-                        type: 'text',
-                        value: workout.name,
-                        onchange: m.withAttr('value', function(value) {workout.name = value})
-                    }),
+                m('div', [
+                    WorkoutTitle(titleAttrs),
+                    m('button.button.alert', {
+                        onclick: vnode.attrs.deleteFunction
+                    }, 'Delete'),
                     m('table', [
                         m('thead', [
                             m('tr', [
                                 m('td', 'Exercise name'),
                                 m('td', 'Sets'),
                                 m('td', 'Amount'),
-                                m('td', 'Delete')
+                                m('td', 'Actions')
                             ])
                         ]),
                         m('tbody', workout.prescriptions.map(function(prescription, index) {
@@ -74,7 +72,8 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                                 sets: 0,
                                 amount: 0
                             });
-                        })
+                        }),
+                        class: 'button primary'
                     }, 'Add Exercise')
                 ])
             ];

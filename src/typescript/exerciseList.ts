@@ -24,7 +24,8 @@ let ExerciseListComponent = {
                             vnode.attrs.allExercises.splice(index, 1);
                             m.redraw();
                         });
-                    })
+                    }),
+                    class: 'button primary'
                 }, 'Delete')
             ])
         }))

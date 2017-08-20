@@ -1,9 +1,9 @@
 import * as m from 'mithril';
 
-const editableString = (value: string, onEdit: (newValue: string) => void, beingEdited: boolean) => {
+const editableString = (tag: string, value: string, onEdit: (newValue: string) => void, beingEdited: boolean) => {
     let displayElement = null;
     if (!beingEdited) {
-        displayElement = m('span', value);
+        displayElement = m(tag, value);
     }
     else {
         displayElement = m('input', {

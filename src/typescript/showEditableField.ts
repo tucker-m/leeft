@@ -30,10 +30,31 @@ const editableNumber = (value: number, onEdit: (newValue: number) => void, being
         });
     }
     return displayElement;
- 
 };
+
+const editableSelect = (value: string, options: Array<string>, onEdit: () => void, beingEdited: boolean) => {
+    let displayElement = null;
+    if (!beingEdited) {
+        displayElement = m('span', value);
+    }
+    else {
+        let selectedIndex = options.indexOf(value);
+        if (selectedIndex == -1) {
+            options.unshift(value);
+            selectedIndex = 0;
+        }
+        displayElement = m('select', options.map((optionValue, index) => {
+            return m('option', {
+                selected: index == selectedIndex,
+                value: optionValue
+            }, optionValue);
+        }));
+    }
+    return displayElement;
+}
 
 export default {
     editableString,
-    editableNumber
+    editableNumber,
+    editableSelect
 };

@@ -36,7 +36,7 @@ let PrescriptionRow = () => {
                         vnode.attrs.prescription.amount = newValue;
                         vnode.attrs.editFunction(vnode.attrs.prescription);
                     }, beingEdited),
-                    m('span', RecordTypeNames.get(vnode.attrs.prescription.exercise.setUnits))
+                    editable.editableSelect(RecordTypeNames.get(vnode.attrs.prescription.exercise.setUnits), Array.from(RecordTypeNames.entries()).map((value) => { return value[1]; }), () => {}, beingEdited)
                 ]),
                 m('td', [
                     m('button', {

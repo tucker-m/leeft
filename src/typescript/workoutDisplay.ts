@@ -19,7 +19,7 @@ interface WorkoutDisplayVnode {
 };
 
 const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
-    let workout = vnode.attrs.workout;
+    //let workout = vnode.attrs.workout;
     // TODO: clone the workout instead of pointing to it. If they don't
     // save their changes, we don't want the edited workout to show up
     // in the workoutList. Then the workoutList and pouchdb will have

@@ -20,7 +20,9 @@ db.allDocs({startkey: 'exercise_', endkey: 'exercise_\uffff', include_docs: true
         });
         m.redraw();
     });
-
+// TODO: try having a "modifyAllWorkouts" method here instead of pushing to the
+// vnode.attrs.allWorkouts array in sub-components. Also, then you wouldn't have to pass
+// the DB object into components.
 let allWorkouts:Array<Workout> = [];
 db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true})
     .then(function(docs: PouchDB.Core.AllDocsResponse<Workout>) {
@@ -39,7 +41,10 @@ let componentList = {
         const workoutListAttrs = {
             allWorkouts,
             allExercises,
-            db
+            db,
+            saveWorkout: function(workout, index) {
+                allWorkouts[index] = workout;
+            }
         };
         return m('div', [
             ExerciseList(exerciseListAttrs),

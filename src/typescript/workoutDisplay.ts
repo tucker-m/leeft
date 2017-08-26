@@ -1,4 +1,3 @@
-import PouchDB from 'pouchdb';
 import * as m from 'mithril';
 import {Workout, Exercise, SetUnits, RecordTypeNames} from './exercise';
 import preventDefault from './preventDefaultFunction';
@@ -6,10 +5,7 @@ import PrescriptionRow from './prescriptionRow';
 import WorkoutTitle from './workoutTitle';
 
 interface WorkoutDisplayAttrs {
-    db: PouchDB.Database
     workout: Workout,
-    allExercises: Array<Exercise>,
-    allWorkouts: Array<Workout>,
     deleteFunction: Function,
     saveWorkoutFunction: Function
 };
@@ -19,7 +15,7 @@ interface WorkoutDisplayVnode {
 };
 
 const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
-    //let workout = vnode.attrs.workout;
+    let workout = vnode.attrs.workout;
     // TODO: clone the workout instead of pointing to it. If they don't
     // save their changes, we don't want the edited workout to show up
     // in the workoutList. Then the workoutList and pouchdb will have
@@ -28,15 +24,14 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
         view: function(vnode: WorkoutDisplayVnode) {
             let titleAttrs = {
                 workout: workout,
-                saveFunction: (newTitle) => {
-                    workout.name = newTitle;
-                    vnode.attrs.saveWorkoutFunction(workout);
-                },
                 beingEdited: false
             };
             let display = [
                 m('div', [
                     WorkoutTitle(titleAttrs),
+                    m('button.button.primary', {
+                        onclick: vnode.attrs.saveWorkoutFunction
+                    }, 'Save'),
                     m('button.button.alert', {
                         onclick: vnode.attrs.deleteFunction
                     }, 'Delete'),

@@ -7,7 +7,8 @@ import preventDefault from './preventDefaultFunction';
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout>,
     allExercises: Array<Exercise>,
-    db: PouchDB
+    db: PouchDB,
+    saveWorkout: Function
 };
 
 interface WorkoutListVnode {
@@ -32,17 +33,13 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                 }, 'Add New Workout'),
                 vnode.attrs.allWorkouts.map(function(workout, index) {
                     const attrs = {
-                        db: vnode.attrs.db,
                         workout: workout,
-                        allExercises: vnode.attrs.allExercises,
-                        allWorkouts: vnode.attrs.allWorkouts,
                         deleteFunction: () => {
                             vnode.attrs.allWorkouts.splice(index, 1);
                             vnode.attrs.db.remove(workout);
                         },
-                        saveWorkoutFunction: (newWorkout) => {
-                            workout = newWorkout;
-                            vnode.attrs.db.put(workout); //TODO: handle an error here
+                        saveWorkoutFunction: (workout: Workout) => {
+                            vnode.attrs.saveWorkout(workout, index);
                         }
                     };
                     return WorkoutDisplay(attrs);

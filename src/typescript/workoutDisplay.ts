@@ -6,6 +6,7 @@ import WorkoutTitle from './workoutTitle';
 
 interface WorkoutDisplayAttrs {
     workout: Workout,
+    allExercises: Array<Exercise>,
     deleteFunction: Function,
     saveWorkoutFunction: Function
 };
@@ -30,7 +31,9 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                 m('div', [
                     WorkoutTitle(titleAttrs),
                     m('button.button.primary', {
-                        onclick: vnode.attrs.saveWorkoutFunction
+                        onclick: () => {
+                            vnode.attrs.saveWorkoutFunction(workout);
+                        }
                     }, 'Save'),
                     m('button.button.alert', {
                         onclick: vnode.attrs.deleteFunction
@@ -47,6 +50,7 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                         m('tbody', workout.prescriptions.map(function(prescription, index) {
                             return m(PrescriptionRow, {
                                 prescription: prescription,
+                                allExercises: vnode.attrs.allExercises,
                                 deleteFunction: () => {
                                     workout.prescriptions.splice(index, 1);
                                 },

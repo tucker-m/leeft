@@ -34,6 +34,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                 vnode.attrs.allWorkouts.map(function(workout, index) {
                     const attrs = {
                         workout: workout,
+                        allExercises: vnode.attrs.allExercises,
                         deleteFunction: () => {
                             vnode.attrs.allWorkouts.splice(index, 1);
                             vnode.attrs.db.remove(workout);

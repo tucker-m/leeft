@@ -1,7 +1,6 @@
 import * as m from "mithril";
 import PouchDB from "pouchdb";
 import {Exercise, Workout} from "./exercise";
-import ExerciseList from './exerciseList';
 import WorkoutList from './workoutList';
 
 let db = new PouchDB('leeft');
@@ -42,12 +41,12 @@ let componentList = {
             allWorkouts,
             allExercises,
             db,
-            saveWorkout: function(workout, index) {
-                allWorkouts[index] = workout;
+            saveWorkout: function(workout: Workout, index: number) {
+                allWorkouts[index] = workout; // TODO: does the index need to be here?
+                db.put(workout); // TODO: catch an error here
             }
         };
         return m('div', [
-            ExerciseList(exerciseListAttrs),
             WorkoutList(workoutListAttrs)
         ]);
     }

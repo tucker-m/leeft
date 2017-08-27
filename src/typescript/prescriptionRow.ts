@@ -25,7 +25,7 @@ let PrescriptionRow = () => {
         view: function(vnode: PrescriptionRowVnode) {
             return m('tr', [
                 m('td', ExerciseName({
-                    value: vnode.attrs.prescription.exercise.name,
+                    exercise: vnode.attrs.prescription.exercise,
                     allExercises: vnode.attrs.allExercises,
                     setChosenExercise: (exercise: Exercise) => {
                         vnode.attrs.prescription.exercise = exercise;

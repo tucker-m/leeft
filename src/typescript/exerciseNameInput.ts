@@ -4,7 +4,7 @@ import {Exercise} from './exercise';
 import MatchingExercises from './matchingExercises';
 
 interface ExerciseNameAttrs {
-    value: string,
+    exercise: Exercise,
     allExercises: Array<Exercise>,
     setChosenExercise: (exercise: Exercise) => void,
     beingEdited: boolean,
@@ -15,25 +15,22 @@ interface ExerciseNameVnode {
 };
 
 const ExerciseNameComponent = (vnode: ExerciseNameVnode) => {
-    const initialValue = vnode.attrs.value;
-    let currentValue = initialValue;
     return {
         view: (vnode: ExerciseNameVnode) => {
             if (!vnode.attrs.beingEdited) {
-                return m('span', vnode.attrs.value);
+                return m('span', vnode.attrs.exercise.name);
             }
             return m('div', [
                 m('input[type=text]', {
-                    value: currentValue,
+                    value: vnode.attrs.exercise.name,
                     onkeyup: m.withAttr('value', (value) => {
-                        currentValue = value;
+                        vnode.attrs.exercise.name = value;
                     })
                 }),
                 MatchingExercises({
-                    value: currentValue,
+                    value: vnode.attrs.exercise.name,
                     allExercises: vnode.attrs.allExercises,
                     setChosenExercise: (exercise: Exercise) => {
-                        currentValue = exercise.name;
                         vnode.attrs.setChosenExercise(exercise);
                     }
                 })

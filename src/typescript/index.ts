@@ -1,9 +1,24 @@
 import * as m from "mithril";
 import PouchDB from "pouchdb";
+import PouchDBFind from "pouchdb-find";
 import {Exercise, Workout} from "./exercise";
 import WorkoutList from './workoutList';
+import ExerciseList from './exerciseList';
+
+PouchDB.plugin(PouchDBFind);
 
 let db = new PouchDB('leeft');
+
+db.createIndex({
+    index: {
+        fields: ['name'],
+    }
+}).then((result) => {
+    console.log(result);
+}).catch((error) => {
+    console.log(error);
+});
+// TODO: wait until callback finishes?
 
 let app = {
     view: function() {
@@ -43,10 +58,16 @@ let componentList = {
             db,
             saveWorkout: function(workout: Workout, index: number) {
                 allWorkouts[index] = workout; // TODO: does the index need to be here?
-                db.put(workout); // TODO: catch an error here
+                db.put(workout).then((result) => {
+                    console.log(result);
+                    workout._rev = result.rev;
+                }).catch((error) => {
+                    console.log(error);
+                });
             }
         };
         return m('div', [
+            ExerciseList(exerciseListAttrs),
             WorkoutList(workoutListAttrs)
         ]);
     }

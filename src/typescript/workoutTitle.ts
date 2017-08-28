@@ -6,6 +6,7 @@ import preventDefault from './preventDefaultFunction';
 interface WorkoutTitleAttrs {
     workout: Workout,
     beingEdited: boolean,
+    saveWorkoutFunction: () => void,
 };
 interface WorkoutTitleVnode {
     attrs: WorkoutTitleAttrs
@@ -23,10 +24,19 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                 }, beingEdited),
                 m('button', {
                     onclick: preventDefault(() => {
-                        beingEdited = !beingEdited;
+                        beingEdited = true;
                     }),
-                    class: 'button secondary'
-                }, 'Edit')
+                    class: 'button secondary',
+                    disabled: beingEdited ? true : false,
+                }, 'Edit Workout Name'),
+                m('button', {
+                    onclick: preventDefault(() => {
+                        beingEdited = false;
+                        vnode.attrs.saveWorkoutFunction();
+                    }),
+                    class: 'button primary',
+                    disabled: beingEdited ? false : true,
+                }, 'Save')
             ]);
         }
     }

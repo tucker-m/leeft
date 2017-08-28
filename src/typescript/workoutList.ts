@@ -28,6 +28,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                             prescriptions: []
                         };
                         vnode.attrs.allWorkouts.push(newWorkout);
+                        vnode.attrs.db.put(newWorkout); // TODO: catch error
                     }),
                     class: 'button primary'
                 }, 'Add New Workout'),
@@ -41,7 +42,28 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         },
                         saveWorkoutFunction: (workout: Workout) => {
                             vnode.attrs.saveWorkout(workout, index);
-                        }
+                        },
+                        updateDefaultExercise: (exercise: Exercise) => {
+                            // If the exercise name doesn't match an existing one,
+                            // create a new exercise. If it does but the rep type
+                            // has changed, update that.
+                            let e = exercise;
+                            const db = vnode.attrs.db;
+                            db.find({
+                                selector: {name: e.name }
+                            }).then((results) => {
+                                // TODO: make sure only one result is
+                                // returned, if any. Exercise names should be unique.
+                                if (results.docs.length == 1) {
+                                    e._id = results.docs[0]._id;
+                                }
+                                else if (results.docs.length == 0) {
+                                    e._id = 'exercise_' + Date.now().toString() + e.name;
+                                    delete e._rev;
+                                }
+                                db.put(e); // TODO: catch errors.
+                            });
+                        },
                     };
                     return WorkoutDisplay(attrs);
                 })

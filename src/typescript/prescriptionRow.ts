@@ -7,8 +7,9 @@ import ExerciseName from './exerciseNameInput';
 interface PrescriptionRowAttrs {
     prescription: ExercisePrescription,
     allExercises: Array<Exercise>,
-    deleteFunction: Function,
-    editFunction: Function,
+    deleteFunction: () => void,
+    saveWorkoutFunction: () => void,
+    updateDefaultExercise: (exercise: Exercise) => void,
     beingEdited: boolean
 };
 
@@ -34,12 +35,10 @@ let PrescriptionRow = () => {
                 })),
                 m('td', editable.editableNumber(vnode.attrs.prescription.sets, (newValue) => {
                     vnode.attrs.prescription.sets = newValue;
-                    vnode.attrs.editFunction(vnode.attrs.prescription);
                 }, beingEdited)),
                 m('td', [
                     editable.editableNumber(vnode.attrs.prescription.amount, (newValue) => {
                         vnode.attrs.prescription.amount = newValue;
-                        vnode.attrs.editFunction(vnode.attrs.prescription);
                     }, beingEdited),
                     editable.editableRepType(
                         RecordTypeNames.get(vnode.attrs.prescription.exercise.setUnits),
@@ -55,14 +54,24 @@ let PrescriptionRow = () => {
                             vnode.attrs.deleteFunction();
                         }),
                         class: 'button alert'
-                    }, 'Delete'),
+                    }, 'Remove'),
                     m('button', {
                         onclick: preventDefault(() => {
-                            beingEdited = !beingEdited;
+                            beingEdited = true;
                         }),
                         class: 'button secondary',
-                    }, 'Edit')
-                ])
+                        disabled: beingEdited ? true : false,
+                    }, 'Edit'),
+                    m('button', {
+                        onclick: preventDefault(() => {
+                            beingEdited = false;
+                            vnode.attrs.updateDefaultExercise(vnode.attrs.prescription.exercise);
+                            vnode.attrs.saveWorkoutFunction();
+                        }),
+                        class: 'button primary',
+                        disabled: beingEdited? false : true,
+                    }, 'Save'),
+                ]),
             ]);
         }
     }

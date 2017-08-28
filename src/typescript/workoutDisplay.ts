@@ -8,7 +8,8 @@ interface WorkoutDisplayAttrs {
     workout: Workout,
     allExercises: Array<Exercise>,
     deleteFunction: Function,
-    saveWorkoutFunction: Function
+    saveWorkoutFunction: (workout: Workout) => void,
+    updateDefaultExercise: (exercise: Exercise) => void,
 };
 
 interface WorkoutDisplayVnode {
@@ -25,19 +26,17 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
         view: function(vnode: WorkoutDisplayVnode) {
             let titleAttrs = {
                 workout: workout,
+                saveWorkoutFunction: () => {
+                    vnode.attrs.saveWorkoutFunction(workout);
+                },
                 beingEdited: false
             };
             let display = [
                 m('div', [
                     WorkoutTitle(titleAttrs),
-                    m('button.button.primary', {
-                        onclick: () => {
-                            vnode.attrs.saveWorkoutFunction(workout);
-                        }
-                    }, 'Save'),
                     m('button.button.alert', {
                         onclick: vnode.attrs.deleteFunction
-                    }, 'Delete'),
+                    }, 'Delete Workout'),
                     m('table', [
                         m('thead', [
                             m('tr', [
@@ -53,10 +52,12 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                                 allExercises: vnode.attrs.allExercises,
                                 deleteFunction: () => {
                                     workout.prescriptions.splice(index, 1);
+                                    vnode.attrs.saveWorkoutFunction(workout);
                                 },
-                                editFunction: (newPrescription) => {
-                                    prescription = newPrescription;
+                                saveWorkoutFunction: () => {
+                                    vnode.attrs.saveWorkoutFunction(workout);
                                 },
+                                updateDefaultExercise: vnode.attrs.updateDefaultExercise,
                                 beingEdited: (prescription.exercise.name == '')
                             });
                         }))
@@ -71,6 +72,7 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                                 sets: 0,
                                 amount: 0
                             });
+                            vnode.attrs.saveWorkoutFunction(workout);
                         }),
                         class: 'button primary'
                     }, 'Add Exercise')

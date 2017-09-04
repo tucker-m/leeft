@@ -18,7 +18,10 @@ interface MatchingVnode {
 const MatchingExerciseComponent = (vnode: MatchingVnode) => {
     let matchingOptions: Array<Exercise> = [];
     const filterExercises = (substring: string, allExercises: Array<Exercise>) => {
-       return allExercises.filter((exercise) => {
+        if (substring.length == 0) {
+            return [];
+        }
+        return allExercises.filter((exercise) => {
            return (
                exercise.name.indexOf(substring) != -1
                    && exercise.name != substring

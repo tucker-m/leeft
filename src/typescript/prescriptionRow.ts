@@ -36,12 +36,12 @@ let PrescriptionRow = () => {
                 m('td', editable.editableNumber(vnode.attrs.prescription.sets, (newValue) => {
                     vnode.attrs.prescription.sets = newValue;
                 }, beingEdited)),
-                m('td', m('div.grid-x', [
-                    m('div.cell.auto', editable.editableNumber(vnode.attrs.prescription.amount, (newValue) => {
+                m('td', m('div.grid-x.align-middle', [
+                    m('div.cell.shrink', editable.editableNumber(vnode.attrs.prescription.amount, (newValue) => {
                         vnode.attrs.prescription.amount = newValue;
                     }, beingEdited)
                     ),
-                    m('div.cell.auto', editable.editableRepType(
+                    m('div.cell.shrink', editable.editableRepType(
                         ' ' + RecordTypeNames.get(vnode.attrs.prescription.exercise.setUnits),
                         (selected) => {
                             vnode.attrs.prescription.exercise.setUnits = selected;

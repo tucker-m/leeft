@@ -42,7 +42,7 @@ const editableRepType = (value: string, onEdit: (selected: number) => void, bein
     let displayElement = null;
     let options = Array.from(RecordTypeNames.values());
     if (!beingEdited) {
-        displayElement = m('span', value);
+        displayElement = m('span.label', value);
     }
     else {
         let selectedIndex = options.indexOf(value);

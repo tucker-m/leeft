@@ -20,20 +20,22 @@ const ExerciseNameComponent = (vnode: ExerciseNameVnode) => {
             if (!vnode.attrs.beingEdited) {
                 return m('span', vnode.attrs.exercise.name);
             }
-            return m('div', [
-                m('input[type=text]', {
-                    value: vnode.attrs.exercise.name,
-                    onkeyup: m.withAttr('value', (value) => {
-                        vnode.attrs.exercise.name = value;
-                    })
+            let textBox = m('input[type=text]', {
+                value: vnode.attrs.exercise.name,
+                onkeyup: m.withAttr('value', (value) => {
+                    vnode.attrs.exercise.name = value;
                 }),
+                placeholder: 'Exercise name'
+            });
+            return m('div', [
+                textBox,
                 MatchingExercises({
                     value: vnode.attrs.exercise.name,
                     allExercises: vnode.attrs.allExercises,
                     setChosenExercise: (exercise: Exercise) => {
                         vnode.attrs.setChosenExercise(exercise);
                     }
-                })
+                }),
             ]);
         }
     };

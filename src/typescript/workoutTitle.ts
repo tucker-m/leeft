@@ -28,7 +28,7 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                         }),
                         disabled: beingEdited ? true : false,
                         class: 'button secondary ' + (beingEdited ? 'hide' : ''),
-                    }, 'Edit Name'),
+                    }, 'Edit'),
                     m('button', {
                         onclick: preventDefault(() => {
                             beingEdited = false;

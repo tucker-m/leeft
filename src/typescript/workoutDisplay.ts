@@ -60,7 +60,7 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                             });
                         }))
                     ]),
-                    m('button', {
+                    m('div.grid-x', m('button.cell.shrink', {
                         onclick: preventDefault(() => {
                             workout.prescriptions.push({
                                 exercise: {
@@ -73,7 +73,7 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                             vnode.attrs.saveWorkoutFunction(workout);
                         }),
                         class: 'button primary'
-                    }, 'Add Exercise')
+                    }, 'Add Exercise'))
                 ])
             ];
         }

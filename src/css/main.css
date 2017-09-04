@@ -1,3 +1,6 @@
 .workout.card {
     max-width: 600px;
 }
+.button {
+    margin-bottom: 0; /* Foundation adds margin for some reason.*/
+}

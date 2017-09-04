@@ -39,12 +39,12 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                 m('div.grid-x.grid-margin-x', [
                     vnode.attrs.allWorkouts.map(function(workout, index) {
                         const attrs = {
+                            key: workout._id,
                             workout: workout,
                             allExercises: vnode.attrs.allExercises,
                             deleteFunction: () => {
                                 vnode.attrs.allWorkouts.splice(index, 1);
                                 vnode.attrs.db.remove(workout);
-                                console.log(vnode.attrs.allWorkouts);
                             },
                             saveWorkoutFunction: (workout: Workout) => {
                                 vnode.attrs.saveWorkout(workout, index);

@@ -7,6 +7,7 @@ interface WorkoutTitleAttrs {
     workout: Workout,
     beingEdited: boolean,
     saveWorkoutFunction: () => void,
+    deleteWorkoutFunction: () => void,
 };
 interface WorkoutTitleVnode {
     attrs: WorkoutTitleAttrs
@@ -16,27 +17,35 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
     let beingEdited = vnode.attrs.beingEdited;
     return {
         view: function(vnode: WorkoutTitleVnode) {
-            return m('div', {
-                class: 'grid-x'
-            }, [
-                editable.editableString('h2', vnode.attrs.workout.name, (newValue) => {
+            return m('div.grid-x.align-middle', [
+                editable.editableString('h3.cell.auto', vnode.attrs.workout.name, (newValue) => {
                     vnode.attrs.workout.name = newValue;
                 }, beingEdited),
-                m('button', {
-                    onclick: preventDefault(() => {
-                        beingEdited = true;
-                    }),
-                    class: 'button secondary',
-                    disabled: beingEdited ? true : false,
-                }, 'Edit Workout Name'),
-                m('button', {
-                    onclick: preventDefault(() => {
-                        beingEdited = false;
-                        vnode.attrs.saveWorkoutFunction();
-                    }),
-                    class: 'button primary',
-                    disabled: beingEdited ? false : true,
-                }, 'Save')
+                m('div.cell.shrink', [
+                    m('button', {
+                        onclick: preventDefault(() => {
+                            beingEdited = true;
+                        }),
+                        disabled: beingEdited ? true : false,
+                        class: 'button secondary ' + (beingEdited ? 'hide' : ''),
+                    }, 'Edit Name'),
+                    m('button', {
+                        onclick: preventDefault(() => {
+                            beingEdited = false;
+                            vnode.attrs.deleteWorkoutFunction();
+                        }),
+                        disabled: beingEdited ? false : true,
+                        class: 'button alert ' + (beingEdited ? '' : 'hide'),
+                    }, 'Delete'),
+                    m('button', {
+                        onclick: preventDefault(() => {
+                            beingEdited = false;
+                            vnode.attrs.saveWorkoutFunction();
+                        }),
+                        disabled: beingEdited ? false : true,
+                        class: 'button primary ' + (beingEdited ? '' : 'hide'),
+                    }, 'Save')
+                ])
             ]);
         }
     }

@@ -36,42 +36,43 @@ let PrescriptionRow = () => {
                 m('td', editable.editableNumber(vnode.attrs.prescription.sets, (newValue) => {
                     vnode.attrs.prescription.sets = newValue;
                 }, beingEdited)),
-                m('td', [
-                    editable.editableNumber(vnode.attrs.prescription.amount, (newValue) => {
+                m('td', m('div.grid-x', [
+                    m('div.cell.auto', editable.editableNumber(vnode.attrs.prescription.amount, (newValue) => {
                         vnode.attrs.prescription.amount = newValue;
-                    }, beingEdited),
-                    editable.editableRepType(
-                        RecordTypeNames.get(vnode.attrs.prescription.exercise.setUnits),
+                    }, beingEdited)
+                    ),
+                    m('div.cell.auto', editable.editableRepType(
+                        ' ' + RecordTypeNames.get(vnode.attrs.prescription.exercise.setUnits),
                         (selected) => {
                             vnode.attrs.prescription.exercise.setUnits = selected;
                         },
                         beingEdited
-                    )
-                ]),
-                m('td', [
-                    m('button', {
-                        onclick: preventDefault(() => {
-                            vnode.attrs.deleteFunction();
-                        }),
-                        class: 'button alert'
-                    }, 'Remove'),
-                    m('button', {
+                    ))
+                ])),
+                m('td', m('div.grid-x', [
+                    m('button.cell.shrink', {
                         onclick: preventDefault(() => {
                             beingEdited = true;
                         }),
-                        class: 'button secondary',
+                        class: 'button secondary ' + (beingEdited ? 'hide' : ''),
                         disabled: beingEdited ? true : false,
                     }, 'Edit'),
-                    m('button', {
+                    m('button.cell.small', {
+                        onclick: preventDefault(() => {
+                            vnode.attrs.deleteFunction();
+                        }),
+                        class: 'button alert ' + (beingEdited ? '' : 'hide')
+                    }, 'Remove'),
+                    m('button.cell.small', {
                         onclick: preventDefault(() => {
                             beingEdited = false;
                             vnode.attrs.updateDefaultExercise(vnode.attrs.prescription.exercise);
                             vnode.attrs.saveWorkoutFunction();
                         }),
-                        class: 'button primary',
+                        class: 'button primary ' + (beingEdited ? '' : 'hide'),
                         disabled: beingEdited? false : true,
                     }, 'Save'),
-                ]),
+                ])),
             ]);
         }
     }

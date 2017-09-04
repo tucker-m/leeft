@@ -48,16 +48,13 @@ db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true})
 
 let componentList = {
     view: function() {
-        const exerciseListAttrs = {
-            allExercises,
-            db
-        };
         const workoutListAttrs = {
             allWorkouts,
             allExercises,
             db,
             saveWorkout: function(workout: Workout, index: number) {
                 allWorkouts[index] = workout; // TODO: does the index need to be here?
+                console.log(workout);
                 db.put(workout).then((result) => {
                     console.log(result);
                     workout._rev = result.rev;
@@ -67,7 +64,6 @@ let componentList = {
             }
         };
         return m('div', [
-            ExerciseList(exerciseListAttrs),
             WorkoutList(workoutListAttrs)
         ]);
     }

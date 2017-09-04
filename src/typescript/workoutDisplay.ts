@@ -7,7 +7,7 @@ import WorkoutTitle from './workoutTitle';
 interface WorkoutDisplayAttrs {
     workout: Workout,
     allExercises: Array<Exercise>,
-    deleteFunction: Function,
+    deleteFunction: () => void,
     saveWorkoutFunction: (workout: Workout) => void,
     updateDefaultExercise: (exercise: Exercise) => void,
 };
@@ -29,21 +29,19 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                 saveWorkoutFunction: () => {
                     vnode.attrs.saveWorkoutFunction(workout);
                 },
+                deleteWorkoutFunction: vnode.attrs.deleteFunction,
                 beingEdited: false
             };
-            let display = [
-                m('div', [
+            return [
+                m('div.workout.cell.card', [
                     WorkoutTitle(titleAttrs),
-                    m('button.button.alert', {
-                        onclick: vnode.attrs.deleteFunction
-                    }, 'Delete Workout'),
                     m('table', [
                         m('thead', [
                             m('tr', [
                                 m('td', 'Exercise name'),
                                 m('td', 'Sets'),
                                 m('td', 'Amount'),
-                                m('td', 'Actions')
+                                m('td', '')
                             ])
                         ]),
                         m('tbody', workout.prescriptions.map(function(prescription, index) {
@@ -78,7 +76,6 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                     }, 'Add Exercise')
                 ])
             ];
-            return display;
         }
     };
 };

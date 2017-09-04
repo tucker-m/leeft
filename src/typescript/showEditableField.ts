@@ -7,7 +7,7 @@ const editableString = (tag: string, value: string, onEdit: (newValue: string) =
         displayElement = m(tag, value);
     }
     else {
-        displayElement = m('input', {
+        displayElement = m('input.cell.auto', {
             type: 'text',
             value: value,
             onchange: m.withAttr('value', onEdit)

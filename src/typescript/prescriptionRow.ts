@@ -10,7 +10,7 @@ interface PrescriptionRowAttrs {
     deleteFunction: () => void,
     saveWorkoutFunction: () => void,
     updateDefaultExercise: (exercise: Exercise) => void,
-    beingEdited: boolean
+    editShowing: boolean
 };
 
 interface PrescriptionRowVnode {
@@ -18,10 +18,10 @@ interface PrescriptionRowVnode {
 };
 
 let PrescriptionRow = () => {
-    let beingEdited: boolean;
+    let beingEdited = false;
     return {
         oninit: function(vnode: PrescriptionRowVnode) {
-            beingEdited = vnode.attrs.beingEdited;
+            beingEdited = vnode.attrs.prescription.exercise.name == '';
         },
         view: function(vnode: PrescriptionRowVnode) {
             return m('tr', [
@@ -50,13 +50,15 @@ let PrescriptionRow = () => {
                     ))
                 ])),
                 m('td', m('div.grid-x', [
-                    m('button.cell.shrink', {
-                        onclick: preventDefault(() => {
-                            beingEdited = true;
-                        }),
-                        class: 'button secondary ' + (beingEdited ? 'hide' : ''),
-                        disabled: beingEdited ? true : false,
-                    }, 'Edit'),
+                    (vnode.attrs.editShowing)
+                        ? m('button.cell.shrink', {
+                            onclick: preventDefault(() => {
+                                beingEdited = true;
+                            }),
+                            class: 'button secondary ' + (beingEdited ? 'hide' : ''),
+                            disabled: beingEdited ? true : false,
+                        }, 'Edit')
+                    : null,
                     m('button.cell.small', {
                         onclick: preventDefault(() => {
                             vnode.attrs.deleteFunction();

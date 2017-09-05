@@ -8,6 +8,7 @@ interface WorkoutTitleAttrs {
     beingEdited: boolean,
     saveWorkoutFunction: () => void,
     deleteWorkoutFunction: () => void,
+    showEditButtonsFunction: (showButtons: boolean) => void,
 };
 interface WorkoutTitleVnode {
     attrs: WorkoutTitleAttrs
@@ -25,6 +26,7 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                     m('button', {
                         onclick: preventDefault(() => {
                             beingEdited = true;
+                            vnode.attrs.showEditButtonsFunction(beingEdited);
                         }),
                         disabled: beingEdited ? true : false,
                         class: 'button secondary ' + (beingEdited ? 'hide' : ''),
@@ -32,6 +34,7 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                     m('button', {
                         onclick: preventDefault(() => {
                             beingEdited = false;
+                            vnode.attrs.showEditButtonsFunction(beingEdited);
                             vnode.attrs.deleteWorkoutFunction();
                         }),
                         disabled: beingEdited ? false : true,
@@ -40,6 +43,7 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                     m('button', {
                         onclick: preventDefault(() => {
                             beingEdited = false;
+                            vnode.attrs.showEditButtonsFunction(beingEdited);
                             vnode.attrs.saveWorkoutFunction();
                         }),
                         disabled: beingEdited ? false : true,

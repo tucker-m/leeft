@@ -4,3 +4,6 @@
 .button {
     margin-bottom: 0; /* Foundation adds margin for some reason.*/
 }
+input[type=text] {
+    margin-bottom: 0;
+}

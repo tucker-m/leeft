@@ -17,8 +17,8 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
     let beingEdited = vnode.attrs.beingEdited;
     return {
         view: function(vnode: WorkoutTitleVnode) {
-            return m('div.grid-x.align-middle', [
-                editable.editableString('h3.cell.auto', vnode.attrs.workout.name, (newValue) => {
+            return m('div.card-divider.grid-x..align-middle', [
+                editable.editableString('h3.cell.auto', vnode.attrs.workout.name, 'Workout Name', (newValue) => {
                     vnode.attrs.workout.name = newValue;
                 }, beingEdited),
                 m('div.cell.shrink', [

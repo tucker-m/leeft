@@ -18,8 +18,8 @@ interface WorkoutListVnode {
 let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
-            return m('div.grid-container.fluid', [
-                m('div.grid-x.align-justify.align-middle', [
+            let elements = [
+                m('div.cell.grid-x.align-justify.align-middle.shrink', [
                     m('h1.cell.shrink', 'All Workouts'),
                     m('button.cell.shrink', {
                         onclick: preventDefault(() => {
@@ -34,9 +34,9 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                             }); // TODO: catch error
                         }),
                         class: 'button primary'
-                    }, 'Add New Workout'),
+                    }, 'Add Workout'),
                 ]),
-                m('div.grid-x.grid-margin-x', [
+                m('div.cell.grid-x', [
                     vnode.attrs.allWorkouts.map(function(workout, index) {
                         const attrs = {
                             key: workout._id,
@@ -79,7 +79,16 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         return WorkoutDisplay(attrs);
                     })
                 ])
-            ])
+            ];
+            if (vnode.attrs.allWorkouts.length == 0) {
+                elements.push(m('div.callout',
+                                'You haven\'t created any workouts yet.'));
+            }
+            return m('div.grid-container.fluid',
+                     m('div.grid-y.grid-margin-y',
+                       elements
+                      )
+                    );
         }
     }
 };

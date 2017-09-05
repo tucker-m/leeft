@@ -30,21 +30,22 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                     vnode.attrs.saveWorkoutFunction(workout);
                 },
                 deleteWorkoutFunction: vnode.attrs.deleteFunction,
-                beingEdited: false
+                beingEdited: (vnode.attrs.workout.name == '')
             };
             return [
                 m('div.workout.cell.card', [
                     WorkoutTitle(titleAttrs),
-                    m('table', [
-                        m('thead', [
-                            m('tr', [
-                                m('td', 'Exercise name'),
-                                m('td', 'Sets'),
-                                m('td', 'Amount'),
-                                m('td', '')
-                            ])
-                        ]),
-                        m('tbody', workout.prescriptions.map(function(prescription, index) {
+                    (workout.prescriptions.length != 0)
+                    ? (m('table.card-section', [
+                            m('thead', [
+                                m('tr', [
+                                    m('td', 'Exercise name'),
+                                    m('td', 'Sets'),
+                                    m('td', 'Amount'),
+                                    m('td', '')
+                                ])
+                            ]),
+                            m('tbody', workout.prescriptions.map(function(prescription, index) {
                             return m(PrescriptionRow, {
                                 prescription: prescription,
                                 allExercises: vnode.attrs.allExercises,
@@ -59,8 +60,9 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                                 beingEdited: (prescription.exercise.name == '')
                             });
                         }))
-                    ]),
-                    m('div.grid-x', m('button.cell.shrink', {
+                    ]))
+                    : null,
+                    m('div.card-section.grid-x', m('button.cell.shrink', {
                         onclick: preventDefault(() => {
                             workout.prescriptions.push({
                                 exercise: {

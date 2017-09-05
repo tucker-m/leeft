@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import {RecordTypeNames} from './exercise';
 
-const editableString = (tag: string, value: string, onEdit: (newValue: string) => void, beingEdited: boolean) => {
+const editableString = (tag: string, value: string, placeholder: string, onEdit: (newValue: string) => void, beingEdited: boolean) => {
     let displayElement = null;
     if (!beingEdited) {
         displayElement = m(tag, value);
@@ -9,8 +9,10 @@ const editableString = (tag: string, value: string, onEdit: (newValue: string) =
     else {
         displayElement = m('input.cell.auto', {
             type: 'text',
+            placeholder: placeholder,
             value: value,
-            onchange: m.withAttr('value', onEdit)
+            onchange: m.withAttr('value', onEdit),
+            autofocus: true,
         });
     }
     return displayElement;

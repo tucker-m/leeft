@@ -66,7 +66,7 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                             }))
                     ]))
                     : null,
-                    m('div.card-section.grid-x', m('button.cell.shrink', {
+                    m('div.card-section', m('button', {
                         onclick: preventDefault(() => {
                             workout.prescriptions.push({
                                 exercise: {

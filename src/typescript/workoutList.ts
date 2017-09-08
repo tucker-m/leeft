@@ -1,14 +1,14 @@
 import * as m from 'mithril';
 import PouchDB from "pouchdb";
 import {Workout, Exercise} from './exercise';
-import WorkoutDisplay from './workoutDisplay';
 import preventDefault from './preventDefaultFunction';
+import workoutDisplayList from './workoutDisplayList';
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout>,
     allExercises: Array<Exercise>,
     db: PouchDB,
-    saveWorkout: Function
+    saveWorkout: (w: Workout, i: number) => void,
 };
 
 interface WorkoutListVnode {
@@ -36,49 +36,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         class: 'button primary'
                     }, 'Add Workout'),
                 ]),
-                m('div.cell.grid-x', [
-                    vnode.attrs.allWorkouts.map(function(workout, index) {
-                        const attrs = {
-                            key: workout._id,
-                            workout: workout,
-                            allExercises: vnode.attrs.allExercises,
-                            deleteFunction: () => {
-                                vnode.attrs.allWorkouts.splice(index, 1);
-                                vnode.attrs.db.remove(workout);
-                            },
-                            saveWorkoutFunction: (workout: Workout) => {
-                                vnode.attrs.saveWorkout(workout, index);
-                            },
-                            updateDefaultExercise: (exercise: Exercise) => {
-                                // If the exercise name doesn't match an existing one,
-                                // create a new exercise. If it does but the rep type
-                                // has changed, update that.
-                                let e = exercise;
-                                const db = vnode.attrs.db;
-                                db.find({
-                                    selector: {name: e.name }
-                                }).then((results) => {
-                                    // TODO: make sure only one result is
-                                    // returned, if any. Exercise names should be unique.
-                                    if (results.docs.length == 1) {
-                                        e._id = results.docs[0]._id;
-                                        e._rev = results.docs[0]._rev;
-                                    }
-                                    else if (results.docs.length == 0) {
-                                        e._id = 'exercise_' + Date.now().toString() + e.name;
-                                        // TODO: push to vnode.attrs.allExercises and do a redraw. We're inside of a callback, so it won't be redrawn automatically.
-                                        delete e._rev;
-                                    }
-                                    db.put(e); // TODO: catch errors.
-                                    // can't just m.redraw() here, the allExercises
-                                    // array needs to be updated. How can we do that?
-                                    // TODO ^ that.
-                                });
-                            },
-                        };
-                        return WorkoutDisplay(attrs);
-                    })
-                ])
+                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.db, vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout))
             ];
             if (vnode.attrs.allWorkouts.length == 0) {
                 elements.push(m('div.callout',

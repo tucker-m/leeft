@@ -59,7 +59,7 @@ let PrescriptionRow = () => {
                             disabled: beingEdited ? true : false,
                         }, 'Edit')
                     : null,
-                    m('button.cell.small', {
+                    m('button.cell.small.hollow', {
                         onclick: preventDefault(() => {
                             vnode.attrs.deleteFunction();
                         }),

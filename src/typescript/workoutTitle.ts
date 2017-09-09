@@ -15,40 +15,53 @@ interface WorkoutTitleVnode {
 };
 
 const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
+    let showEditButton = false;
     let beingEdited = vnode.attrs.beingEdited;
     return {
         view: function(vnode: WorkoutTitleVnode) {
-            return m('div.card-divider.grid-x..align-middle', [
-                editable.editableString('h3.cell.auto', vnode.attrs.workout.name, 'Workout Name', (newValue) => {
-                    vnode.attrs.workout.name = newValue;
-                }, beingEdited),
-                m('div.cell.shrink', [
-                    m('button', {
+            return m('div.card-divider.grid-x.align-middle', [
+                m('div.cell.auto.grid-x.grid-margin-x.align-middle', [
+                    editable.editableString('h3.cell.shrink.workout-title', vnode.attrs.workout.name, 'Workout Name', (newValue) => {
+                        vnode.attrs.workout.name = newValue;
+                    }, beingEdited),
+                    m('button.small.cell.shrink', {
                         onclick: preventDefault(() => {
                             beingEdited = true;
-                            vnode.attrs.showEditButtonsFunction(beingEdited);
                         }),
-                        disabled: beingEdited ? true : false,
-                        class: 'button secondary ' + (beingEdited ? 'hide' : ''),
-                    }, 'Edit'),
-                    m('button', {
+                        disabled: showEditButton && !beingEdited ? false : true,
+                        class: 'button secondary ' + (showEditButton && !beingEdited ? '' : 'hide'),
+                    }, 'Edit Name'),
+                ]),
+                m('div.cell.shrink.grid-x.grid-margin-x', [
+                    m('button.cell.shrink', {
                         onclick: preventDefault(() => {
+                            showEditButton = true;
                             beingEdited = false;
-                            vnode.attrs.showEditButtonsFunction(beingEdited);
+                            vnode.attrs.showEditButtonsFunction(showEditButton);
+                        }),
+                        disabled: showEditButton || beingEdited ? true : false,
+                        class: 'button secondary ' + (showEditButton || beingEdited ? 'hide' : ''),
+                    }, 'Edit'),
+                    m('button.cell.shrink', {
+                        onclick: preventDefault(() => {
+                            showEditButton = false;
+                            beingEdited = false;
+                            vnode.attrs.showEditButtonsFunction(showEditButton);
                             vnode.attrs.deleteWorkoutFunction();
                         }),
-                        disabled: beingEdited ? false : true,
-                        class: 'button alert ' + (beingEdited ? '' : 'hide'),
+                        disabled: showEditButton || beingEdited ? false : true,
+                        class: 'button alert hollow ' + (showEditButton || beingEdited ? '' : 'hide'),
                     }, 'Delete'),
-                    m('button', {
+                    m('button.cell.shrink', {
                         onclick: preventDefault(() => {
                             beingEdited = false;
+                            showEditButton = false;
                             vnode.attrs.showEditButtonsFunction(beingEdited);
                             vnode.attrs.saveWorkoutFunction();
                         }),
-                        disabled: beingEdited ? false : true,
-                        class: 'button primary ' + (beingEdited ? '' : 'hide'),
-                    }, 'Save')
+                        disabled: showEditButton || beingEdited ? false : true,
+                        class: 'button primary ' + (showEditButton || beingEdited ? '' : 'hide'),
+                    }, 'Done')
                 ])
             ]);
         }

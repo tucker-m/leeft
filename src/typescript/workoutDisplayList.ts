@@ -4,20 +4,17 @@ import {Exercise, Workout} from './exercise';
 import WorkoutDisplay from './workoutDisplay';
 
 export default (db: PouchDB, allWorkouts: Array<Workout>, allExercises: Array<Exercise>, saveWorkout: (w: Workout, i: number) => void) => {
-    let displayElements = new Array(allWorkouts.length);
-    let reversedWorkouts = allWorkouts.slice().reverse();
-    for(let i = reversedWorkouts.length - 1; i > -1; i--) {
-        let workout = reversedWorkouts[i];
+    return allWorkouts.map((workout, index) => {
         const attrs = {
             key: workout._id,
             workout: workout,
             allExercises: allExercises,
             deleteFunction: () => {
-                reversedWorkouts.splice(i, 1); // TODO: remove from allWorkouts?
+                allWorkouts.splice(index, 1); // TODO: remove from allWorkouts?
                 db.remove(workout);
             },
             saveWorkoutFunction: (workout: Workout) => {
-                saveWorkout(workout, i);
+                saveWorkout(workout, index);
             },
             updateDefaultExercise: (exercise: Exercise) => {
                 // If the exercise name doesn't match an existing one,
@@ -46,5 +43,5 @@ export default (db: PouchDB, allWorkouts: Array<Workout>, allExercises: Array<Ex
             },
         };
         return WorkoutDisplay(attrs);
-    }
+    });
 }

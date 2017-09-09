@@ -61,7 +61,7 @@ let componentList = {
                 }).catch((error) => {
                     console.log(error);
                 });
-            }
+            },
         };
         return m('div', [
             WorkoutList(workoutListAttrs)

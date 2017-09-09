@@ -4,7 +4,9 @@ import {Exercise, Workout} from './exercise';
 import WorkoutDisplay from './workoutDisplay';
 
 export default (db: PouchDB, allWorkouts: Array<Workout>, allExercises: Array<Exercise>, saveWorkout: (w: Workout, i: number) => void) => {
-    return allWorkouts.map((workout, index) => {
+    let elements = [];
+    for (let index = allWorkouts.length - 1; index >= 0; index--) {
+        let workout = allWorkouts[index];
         const attrs = {
             key: workout._id,
             workout: workout,
@@ -42,6 +44,7 @@ export default (db: PouchDB, allWorkouts: Array<Workout>, allExercises: Array<Ex
                 });
             },
         };
-        return WorkoutDisplay(attrs);
-    });
+        elements.push(WorkoutDisplay(attrs));
+    }
+    return elements;
 }

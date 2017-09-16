@@ -1,24 +1,11 @@
 import * as m from "mithril";
-import PouchDB from "pouchdb";
-import PouchDBFind from "pouchdb-find";
 import {Exercise, Workout} from "./exercise";
 import WorkoutList from './workoutList';
 import ExerciseList from './exerciseList';
+import db from './db';
 
-PouchDB.plugin(PouchDBFind);
+db.init();
 
-let db = new PouchDB('leeft');
-
-db.createIndex({
-    index: {
-        fields: ['name'],
-    }
-}).then((result) => {
-    console.log(result);
-}).catch((error) => {
-    console.log(error);
-});
-// TODO: wait until callback finishes?
 
 let app = {
     view: function() {
@@ -27,40 +14,31 @@ let app = {
 };
 
 let allExercises:Array<Exercise> = [];
-db.allDocs({startkey: 'exercise_', endkey: 'exercise_\uffff', include_docs: true})
-    .then(function(docs: PouchDB.Core.AllDocsResponse<Exercise>) {
-        allExercises = docs.rows.map(function(row) {
-            return row.doc;
-        });
-        m.redraw();
+db.getAllExercises().then(function(docs) {
+    allExercises = docs.rows.map(function(row) {
+        return row.doc;
     });
+    m.redraw();
+});
 // TODO: try having a "modifyAllWorkouts" method here instead of pushing to the
 // vnode.attrs.allWorkouts array in sub-components. Also, then you wouldn't have to pass
 // the DB object into components.
 let allWorkouts:Array<Workout> = [];
-db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true})
-    .then(function(docs: PouchDB.Core.AllDocsResponse<Workout>) {
-        allWorkouts = docs.rows.map(function(row) {
-            return row.doc;
-        });
-        m.redraw();
+db.getAllWorkouts().then((docs) => {
+    allWorkouts = docs.rows.map((row) => {
+        return row.doc;
     });
+    m.redraw();
+});
 
 let componentList = {
     view: function() {
         const workoutListAttrs = {
             allWorkouts,
             allExercises,
-            db,
             saveWorkout: function(workout: Workout, index: number) {
                 allWorkouts[index] = workout; // TODO: does the index need to be here?
-                console.log(workout);
-                db.put(workout).then((result) => {
-                    console.log(result);
-                    workout._rev = result.rev;
-                }).catch((error) => {
-                    console.log(error);
-                });
+                db.put(workout);
             },
         };
         return m('div', [

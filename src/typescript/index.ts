@@ -38,7 +38,10 @@ let componentList = {
             allExercises,
             saveWorkout: function(workout: Workout, index: number) {
                 allWorkouts[index] = workout; // TODO: does the index need to be here?
-                db.put(workout);
+                db.put(workout).then((doc) => {
+                    debugger;
+                    workout._rev = doc.rev;
+                });
             },
         };
         return m('div', [

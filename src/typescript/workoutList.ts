@@ -1,5 +1,4 @@
 import * as m from 'mithril';
-import PouchDB from "pouchdb";
 import {Workout, Exercise} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import workoutDisplayList from './workoutDisplayList';
@@ -7,7 +6,6 @@ import workoutDisplayList from './workoutDisplayList';
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout>,
     allExercises: Array<Exercise>,
-    db: PouchDB,
     saveWorkout: (w: Workout, i: number) => void,
 };
 
@@ -28,15 +26,13 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                                 name: '',
                                 prescriptions: []
                             };
-                            vnode.attrs.allWorkouts.push(newWorkout);
-                            vnode.attrs.db.put(newWorkout).then((result) => {
-                                newWorkout._rev = result.rev;
-                            }); // TODO: catch error
+                            const newIndex = vnode.attrs.allWorkouts.length;
+                            vnode.attrs.saveWorkout(newWorkout, newIndex);
                         }),
                         class: 'button primary'
                     }, 'Add Workout'),
                 ]),
-                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.db, vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout))
+                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout))
             ];
             if (vnode.attrs.allWorkouts.length == 0) {
                 elements.push(m('div.callout',

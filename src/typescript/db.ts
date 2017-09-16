@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Workout, Saveable} from './exercise';
+import {Workout} from './exercise';
 import * as m from 'mithril';
 
 let db: PouchDB;
@@ -31,9 +31,7 @@ const getAllWorkouts = function() {
 }
 
 const put = function(object: Workout) {
-    db.put(object).then((result) => {
-        object._rev = result.rev;
-    }); // TODO: catch error
+    return db.put(object);
 };
 
 export default {init, getAllExercises, getAllWorkouts, put};

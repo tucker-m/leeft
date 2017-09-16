@@ -2,7 +2,6 @@ import * as m from 'mithril';
 import {
     Exercise,
     SetUnits,
-    RecordTypeNames
 } from './exercise';
 import preventDefault from './preventDefaultFunction';
 
@@ -16,7 +15,7 @@ interface AddExerciseVnode {
 };
 
 const AddExerciseComponent = function(vnode: AddExerciseVnode) {
-    let newExercise: Exercise = {_id: '', name: '', setUnits: SetUnits.Weight};
+    let newExercise: Exercise = {_id: '', name: '', setUnits: 'reps'};
 
     return {
         view: function(vnode: AddExerciseVnode) {
@@ -33,13 +32,12 @@ const AddExerciseComponent = function(vnode: AddExerciseVnode) {
                     value: newExercise.name
                 }),
                 m('select', {
-                    onchange: m.withAttr('value', function(value: string) {
-                        let newValue = parseInt(value);
-                        newExercise.setUnits = newValue;
+                    onchange: m.withAttr('value', function(value: SetUnits) {
+                        newExercise.setUnits = value;
                     }),
                     value: newExercise.setUnits.toString()
-                }, Array.from(RecordTypeNames.entries()).map(function(tuple) {
-                    return m('option[value=' + tuple[0] + ']', tuple[1]);
+                }, ['reps', 'seconds'].map(function(value) {
+                    return m('option[value=' + value + ']', value);
                 })),
                 m('button[type=submit]', 'Add')
             ]);

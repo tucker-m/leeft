@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import {ExercisePrescription, Exercise, RecordTypeNames} from './exercise';
+import {SetUnits, ExercisePrescription, Exercise} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import editable from './showEditableField';
 import ExerciseName from './exerciseNameInput';
@@ -9,7 +9,7 @@ interface PrescriptionRowAttrs {
     allExercises: Array<Exercise>,
     deleteFunction: () => void,
     saveWorkoutFunction: () => void,
-    updateDefaultExercise: (exercise: Exercise) => void,
+    updateDefaultExercise: (exerciseName: string, repType: SetUnits) => void,
     editShowing: boolean
 };
 
@@ -42,8 +42,8 @@ let PrescriptionRow = () => {
                     }, beingEdited)
                     ),
                     m('div.cell.shrink', editable.editableRepType(
-                        ' ' + RecordTypeNames.get(vnode.attrs.prescription.exercise.setUnits),
-                        (selected) => {
+                        ' ' + vnode.attrs.prescription.exercise.setUnits,
+                        (selected: SetUnits) => {
                             vnode.attrs.prescription.exercise.setUnits = selected;
                         },
                         beingEdited
@@ -68,7 +68,7 @@ let PrescriptionRow = () => {
                     m('button.cell.small', {
                         onclick: preventDefault(() => {
                             beingEdited = false;
-                            vnode.attrs.updateDefaultExercise(vnode.attrs.prescription.exercise);
+                            vnode.attrs.updateDefaultExercise(vnode.attrs.prescription.exercise.name, vnode.attrs.prescription.exercise.setUnits);
                             vnode.attrs.saveWorkoutFunction();
                         }),
                         class: 'button primary ' + (beingEdited ? '' : 'hide'),

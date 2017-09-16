@@ -1,8 +1,4 @@
-const enum SetUnits {
-    Weight,
-    None,
-    Time
-};
+type SetUnits = 'reps' | 'seconds';
 
 interface ExerciseSetLog {
     exerciseName: string,
@@ -10,12 +6,6 @@ interface ExerciseSetLog {
     unit: SetUnits,
     reps: number
 };
-
-const RecordTypeNames:Map<SetUnits, string> = new Map([
-    [SetUnits.Weight, 'reps'],
-    [SetUnits.None, 'N/A'],
-    [SetUnits.Time, 'seconds']
-]);
 
 interface Exercise {
     _id?: string, // ideally, this should not be optional. All saveables need an _id.
@@ -42,4 +32,4 @@ interface WorkoutLog {
     date: Date
 };
 
-export { Exercise, SetUnits, RecordTypeNames, ExercisePrescription, Workout };
+export { Exercise, SetUnits, ExercisePrescription, Workout };

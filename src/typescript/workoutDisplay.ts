@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import {Workout, Exercise, SetUnits, RecordTypeNames} from './exercise';
+import {Workout, Exercise, SetUnits} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import PrescriptionRow from './prescriptionRow';
 import WorkoutTitle from './workoutTitle';
@@ -9,7 +9,7 @@ interface WorkoutDisplayAttrs {
     allExercises: Array<Exercise>,
     deleteFunction: () => void,
     saveWorkoutFunction: (workout: Workout) => void,
-    updateDefaultExercise: (exercise: Exercise) => void,
+    updateDefaultExercise: (exerciseName: string, repType: SetUnits) => void,
 };
 
 interface WorkoutDisplayVnode {
@@ -71,7 +71,7 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                             workout.prescriptions.push({
                                 exercise: {
                                     name: '',
-                                    setUnits: SetUnits.Weight
+                                    setUnits: 'reps'
                                 },
                                 sets: 0,
                                 amount: 0

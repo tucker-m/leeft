@@ -14,3 +14,16 @@ h3, .h3 {
     text-transform: uppercase;
     letter-spacing: .15rem;
 }
+.rep-type {
+    border-radius: .5em;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #1779ba;
+    color: #1779ba;
+    background: none;
+    margin-left: .5em;
+}
+.rep-type.seconds {
+    border-color: green;
+    color: green;
+}

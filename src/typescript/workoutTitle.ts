@@ -29,7 +29,7 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                             beingEdited = true;
                         }),
                         disabled: showEditButton && !beingEdited ? false : true,
-                        class: 'button secondary ' + (showEditButton && !beingEdited ? '' : 'hide'),
+                        class: 'button secondary hollow ' + (showEditButton && !beingEdited ? '' : 'hide'),
                     }, 'Edit Name'),
                 ]),
                 m('div.cell.shrink.grid-x.grid-margin-x', [

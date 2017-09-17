@@ -41,7 +41,7 @@ const editableRepType = (value: string, onEdit: (selected: string) => void, bein
     value = value.trim(); // TODO: why is this necessary?
     let options: Array<SetUnits> = ['reps', 'seconds'];
     if (!beingEdited) {
-        displayElement = m('span.label', value);
+        displayElement = m('span.label.rep-type.' + value, value);
     }
     else {
         displayElement = m('select', {

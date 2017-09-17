@@ -66,7 +66,9 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                             }))
                     ]))
                     : null,
-                    m('div.card-section', m('button', {
+                    m('div.card-section', {
+                        class: showEditButtons ? '' : 'hide',
+                    }, m('button', {
                         onclick: preventDefault(() => {
                             workout.prescriptions.push({
                                 exercise: {
@@ -78,7 +80,8 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                             });
                             vnode.attrs.saveWorkoutFunction(workout);
                         }),
-                        class: 'button primary'
+                        disabled: showEditButtons ? false : true,
+                        class: 'button primary',
                     }, 'Add Exercise'))
                 ])
             ];

@@ -51,11 +51,11 @@ let PrescriptionRow = () => {
                 ])),
                 m('td', m('div.grid-x', [
                     (vnode.attrs.editShowing)
-                        ? m('button.cell.shrink', {
+                        ? m('button.button.secondary.cell.small.shrink', {
                             onclick: preventDefault(() => {
                                 beingEdited = true;
                             }),
-                            class: 'button secondary ' + (beingEdited ? 'hide' : ''),
+                            class: (beingEdited ? 'hide' : ''),
                             disabled: beingEdited ? true : false,
                         }, 'Edit')
                     : null,

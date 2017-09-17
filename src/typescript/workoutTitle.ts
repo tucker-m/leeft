@@ -33,16 +33,20 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                     }, 'Edit Name'),
                 ]),
                 m('div.cell.shrink.grid-x.grid-margin-x', [
-                    m('button.cell.shrink', {
+                    m('button.button.secondary.cell.shrink', {
                         onclick: preventDefault(() => {
                             showEditButton = true;
                             beingEdited = false;
                             vnode.attrs.showEditButtonsFunction(showEditButton);
                         }),
                         disabled: showEditButton || beingEdited ? true : false,
-                        class: 'button secondary ' + (showEditButton || beingEdited ? 'hide' : ''),
+                        class: (showEditButton || beingEdited ? 'hide' : ''),
                     }, 'Edit'),
-                    m('button.cell.shrink', {
+                    m('a.button.cell.shrink.primary', {
+                        href: '/log/' + vnode.attrs.workout._id,
+                        oncreate: m.route.link,
+                    }, 'Begin'),
+                    m('button.button.alert.hollow.cell.shrink', {
                         onclick: preventDefault(() => {
                             showEditButton = false;
                             beingEdited = false;
@@ -50,7 +54,7 @@ const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
                             vnode.attrs.deleteWorkoutFunction();
                         }),
                         disabled: showEditButton || beingEdited ? false : true,
-                        class: 'button alert hollow ' + (showEditButton || beingEdited ? '' : 'hide'),
+                        class: (showEditButton || beingEdited ? '' : 'hide'),
                     }, 'Delete'),
                     m('button.cell.shrink', {
                         onclick: preventDefault(() => {

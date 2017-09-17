@@ -1,7 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 import {Workout, Exercise} from './exercise';
-import * as m from 'mithril';
 
 let db: PouchDB;
 
@@ -44,4 +43,14 @@ const findByName = function(name: string) {
     });
 };
 
-export default {init, getAllExercises, getAllWorkouts, put, remove, findByName};
+const findWorkoutById = function(id: string) {
+    return new Promise<Workout>((resolve, reject) => {
+        db.get(id).then((workout) => {
+            resolve(workout);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export default {init, getAllExercises, getAllWorkouts, put, remove, findByName, findWorkoutById};

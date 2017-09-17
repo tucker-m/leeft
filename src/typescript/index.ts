@@ -3,11 +3,12 @@ import {Exercise, Workout, SetUnits} from "./exercise";
 import WorkoutList from './workoutList';
 import ExerciseList from './exerciseList';
 import db from './db';
+import LogWorkout from './logWorkout';
 
 db.init();
 
 
-let app = {
+let App = {
     view: function() {
         return m(componentList);
     }
@@ -71,4 +72,7 @@ let componentList = {
     }
 };
 
-m.mount(document.getElementById('main'), app);
+m.route(document.getElementById('main'), '/', {
+    '/': App,
+    '/log/:id': LogWorkout,
+});

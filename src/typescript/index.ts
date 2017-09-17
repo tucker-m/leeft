@@ -43,6 +43,10 @@ let componentList = {
                     workout._rev = doc.rev;
                 });
             },
+            deleteWorkout: function(workout: Workout, index: number) {
+                allWorkouts.splice(index, 1);
+                db.remove(workout);
+            }
         };
         return m('div', [
             WorkoutList(workoutListAttrs)

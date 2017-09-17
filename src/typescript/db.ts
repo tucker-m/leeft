@@ -34,4 +34,8 @@ const put = function(object: Workout) {
     return db.put(object);
 };
 
-export default {init, getAllExercises, getAllWorkouts, put};
+const remove = function(object: Workout) {
+    db.remove(object);
+};
+
+export default {init, getAllExercises, getAllWorkouts, put, remove};

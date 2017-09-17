@@ -7,6 +7,7 @@ interface WorkoutListAttrs {
     allWorkouts: Array<Workout>,
     allExercises: Array<Exercise>,
     saveWorkout: (w: Workout, i: number) => void,
+    deleteWorkout: (w: Workout, i: number) => void,
 };
 
 interface WorkoutListVnode {
@@ -32,7 +33,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         class: 'button primary'
                     }, 'Add Workout'),
                 ]),
-                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout))
+                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout, vnode.attrs.deleteWorkout))
             ];
             if (vnode.attrs.allWorkouts.length == 0) {
                 elements.push(m('div.callout',

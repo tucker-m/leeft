@@ -12,6 +12,8 @@ interface PrescriptionRowAttrs {
     updateDefaultExercise: (exerciseName: string, repType: SetUnits) => void,
     editShowing: boolean
 };
+// TODO: beingEdited should ALSO be a property of this, so that
+// the workoutTitle component can change it.
 
 interface PrescriptionRowVnode {
     attrs: PrescriptionRowAttrs

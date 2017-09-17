@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Workout} from './exercise';
+import {Workout, Exercise} from './exercise';
 import * as m from 'mithril';
 
 let db: PouchDB;
@@ -30,7 +30,7 @@ const getAllWorkouts = function() {
     return db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true});
 }
 
-const put = function(object: Workout) {
+const put = function(object: Workout | Exercise) {
     return db.put(object);
 };
 
@@ -38,4 +38,10 @@ const remove = function(object: Workout) {
     db.remove(object);
 };
 
-export default {init, getAllExercises, getAllWorkouts, put, remove};
+const findByName = function(name: string) {
+    return db.find({
+        selector: {name: name}
+    });
+};
+
+export default {init, getAllExercises, getAllWorkouts, put, remove, findByName};

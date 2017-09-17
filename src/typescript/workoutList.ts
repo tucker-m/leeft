@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import {Workout, Exercise} from './exercise';
+import {Workout, Exercise, SetUnits} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import workoutDisplayList from './workoutDisplayList';
 
@@ -8,6 +8,7 @@ interface WorkoutListAttrs {
     allExercises: Array<Exercise>,
     saveWorkout: (w: Workout, i: number) => void,
     deleteWorkout: (w: Workout, i: number) => void,
+    updateDefaultExercise: (name: string, repType: SetUnits) => void,
 };
 
 interface WorkoutListVnode {
@@ -33,7 +34,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         class: 'button primary'
                     }, 'Add Workout'),
                 ]),
-                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout, vnode.attrs.deleteWorkout))
+                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout, vnode.attrs.deleteWorkout, vnode.attrs.updateDefaultExercise))
             ];
             if (vnode.attrs.allWorkouts.length == 0) {
                 elements.push(m('div.callout',

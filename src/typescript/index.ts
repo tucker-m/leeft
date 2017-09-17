@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import {Exercise, Workout} from "./exercise";
+import {Exercise, Workout, SetUnits} from "./exercise";
 import WorkoutList from './workoutList';
 import ExerciseList from './exerciseList';
 import db from './db';
@@ -39,13 +39,29 @@ let componentList = {
             saveWorkout: function(workout: Workout, index: number) {
                 allWorkouts[index] = workout; // TODO: does the index need to be here?
                 db.put(workout).then((doc) => {
-                    debugger;
                     workout._rev = doc.rev;
                 });
             },
             deleteWorkout: function(workout: Workout, index: number) {
                 allWorkouts.splice(index, 1);
                 db.remove(workout);
+            },
+            updateDefaultExercise: function(exerciseName: string, repType: SetUnits) {
+                db.findByName(exerciseName).then((results) => {
+                    let exercise: Exercise = null;
+                    if (results.docs.length == 1) {
+                        exercise = results.docs[0];
+                        exercise.setUnits = repType;
+                    }
+                    else if (results.docs.length == 0) {
+                        exercise = {
+                            _id: 'exercise_' + Date.now().toString() + exerciseName,
+                            name: exerciseName,
+                            setUnits: repType,
+                        };
+                    }
+                    db.put(exercise);
+                });
             }
         };
         return m('div', [

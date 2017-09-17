@@ -59,6 +59,7 @@ let componentList = {
                             name: exerciseName,
                             setUnits: repType,
                         };
+                        allExercises.push(exercise);
                     }
                     db.put(exercise);
                 });

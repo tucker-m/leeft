@@ -27,3 +27,15 @@ h3, .h3 {
     border-color: green;
     color: green;
 }
+.exercise-name {
+    text-transform: uppercase;
+}
+.prescription-sets {
+    font-size: 3rem;
+}
+.prescription-reps {
+    font-size: 2rem;
+}
+.workout-row:not(:last-of-type) {
+    border-bottom: 1px solid pink;
+}

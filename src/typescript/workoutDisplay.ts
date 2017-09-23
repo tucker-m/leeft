@@ -40,16 +40,8 @@ const WorkoutDisplayComponent = function(vnode: WorkoutDisplayVnode) {
                 m('div.workout.cell.card', [
                     WorkoutTitle(titleAttrs),
                     (workout.prescriptions.length != 0)
-                        ? (m('table.card-section', [
-                            m('thead', [
-                                m('tr', [
-                                    m('td', 'Exercise name'),
-                                    m('td', 'Sets'),
-                                    m('td', 'Amount'),
-                                    m('td', '')
-                                ])
-                            ]),
-                            m('tbody', workout.prescriptions.map(function(prescription, index) {
+                        ? (m('div.card-section', [
+                            m('div', workout.prescriptions.map(function(prescription, index) {
                                 return m(PrescriptionRow, {
                                     prescription: prescription,
                                     allExercises: vnode.attrs.allExercises,

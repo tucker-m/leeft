@@ -18,7 +18,7 @@ const ExerciseNameComponent = (vnode: ExerciseNameVnode) => {
     return {
         view: (vnode: ExerciseNameVnode) => {
             if (!vnode.attrs.beingEdited) {
-                return m('span', vnode.attrs.exercise.name);
+                return m('h5.exercise-name', vnode.attrs.exercise.name);
             }
             let textBox = m('input[type=text]', {
                 value: vnode.attrs.exercise.name,

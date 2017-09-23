@@ -26,8 +26,8 @@ let PrescriptionRow = () => {
             beingEdited = vnode.attrs.prescription.exercise.name == '';
         },
         view: function(vnode: PrescriptionRowVnode) {
-            return m('tr', [
-                m('td', ExerciseName({
+            return m('div.grid-x.align-middle.workout-row', [
+                m('div.cell.auto', ExerciseName({
                     exercise: vnode.attrs.prescription.exercise,
                     allExercises: vnode.attrs.allExercises,
                     setChosenExercise: (exercise: Exercise) => {
@@ -35,23 +35,17 @@ let PrescriptionRow = () => {
                     },
                     beingEdited: beingEdited,
                 })),
-                m('td', editable.editableNumber(vnode.attrs.prescription.sets, (newValue) => {
-                    vnode.attrs.prescription.sets = newValue;
-                }, beingEdited)),
-                m('td', m('div.grid-x.align-middle', [
-                    m('div.cell.shrink', editable.editableNumber(vnode.attrs.prescription.amount, (newValue) => {
-                        vnode.attrs.prescription.amount = newValue;
-                    }, beingEdited)
-                    ),
-                    m('div.cell.shrink', editable.editableRepType(
-                        ' ' + vnode.attrs.prescription.exercise.setUnits,
-                        (selected: SetUnits) => {
-                            vnode.attrs.prescription.exercise.setUnits = selected;
-                        },
-                        beingEdited
-                    ))
-                ])),
-                m('td', m('div.grid-x', [
+                m('div.cell.shrink', [
+                    m('p', [
+                        m('span.prescription-sets', vnode.attrs.prescription.sets),
+                        m('span', 'x'),
+                        m('span.prescription-reps', vnode.attrs.prescription.amount),
+                        m('span.label.rep-type', {
+                            class: vnode.attrs.prescription.exercise.setUnits,
+                        }, vnode.attrs.prescription.exercise.setUnits),
+                    ]),
+                ]),
+                m('div', m('div.grid-x', [
                     (vnode.attrs.editShowing)
                         ? m('button.button.secondary.cell.small.shrink', {
                             onclick: preventDefault(() => {

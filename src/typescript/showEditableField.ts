@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import {SetUnits} from './exercise';
+import {SetUnits, ExercisePrescription} from './exercise';
 
 const editableString = (tag: string, value: string, placeholder: string, onEdit: (newValue: string) => void, beingEdited: boolean) => {
     let displayElement = null;
@@ -35,6 +35,39 @@ const editableNumber = (value: number, onEdit: (newValue: number) => void, being
     return displayElement;
 };
 
+const setsAndReps = (prescription: ExercisePrescription,
+                     beingEdited: boolean) => {
+    if (beingEdited) {
+        return [
+            m('div.cell.shrink.input-group', [
+                m('input[type=number].input-group-field', {
+                    value: prescription.sets,
+                    onchange: m.withAttr('value', (value) => {
+                        prescription.sets = parseInt(value);
+                    }),
+                }),
+                m('span.input-group-label', 'sets'),
+            ]),
+            m('div.cell.shrink.input-group', [
+                m('input[type=number].input-group-field', {
+                    value: prescription.amount,
+                    onchange: m.withAttr('value', (value) => {
+                        prescription.amount = parseInt(value);
+                    })
+                }),
+                m('span.input-group-label', 'reps'),
+            ])
+        ];
+    }
+    return m('p', [
+        m('span.prescription-sets', prescription.sets),
+        m('span', 'x'),
+        m('span.prescription-reps', prescription.amount),
+        m('span.label.rep-type', {
+            class: prescription.exercise.setUnits,
+        }, prescription.exercise.setUnits),
+    ]);
+};
 
 const editableRepType = (value: string, onEdit: (selected: string) => void, beingEdited: boolean) => {
     let displayElement = null;
@@ -62,4 +95,5 @@ export default {
     editableString,
     editableNumber,
     editableRepType,
+    setsAndReps,
 };

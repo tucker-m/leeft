@@ -26,25 +26,18 @@ let PrescriptionRow = () => {
             beingEdited = vnode.attrs.prescription.exercise.name == '';
         },
         view: function(vnode: PrescriptionRowVnode) {
+            let prescription = vnode.attrs.prescription;
+            let exercise = prescription.exercise;
             return m('div.grid-x.align-middle.workout-row', [
                 m('div.cell.auto', ExerciseName({
-                    exercise: vnode.attrs.prescription.exercise,
+                    exercise: exercise,
                     allExercises: vnode.attrs.allExercises,
                     setChosenExercise: (exercise: Exercise) => {
-                        vnode.attrs.prescription.exercise = exercise;
+                        exercise = exercise;
                     },
                     beingEdited: beingEdited,
                 })),
-                m('div.cell.shrink', [
-                    m('p', [
-                        m('span.prescription-sets', vnode.attrs.prescription.sets),
-                        m('span', 'x'),
-                        m('span.prescription-reps', vnode.attrs.prescription.amount),
-                        m('span.label.rep-type', {
-                            class: vnode.attrs.prescription.exercise.setUnits,
-                        }, vnode.attrs.prescription.exercise.setUnits),
-                    ]),
-                ]),
+                editable.setsAndReps(prescription, beingEdited),
                 m('div', m('div.grid-x', [
                     (vnode.attrs.editShowing)
                         ? m('button.button.secondary.cell.small.shrink', {
@@ -55,16 +48,10 @@ let PrescriptionRow = () => {
                             disabled: beingEdited ? true : false,
                         }, 'Edit')
                     : null,
-                    m('button.cell.small.hollow', {
-                        onclick: preventDefault(() => {
-                            vnode.attrs.deleteFunction();
-                        }),
-                        class: 'button alert ' + (beingEdited ? '' : 'hide')
-                    }, 'Remove'),
                     m('button.cell.small', {
                         onclick: preventDefault(() => {
                             beingEdited = false;
-                            vnode.attrs.updateDefaultExercise(vnode.attrs.prescription.exercise.name, vnode.attrs.prescription.exercise.setUnits);
+                            vnode.attrs.updateDefaultExercise(exercise.name, exercise.setUnits);
                             vnode.attrs.saveWorkoutFunction();
                         }),
                         class: 'button primary ' + (beingEdited ? '' : 'hide'),

@@ -20,7 +20,6 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
         view: function(vnode: WorkoutListVnode) {
             let elements = [
                 m('div.cell.grid-x.align-justify.align-middle.shrink', [
-                    m('h1.cell.shrink', 'All Workouts'),
                     m('button.cell.shrink', {
                         onclick: preventDefault(() => {
                             let newWorkout: Workout = {

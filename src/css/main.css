@@ -2,10 +2,10 @@
     max-width: 600px;
 }
 .button {
-    margin-bottom: 0; /* Foundation adds margin for some reason.*/
+    /*margin-bottom: 0; /* Foundation adds margin for some reason.*/
 }
 input[type=text] {
-    margin-bottom: 0;
+    /*margin-bottom: 0;*/
 }
 h3, .h3 {
     margin-bottom: 0; /* overriding foundation style */

@@ -28,8 +28,16 @@ interface Workout {
 };
 
 interface WorkoutLog {
+    _id: string,
+    _rev?: string,
     workout: Workout,
-    date: Date
+    sets: [
+        {
+            reps: number,
+            amount: number,
+        }
+    ],
+    date: number
 };
 
-export { Exercise, SetUnits, ExercisePrescription, Workout };
+export { Exercise, SetUnits, ExercisePrescription, Workout, WorkoutLog };

@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Workout, Exercise} from './exercise';
+import {Workout, Exercise, WorkoutLog} from './exercise';
 
 let db: PouchDB;
 
@@ -53,4 +53,8 @@ const findWorkoutById = function(id: string) {
     });
 };
 
-export default {init, getAllExercises, getAllWorkouts, put, remove, findByName, findWorkoutById};
+const saveLog = (log: WorkoutLog) => {
+    return db.put(log);
+}
+
+export default {init, getAllExercises, getAllWorkouts, put, remove, findByName, findWorkoutById, saveLog};

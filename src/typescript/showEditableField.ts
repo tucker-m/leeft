@@ -55,8 +55,19 @@ const setsAndReps = (prescription: ExercisePrescription,
                         prescription.amount = parseInt(value);
                     })
                 }),
-                m('span.input-group-label', 'reps'),
-            ])
+                m('span.input-group-label', prescription.exercise.setUnits),
+            ]),
+            m('div.cell.shrink', [
+                m('select', {
+                    value: prescription.exercise.setUnits,
+                    onchange: m.withAttr('value', (value) => {
+                        prescription.exercise.setUnits = value;
+                    })
+                }, [
+                    m('option[value="reps"]', 'reps'),
+                    m('option[value="seconds"]', 'seconds'),
+                ])
+            ]),
         ];
     }
     return m('p', [

@@ -16,56 +16,42 @@ interface WorkoutTitleVnode {
 
 const WorkoutTitleComponent = (vnode: WorkoutTitleVnode) => {
     let showEditButton = false;
+    let showEditMenu = false;
     let beingEdited = vnode.attrs.beingEdited;
     return {
         view: function(vnode: WorkoutTitleVnode) {
-            return m('div.card-divider.grid-x.align-middle', [
+            return m('div.card-divider.grid-x.align-top', [
                 m('div.cell.auto.grid-x.grid-margin-x.align-middle', [
                     editable.editableString('h3.cell.shrink.workout-title', vnode.attrs.workout.name, 'Workout Name', (newValue) => {
                         vnode.attrs.workout.name = newValue;
                     }, beingEdited),
-                    m('button.small.cell.shrink', {
-                        onclick: preventDefault(() => {
-                            beingEdited = true;
-                        }),
-                        disabled: showEditButton && !beingEdited ? false : true,
-                        class: 'button secondary hollow ' + (showEditButton && !beingEdited ? '' : 'hide'),
-                    }, 'Edit Name'),
                 ]),
-                m('div.cell.shrink.grid-x.grid-margin-x', [
-                    m('button.button.secondary.cell.shrink', {
-                        onclick: preventDefault(() => {
-                            showEditButton = true;
-                            beingEdited = false;
-                            vnode.attrs.showEditButtonsFunction(showEditButton);
-                        }),
-                        disabled: showEditButton || beingEdited ? true : false,
-                        class: (showEditButton || beingEdited ? 'hide' : ''),
-                    }, 'Edit'),
+                m('div.cell.shrink.grid-x.grid-margin-x.align-top', [
+                    m('div.grid-y', [
+                        m('button.button.secondary.cell.shrink', {
+                            onclick: preventDefault(() => {
+                                showEditMenu = !showEditMenu;
+                            }),
+                        }, 'Edit'),
+                        showEditMenu ? m('div.cell.shrink.grid-y', [
+                            m('button.button.hollow', {
+                                onclick: () => {beingEdited = true; showEditMenu = false;}
+                            }, 'Change Title'),
+                            m('button.button.hollow', {
+                                onclick: () => {
+                                    showEditMenu = false;
+                                    vnode.attrs.showEditButtonsFunction(true)
+                                },
+                            }, 'Edit Exercises'),
+                            m('button.button.hollow.alert', {
+                                onclick: vnode.attrs.deleteWorkoutFunction,
+                            }, 'Delete Workout'),
+                        ]) : null,
+                    ]),
                     m('a.button.cell.shrink.primary', {
                         href: '/log/' + vnode.attrs.workout._id,
                         oncreate: m.route.link,
                     }, 'Begin'),
-                    m('button.button.alert.hollow.cell.shrink', {
-                        onclick: preventDefault(() => {
-                            showEditButton = false;
-                            beingEdited = false;
-                            vnode.attrs.showEditButtonsFunction(showEditButton);
-                            vnode.attrs.deleteWorkoutFunction();
-                        }),
-                        disabled: showEditButton || beingEdited ? false : true,
-                        class: (showEditButton || beingEdited ? '' : 'hide'),
-                    }, 'Delete'),
-                    m('button.cell.shrink', {
-                        onclick: preventDefault(() => {
-                            beingEdited = false;
-                            showEditButton = false;
-                            vnode.attrs.showEditButtonsFunction(beingEdited);
-                            vnode.attrs.saveWorkoutFunction();
-                        }),
-                        disabled: showEditButton || beingEdited ? false : true,
-                        class: 'button primary ' + (showEditButton || beingEdited ? '' : 'hide'),
-                    }, 'Done')
                 ])
             ]);
         }

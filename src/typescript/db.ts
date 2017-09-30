@@ -28,9 +28,14 @@ const getAllExercises = function() {
 const getAllWorkouts = function() {
     return db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true});
 }
-
 const put = function(object: Workout | Exercise) {
     return db.put(object);
+};
+
+const putAndFillRev = function(object: Workout | Exercise) {
+        <Promise<{}>>(db.put(object)).then((response) => {
+        object._rev = response.rev;
+    });
 };
 
 const remove = function(object: Workout) {
@@ -57,4 +62,14 @@ const saveLog = (log: WorkoutLog) => {
     return db.put(log);
 }
 
-export default {init, getAllExercises, getAllWorkouts, put, remove, findByName, findWorkoutById, saveLog};
+export default {
+    init,
+    getAllExercises,
+    getAllWorkouts,
+    put,
+    putAndFillRev,
+    remove,
+    findByName,
+    findWorkoutById,
+    saveLog
+};

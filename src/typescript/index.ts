@@ -4,6 +4,7 @@ import WorkoutList from './workoutList';
 import ExerciseList from './exerciseList';
 import db from './db';
 import LogWorkout from './logWorkout';
+import ViewWorkout from './viewWorkout';
 
 db.init();
 
@@ -75,4 +76,5 @@ let componentList = {
 m.route(document.getElementById('main'), '/', {
     '/': App,
     '/log/:id': LogWorkout,
+    '/workouts/:id': ViewWorkout,
 });

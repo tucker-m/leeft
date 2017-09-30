@@ -32,19 +32,25 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
         let elements = Array();
         for (let i = 0; i < prescription.sets; i++) {
             elements.push(m('div', [
-                m('p', 'Set ' + i),
-                m('input[type=number]', {
-                    placeholder: 'Reps done',
-                    onchange: m.withAttr('value', (value) => {
-                        log.sets[i].reps = value;
+                m('p', 'Set ' + (i + 1).toString()),
+                m('div.input-group', [
+                    m('input[type=number].input-group-field', {
+                        placeholder: 'Reps done',
+                        onchange: m.withAttr('value', (value) => {
+                            log.sets[i].reps = value;
+                        }),
                     }),
-                }),
-                m('input[type=number]', {
-                    placeholder: 'Weight done',
-                    onchange: m.withAttr('value', (value) => {
-                        log.sets[i].amount = value;
+                    m('span.input-group-label', prescription.exercise.setUnits),
+                ]),
+                m('div.input-group', [
+                    m('input[type=number].input-group-field', {
+                        placeholder: 'Weight done',
+                        onchange: m.withAttr('value', (value) => {
+                            log.sets[i].amount = value;
+                        }),
                     }),
-                })
+                    m('span.input-group-label', 'pounds')
+                ])
             ]));
         }
         return elements;
@@ -55,7 +61,11 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
             return m('div', [
                 workout.prescriptions.map((prescription) => {
                     return m('div.card', [
-                        m('div.card-divider', m('h4', prescription.exercise.name)),
+                        m('div.card-divider', m('h4', prescription.exercise.name
+                                                + ' (' + prescription.amount + ' '
+                                                + prescription.exercise.setUnits
+                                                + ')')
+                         ),
                         m('div.card-section', getSetArray(prescription, log))
                     ]);
                 }),

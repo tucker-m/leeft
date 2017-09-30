@@ -18,32 +18,31 @@ interface WorkoutListVnode {
 let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
-            let elements = [
-                m('div.cell.grid-x.align-justify.align-middle.shrink', [
-                    m('button.cell.shrink', {
-                        onclick: preventDefault(() => {
-                            let newWorkout: Workout = {
-                                _id: 'workout_' + Date.now(), // TODO: add a random number here
-                                name: '',
-                                prescriptions: []
-                            };
-                            const newIndex = vnode.attrs.allWorkouts.length;
-                            vnode.attrs.saveWorkout(newWorkout, newIndex);
-                        }),
-                        class: 'button primary'
-                    }, 'Add Workout'),
-                ]),
-                m('div.cell.grid-x.grid-margin-x', workoutDisplayList(vnode.attrs.allWorkouts, vnode.attrs.allExercises, vnode.attrs.saveWorkout, vnode.attrs.deleteWorkout, vnode.attrs.updateDefaultExercise))
-            ];
             if (vnode.attrs.allWorkouts.length == 0) {
-                elements.push(m('div.callout',
-                                'You haven\'t created any workouts yet.'));
+                return m('p', 'You haven\'t created any workouts yet.');
             }
-            return m('div.grid-container.fluid',
-                     m('div.grid-y.grid-margin-y',
-                       elements
-                      )
-                    );
+            else {
+                let elements: Array<m.Vnode<{}, {}>> = [];
+                elements.push(m('ul', vnode.attrs.allWorkouts.map((workout) => {
+                    return m('li', m('a', {
+                        href: '/workouts/' + workout._id,
+                        oncreate: m.route.link,
+                    }, workout.name))
+                })));
+                elements.push(m('button.button', {
+                    onclick: preventDefault(() => {
+                        let newWorkout: Workout = {
+                            _id: 'workout_' + Date.now(), // TODO: add a random number here
+                            name: 'New Workout',
+                            prescriptions: []
+                        };
+                        const newIndex = vnode.attrs.allWorkouts.length;
+                        vnode.attrs.saveWorkout(newWorkout, newIndex);
+                    }),
+                    class: 'button primary'
+                }, 'Add Workout'));
+                return elements;
+            }
         }
     }
 };

@@ -19,6 +19,16 @@ const init = function() {
         console.log(error);
     });
     // TODO: wait until callback finishes?
+
+    db.createIndex({
+        index: {
+            fields: ['workout._id']
+        }
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
+    })
 };
 
 const getAllExercises = function() {
@@ -48,6 +58,14 @@ const findByName = function(name: string) {
     });
 };
 
+const findLogsByWorkoutId = (id: string) => {
+    return db.find({
+        selector: {
+            'workout._id': id
+        }
+    })
+}
+
 const findWorkoutById = function(id: string) {
     return new Promise<Workout>((resolve, reject) => {
         db.get(id).then((workout) => {
@@ -70,6 +88,7 @@ export default {
     putAndFillRev,
     remove,
     findByName,
+    findLogsByWorkoutId,
     findWorkoutById,
     saveLog
 };

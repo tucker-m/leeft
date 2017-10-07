@@ -70,7 +70,11 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
                     ]);
                 }),
                 m('button.button.primary', {
-                    onclick: db.saveLog(log),
+                    onclick: () => {
+                        db.saveLog(log).then((result) => {
+                            log._rev = result.rev
+                        })
+                    },
                 }, 'Save')
             ]);
         }

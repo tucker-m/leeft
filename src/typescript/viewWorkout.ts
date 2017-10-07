@@ -3,6 +3,7 @@ import db from './db';
 import {Workout} from './exercise';
 import ViewWorkoutMenu from './viewWorkoutMenu';
 import ViewWorkoutRow from './viewWorkoutRow';
+import WorkoutLogs from './workoutLogs';
 
 interface ViewWorkoutAttrs {
     id: string
@@ -49,10 +50,6 @@ export default (vnode: ViewWorkoutVnode) => {
                     : m('button.button.dropdown.secondary.hollow.cell.shrink', {
                         onclick: () => { showMenu = !showMenu; }
                     }, 'Edit'),
-                    m('a.button.cell.shrink', {
-                        href: '/log/' + workout._id,
-                        oncreate: m.route.link,
-                    }, 'Start Workout')
                 ]),
                 showMenu ? m(ViewWorkoutMenu, {
                     workout: workout,
@@ -99,7 +96,10 @@ export default (vnode: ViewWorkoutVnode) => {
                             db.putAndFillRev(workout);
                         }
                     }, 'Add Exercise')
-                : null
+                : null,
+                WorkoutLogs({
+                    workout_id: workout._id
+                })
             ]);
         }
     };

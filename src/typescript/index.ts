@@ -5,9 +5,9 @@ import ExerciseList from './exerciseList';
 import db from './db';
 import LogWorkout from './logWorkout';
 import ViewWorkout from './viewWorkout';
+import ViewLog from './viewLog'
 
 db.init();
-
 
 let App = {
     view: function() {
@@ -77,4 +77,5 @@ m.route(document.getElementById('main'), '/', {
     '/': App,
     '/log/:id': LogWorkout,
     '/workouts/:id': ViewWorkout,
+    '/viewlog/:id': ViewLog,
 });

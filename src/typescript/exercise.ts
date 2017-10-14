@@ -33,6 +33,7 @@ interface WorkoutLog {
     workout: Workout,
     sets: [
         {
+            exercise: Exercise,
             reps: number,
             amount: number,
         }

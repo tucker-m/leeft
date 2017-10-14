@@ -1,6 +1,6 @@
 import * as m from 'mithril';
 import db from './db';
-import {Workout, WorkoutLog} from './exercise';
+import {Workout, WorkoutLog, ExercisePrescription} from './exercise';
 
 interface LogWorkoutAttrs {
     id: string
@@ -20,7 +20,7 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
         _id: 'log_' + Date.now().toString(),
         workout: workout,
         date: Date.now(),
-        sets: [{reps: 0, amount: 0}],
+        sets: [{exercise: null, reps: 0, amount: 0}],
     };
     db.findWorkoutById(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout;
@@ -28,8 +28,8 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
         m.redraw(); // TODO: mobx to make this unnecessary?
     });
 
-    const getSetArray = (prescription, log) => {
-        let elements = Array();
+    const getSetArray = (prescription: ExercisePrescription, log: WorkoutLog) => {
+        let elements = new Array(prescription.sets)
         for (let i = 0; i < prescription.sets; i++) {
             elements.push(m('div', [
                 m('p', 'Set ' + (i + 1).toString()),

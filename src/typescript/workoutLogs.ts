@@ -39,7 +39,14 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                     const month = months[date.getMonth()]
                     const day = date.getDate()
                     const year = date.getFullYear()
-                    return m('p', month + ' ' + day + ', ' + year)
+                    const hour = date.getHours() % 12
+                    const meridian = (date.getHours() / 12) <= 1 ? 'am' : 'pm'
+                    const minutes = date.getMinutes()
+
+                    return m('p', m('a', {
+                        href: '/viewlog/' + log._id,
+                        oncreate: m.route.link,
+                    }, month + ' ' + day + ', ' + year + ' at ' + hour + ':' + minutes.toString().padStart(2, '0') + meridian))
                 })
             ])
         }

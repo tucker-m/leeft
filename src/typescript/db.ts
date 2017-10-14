@@ -76,6 +76,16 @@ const findWorkoutById = function(id: string) {
     });
 };
 
+const findLogById = (id: string) => {
+    return new Promise<WorkoutLog>((resolve, reject) => {
+        db.get(id).then((log) => {
+            resolve(log)
+        }).catch((error) => {
+            reject(error)
+        })
+    })
+}
+
 const saveLog = (log: WorkoutLog) => {
     return db.put(log);
 }
@@ -90,5 +100,6 @@ export default {
     findByName,
     findLogsByWorkoutId,
     findWorkoutById,
-    saveLog
+    findLogById,
+    saveLog,
 };

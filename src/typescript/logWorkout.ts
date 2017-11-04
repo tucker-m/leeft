@@ -50,20 +50,24 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
                     return m('div', [
                         m('h2', setLog.exercise.name),
                         m('p', expectedRepNumbers[index] + ' reps'),
-                        m('input[type=number].input-group-field', {
-                            placeholder: 'Reps done',
-                            onchange: m.withAttr('value', (value) => {
-                                setLog.reps = value;
+                        m('div.input-group', [
+                            m('input[type=number].input-group-field', {
+                                placeholder: 'Reps done',
+                                onchange: m.withAttr('value', (value) => {
+                                    setLog.reps = value;
+                                }),
                             }),
-                        }),
-                        m('span.input-group-label', setLog.exercise.setUnits),
-                        m('input[type=number].input-group-field', {
-                            placeholder: 'Weight done',
-                            onchange: m.withAttr('value', (value) => {
-                                setLog.amount = value;
+                            m('span.input-group-label', setLog.exercise.setUnits),
+                        ]),
+                        m('div.input-group', [
+                            m('input[type=number].input-group-field', {
+                                placeholder: 'Weight done',
+                                onchange: m.withAttr('value', (value) => {
+                                    setLog.amount = value;
+                                }),
                             }),
-                        }),
-                        m('span.input-group-label', 'pounds'),
+                            m('span.input-group-label', 'pounds'),
+                        ])
                     ]);
                 }),
                 m('button.button.primary', {

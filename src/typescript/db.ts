@@ -22,7 +22,7 @@ const init = function() {
 
     db.createIndex({
         index: {
-            fields: ['workout._id']
+            fields: ['workout._id', 'date']
         }
     }).then((result) => {
         console.log(result)
@@ -61,8 +61,11 @@ const findByName = function(name: string) {
 const findLogsByWorkoutId = (id: string) => {
     return db.find({
         selector: {
-            'workout._id': id
-        }
+            $and: [
+                {'workout._id': id},
+                {'date': {$gt: null}}
+            ]
+        },
     })
 }
 

@@ -13,7 +13,6 @@ export default (vnode: ViewLogVnode) => {
     let log: WorkoutLog = null
     db.findLogById(vnode.attrs.id).then((logResult) => {
         log = logResult
-        console.log(log)
         m.redraw()
     })
     return {

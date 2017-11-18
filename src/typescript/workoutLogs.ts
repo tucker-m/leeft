@@ -1,6 +1,7 @@
 import * as m from 'mithril'
 import {WorkoutLog} from './exercise'
 import db from './db'
+import utils from './utils'
 
 interface WorkoutLogAttrs {
     workout_id: string
@@ -10,8 +11,6 @@ interface WorkoutLogVnode {
 }
 
 let logs: Array<WorkoutLog> = []
-
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
     let currentWorkoutId = vnode.attrs.workout_id;
@@ -34,19 +33,11 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                         oncreate: m.route.link,
                     }, 'New Log Entry')
                 ]),
-                logs.map((log) => {
-                    const date = new Date(log.date)
-                    const month = months[date.getMonth()]
-                    const day = date.getDate()
-                    const year = date.getFullYear()
-                    const hour = date.getHours() % 12
-                    const meridian = (date.getHours() / 12) <= 1 ? 'am' : 'pm'
-                    const minutes = date.getMinutes()
-
+                logs.reverse().map((log) => {
                     return m('p', m('a', {
                         href: '/viewlog/' + log._id,
                         oncreate: m.route.link,
-                    }, month + ' ' + day + ', ' + year + ' at ' + hour + ':' + minutes.toString().padStart(2, '0') + meridian))
+                    }, utils.formatDate(log.date)))
                 })
             ])
         }

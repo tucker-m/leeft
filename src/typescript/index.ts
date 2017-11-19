@@ -6,6 +6,7 @@ import db from './db';
 import LogWorkout from './logWorkout';
 import ViewWorkout from './viewWorkout';
 import ViewLog from './viewLog'
+import {observable} from 'mobx'
 
 db.init();
 
@@ -32,6 +33,15 @@ db.getAllWorkouts().then((docs) => {
     });
     m.redraw();
 });
+
+let someWorkout = observable({
+    _id: 'initial',
+    name: '',
+    prescriptions: [],
+})
+db.getSomeWorkout().then((theWorkout) => {
+    someWorkout = theWorkout
+})
 
 let componentList = {
     view: function() {
@@ -68,6 +78,12 @@ let componentList = {
             }
         };
         return m('div', [
+            m('button', {
+                value: someWorkout._id,
+                onclick: m.withAttr('value', (value) => {
+                    someWorkout._id = Date.now().toString()
+                })
+            }, 'click me'),
             WorkoutList(workoutListAttrs)
         ]);
     }

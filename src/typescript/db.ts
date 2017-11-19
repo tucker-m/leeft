@@ -1,6 +1,7 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 import {Workout, Exercise, WorkoutLog} from './exercise';
+import {observable, autorun} from 'mobx'
 
 let db: PouchDB;
 
@@ -93,6 +94,28 @@ const saveLog = (log: WorkoutLog) => {
     return db.put(log);
 }
 
+const getSomeWorkout = () => {
+    return new Promise<any>((resolve, reject) => {
+        let rev = ''
+        db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true, limt: 1}).then((workouts) => {
+            let workout = workouts.rows[0].doc
+            rev = workout._rev
+            delete workout._rev
+            let observableWorkout = observable(workout)
+            autorun(() => {
+                TODO: In here, save to the database
+                and change the rev variable accordingly
+                console.log(observableWorkout._id)
+                rev += 'a'
+                console.log(rev)
+            })
+
+            resolve(observableWorkout)
+        })
+    })
+}
+
+
 export default {
     init,
     getAllExercises,
@@ -105,4 +128,5 @@ export default {
     findWorkoutById,
     findLogById,
     saveLog,
+    getSomeWorkout,
 };

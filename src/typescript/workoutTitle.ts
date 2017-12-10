@@ -1,10 +1,10 @@
 import * as m from 'mithril';
 import editable from './showEditableField';
-import {Workout} from './exercise';
+import {Saveable, Workout} from './exercise';
 import preventDefault from './preventDefaultFunction';
 
 interface WorkoutTitleAttrs {
-    workout: Workout,
+    workout: Workout & Saveable,
     beingEdited: boolean,
     saveWorkoutFunction: () => void,
     deleteWorkoutFunction: () => void,

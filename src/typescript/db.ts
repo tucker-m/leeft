@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 import {Saveable, Saved, Workout, Exercise, WorkoutLog} from './exercise';
-import {observable, autorun, IObservableObject} from 'mobx'
+import {observable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
 
@@ -96,15 +96,31 @@ function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservable
             delete record._rev
             let observableRecord = observable(record)
             autorun(() => {
-                let saveMe: Saveable & T = Object.assign({}, observableRecord, {_rev: rev})
-                db.put(saveMe).then((response) => {
+                let plainObject: Saveable & T = toJS(observableRecord)
+                let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
+                db.put(savedObject).then((response) => {
                     rev = response.rev
                 })
             })
-
             resolve(observableRecord)
         })
     })
+}
+
+function createSaveableRecord<T> (object: T & Saveable): Saveable & T & IObservableObject {
+    let rev = ''
+    let observeMe = observable(object)
+    db.put(object).then((response) => {
+        rev = response.rev
+        autorun(() => {
+            let plainObject: Saveable & T = toJS(observeMe)
+            let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
+            db.put(savedObject).then((response) => {
+                rev = response.rev
+            })
+        })
+    })
+    return observeMe
 }
 
 
@@ -120,4 +136,5 @@ export default {
     findLogById,
     saveLog,
     fetchSaveableRecord,
+    createSaveableRecord,
 };

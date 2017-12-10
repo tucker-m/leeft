@@ -1,11 +1,11 @@
 import * as m from 'mithril';
-import {Workout, Exercise, SetUnits} from './exercise';
+import {Saveable, Workout, Exercise, SetUnits} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import PrescriptionRow from './prescriptionRow';
 import WorkoutTitle from './workoutTitle';
 
 interface WorkoutDisplayAttrs {
-    workout: Workout,
+    workout: Workout & Saveable,
     allExercises: Array<Exercise>,
     deleteFunction: () => void,
     saveWorkoutFunction: (workout: Workout) => void,

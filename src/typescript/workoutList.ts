@@ -2,7 +2,8 @@ import * as m from 'mithril';
 import {Saveable, Workout, Exercise, SetUnits} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import workoutDisplayList from './workoutDisplayList';
-import {observable, IObservableObject} from 'mobx'
+import {IObservableObject} from 'mobx'
+import db from './db'
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Saveable>,
@@ -33,7 +34,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
             }
             elements.push(m('button.button', {
                 onclick: preventDefault(() => {
-                    let newWorkout: Workout & Saveable & IObservableObject = observable({
+                    let newWorkout: Workout & Saveable & IObservableObject = db.createSaveableRecord({
                         _id: 'workout_' + Date.now(), // TODO: add a random number here
                         name: 'New Workout',
                         prescriptions: []

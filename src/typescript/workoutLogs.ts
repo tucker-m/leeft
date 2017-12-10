@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {WorkoutLog} from './exercise'
+import {Saveable, WorkoutLog} from './exercise'
 import db from './db'
 import utils from './utils'
 
@@ -10,7 +10,7 @@ interface WorkoutLogVnode {
     attrs: WorkoutLogAttrs
 }
 
-let logs: Array<WorkoutLog> = []
+let logs: Array<WorkoutLog & Saveable> = []
 
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
     let currentWorkoutId = vnode.attrs.workout_id;

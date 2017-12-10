@@ -94,7 +94,7 @@ const saveLog = (log: WorkoutLog) => {
     return db.put(log);
 }
 
-const fetchSaveableRecord<T>: (id: string) => Saveable = (id: string) => {
+function fetchSaveableRecord<T> (id: string): Promise<Saveable & T> {
     return new Promise<Saveable & T>((resolve, reject) => {
         let rev = ''
         db.get(id).then((record: Saved & T) => {
@@ -102,30 +102,13 @@ const fetchSaveableRecord<T>: (id: string) => Saveable = (id: string) => {
             delete record._rev
             let observableRecord = observable(record)
             autorun(() => {
-                let saveMe: Saved & T = Object.assign({}, observableRecord, {_rev: rev})
+                let saveMe: Saveable & T = Object.assign({}, observableRecord, {_rev: rev})
                 db.put(saveMe).then((response) => {
                     rev = response.rev
                 })
             })
-        })
-    })
-}
 
-const getSomeWorkout = () => {
-    return new Promise<any>((resolve, reject) => {
-        let rev = ''
-        db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true, limt: 1}).then((workouts) => {
-            let workout = workouts.rows[0].doc
-            rev = workout._rev
-            delete workout._rev
-            let observableWorkout = observable(workout)
-            autorun(() => {
-                console.log(observableWorkout._id)
-                rev += 'a'
-                console.log(rev)
-            })
-
-            resolve(observableWorkout)
+            resolve(observableRecord)
         })
     })
 }
@@ -143,5 +126,5 @@ export default {
     findWorkoutById,
     findLogById,
     saveLog,
-    getSomeWorkout,
+    fetchSaveableRecord,
 };

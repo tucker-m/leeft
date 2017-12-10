@@ -1,6 +1,7 @@
 import * as m from 'mithril';
 import db from './db';
-import {Workout, WorkoutLog, ExercisePrescription, ExerciseSetLog} from './exercise';
+import {Saveable, Workout, WorkoutLog, ExercisePrescription, ExerciseSetLog} from './exercise';
+import {observable, IObservableObject} from 'mobx'
 
 interface LogWorkoutAttrs {
     id: string
@@ -11,17 +12,17 @@ interface LogWorkoutVnode {
 };
 
 const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
-    let workout: Workout = {
+    let workout: Workout & Saveable = {
         _id: '',
         name: '',
         prescriptions: [],
     };
-    let log: WorkoutLog = {
+    let log: WorkoutLog & Saveable & IObservableObject = observable({
         _id: 'log_' + Date.now().toString(),
         workout: workout,
         date: Date.now(),
         sets: [],
-    };
+    })
     let expectedRepNumbers: Array<number> = []
     db.findWorkoutById(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout
@@ -72,9 +73,8 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
                 }),
                 m('button.button.primary', {
                     onclick: () => {
-                        db.saveLog(log).then((result) => {
-                            log._rev = result.rev
-                        })
+                        // TODO: immutablejs here
+                        console.log('it is already saved')
                     },
                 }, 'Save')
             ]);

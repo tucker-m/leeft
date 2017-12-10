@@ -1,10 +1,10 @@
 import * as m from 'mithril';
 import db from './db';
-import {Workout} from './exercise';
+import {Saveable, Workout} from './exercise';
 import ViewWorkoutMenu from './viewWorkoutMenu';
 import ViewWorkoutRow from './viewWorkoutRow';
 import WorkoutLogs from './workoutLogs';
-import {observable} from 'mobx';
+import {observable, IObservableObject} from 'mobx';
 
 interface ViewWorkoutAttrs {
     id: string
@@ -14,7 +14,7 @@ interface ViewWorkoutVnode {
 };
 
 export default (vnode: ViewWorkoutVnode) => {
-    let workout: (Workout & Saveable & IObservableObect) = observable({
+    let workout: (Workout & Saveable & IObservableObject) = observable({
         _id: '',
         name: '',
         prescriptions: [],

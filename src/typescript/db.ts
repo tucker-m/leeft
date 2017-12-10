@@ -65,7 +65,7 @@ const findLogsByWorkoutId = (id: string) => {
 }
 
 const findWorkoutById = function(id: string) {
-    return new Promise<Workout>((resolve, reject) => {
+    return new Promise<Workout & Saveable>((resolve, reject) => {
         db.get(id).then((workout) => {
             resolve(workout);
         }).catch((error) => {

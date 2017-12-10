@@ -1,8 +1,8 @@
 import * as m from 'mithril';
-import {Exercise, Workout, SetUnits} from './exercise';
+import {Saveable, Exercise, Workout, SetUnits} from './exercise';
 import WorkoutDisplay from './workoutDisplay';
 
-export default (allWorkouts: Array<Workout>, allExercises: Array<Exercise>, saveWorkout: (w: Workout, i: number) => void, deleteWorkout: (w: Workout, i: number) => void, updateDefaultExercise: (name: string, repType: SetUnits) => void) => {
+export default (allWorkouts: Array<Workout & Saveable>, allExercises: Array<Exercise>, saveWorkout: (w: Workout, i: number) => void, deleteWorkout: (w: Workout, i: number) => void, updateDefaultExercise: (name: string, repType: SetUnits) => void) => {
     let elements = [];
     for (let index = allWorkouts.length - 1; index >= 0; index--) {
         let workout = allWorkouts[index];

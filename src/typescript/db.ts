@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 import {Saveable, Saved, Workout, Exercise, WorkoutLog} from './exercise';
-import {observable, autorun} from 'mobx'
+import {observable, autorun, IObservableObject} from 'mobx'
 
 let db: PouchDB;
 
@@ -41,12 +41,6 @@ const getAllWorkouts = function() {
 }
 const put = function(object: Workout | Exercise) {
     return db.put(object);
-};
-
-const putAndFillRev = function(object: Workout | Exercise) {
-        <Promise<{}>>(db.put(object)).then((response) => {
-        object._rev = response.rev;
-    });
 };
 
 const remove = function(object: Workout) {
@@ -94,8 +88,8 @@ const saveLog = (log: WorkoutLog) => {
     return db.put(log);
 }
 
-function fetchSaveableRecord<T> (id: string): Promise<Saveable & T> {
-    return new Promise<Saveable & T>((resolve, reject) => {
+function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservableObject> {
+    return new Promise<Saveable & T & IObservableObject>((resolve, reject) => {
         let rev = ''
         db.get(id).then((record: Saved & T) => {
             rev = record._rev
@@ -119,7 +113,6 @@ export default {
     getAllExercises,
     getAllWorkouts,
     put,
-    putAndFillRev,
     remove,
     findByName,
     findLogsByWorkoutId,

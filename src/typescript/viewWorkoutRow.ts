@@ -5,7 +5,6 @@ interface RowAttrs {
     prescription: ExercisePrescription,
     showEditButtons: boolean,
     deleteFunction: () => void,
-    saveFunction: () => void,
 };
 interface RowVnode {
     attrs: RowAttrs
@@ -66,7 +65,6 @@ export default (vnode: RowVnode) => {
                     ]),
                     m('button.button', {
                         onclick: () => {
-                            vnode.attrs.saveFunction;
                             beingEdited = false;
                         },
                     }, 'Save'),

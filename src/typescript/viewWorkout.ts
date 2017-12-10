@@ -4,6 +4,7 @@ import {Workout} from './exercise';
 import ViewWorkoutMenu from './viewWorkoutMenu';
 import ViewWorkoutRow from './viewWorkoutRow';
 import WorkoutLogs from './workoutLogs';
+import {observable} from 'mobx';
 
 interface ViewWorkoutAttrs {
     id: string
@@ -13,15 +14,15 @@ interface ViewWorkoutVnode {
 };
 
 export default (vnode: ViewWorkoutVnode) => {
-    let workout: Workout = {
+    let workout: (Workout & Saveable & IObservableObect) = observable({
         _id: '',
         name: '',
         prescriptions: [],
-    };
-    db.findWorkoutById(vnode.attrs.id).then((returnedWorkout) => {
+    })
+    db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout;
-        m.redraw(); // TODO: mobx to make this unnecessary?
-    });
+        m.redraw();
+    })
 
     let showMenu = false;
     let showEditButtons = false;
@@ -44,7 +45,6 @@ export default (vnode: ViewWorkoutVnode) => {
                             onclick: () => {
                                 showEditButtons = false;
                                 titleBeingEdited = false;
-                                db.putAndFillRev(workout);
                             },
                         }, 'Done Editing')
                     : m('button.button.dropdown.secondary.hollow.cell.shrink', {
@@ -74,11 +74,7 @@ export default (vnode: ViewWorkoutVnode) => {
                             showEditButtons,
                             deleteFunction: () => {
                                 workout.prescriptions.splice(index, 1);
-                                db.putAndFillRev(workout);
                             },
-                            saveFunction: () => {
-                                db.putAndFillRev(workout);
-                            }
                         });
                     }))
                 ]),
@@ -93,7 +89,6 @@ export default (vnode: ViewWorkoutVnode) => {
                                 sets: 0,
                                 amount: 0,
                             });
-                            db.putAndFillRev(workout);
                         }
                     }, 'Add Exercise')
                 : null,

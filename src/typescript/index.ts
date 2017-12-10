@@ -69,12 +69,6 @@ let componentList = {
             }
         };
         return m('div', [
-            m('button', {
-                value: someWorkout._id,
-                onclick: m.withAttr('value', (value) => {
-                    someWorkout._id = Date.now().toString()
-                })
-            }, 'click me'),
             WorkoutList(workoutListAttrs)
         ]);
     }

@@ -1,7 +1,6 @@
 import * as m from "mithril";
 import {Exercise, Workout, SetUnits} from "./exercise";
 import WorkoutList from './workoutList';
-import ExerciseList from './exerciseList';
 import db from './db';
 import LogWorkout from './logWorkout';
 import ViewWorkout from './viewWorkout';

@@ -1,12 +1,13 @@
 import * as m from 'mithril';
-import {Workout, Exercise, SetUnits} from './exercise';
+import {Saveable, Workout, Exercise, SetUnits} from './exercise';
 import preventDefault from './preventDefaultFunction';
 import workoutDisplayList from './workoutDisplayList';
+import {observable, IObservableObject} from 'mobx'
 
 interface WorkoutListAttrs {
-    allWorkouts: Array<Workout>,
+    allWorkouts: Array<Workout & Saveable>,
     allExercises: Array<Exercise>,
-    saveWorkout: (w: Workout, i: number) => void,
+    saveWorkout: (w: Workout & IObservableObject, i: number) => void,
     deleteWorkout: (w: Workout, i: number) => void,
     updateDefaultExercise: (name: string, repType: SetUnits) => void,
 };
@@ -32,11 +33,11 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
             }
             elements.push(m('button.button', {
                 onclick: preventDefault(() => {
-                    let newWorkout: Workout = {
+                    let newWorkout: Workout & Saveable & IObservableObject = observable({
                         _id: 'workout_' + Date.now(), // TODO: add a random number here
                         name: 'New Workout',
                         prescriptions: []
-                    };
+                    });
                     const newIndex = vnode.attrs.allWorkouts.length;
                     vnode.attrs.saveWorkout(newWorkout, newIndex);
                 }),

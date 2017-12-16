@@ -12,7 +12,7 @@ interface ViewLogVnode {
 
 export default (vnode: ViewLogVnode) => {
     let log: WorkoutLog = null
-    db.findLogById(vnode.attrs.id).then((logResult) => {
+    db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then((logResult) => {
         log = logResult
         m.redraw()
     })

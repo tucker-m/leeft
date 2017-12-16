@@ -17,7 +17,7 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
         name: '',
         prescriptions: [],
     };
-    let log: WorkoutLog & Saveable & IObservableObject = observable({
+    let log: WorkoutLog & Saveable & IObservableObject = db.createSaveableRecord({
         _id: 'log_' + Date.now().toString(),
         workout: workout,
         date: Date.now(),

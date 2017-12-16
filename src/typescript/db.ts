@@ -60,20 +60,6 @@ const findLogsByWorkoutId = (id: string) => {
     })
 }
 
-const findWorkoutById = function(id: string) {
-    return new Promise<Workout & Saveable>((resolve, reject) => {
-        db.get(id).then((workout) => {
-            resolve(workout);
-        }).catch((error) => {
-            reject(error);
-        });
-    });
-};
-
-const saveLog = (log: WorkoutLog) => {
-    return db.put(log);
-}
-
 function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservableObject> {
     return new Promise<Saveable & T & IObservableObject>((resolve, reject) => {
         let rev = ''
@@ -118,8 +104,6 @@ export default {
     remove,
     findByName,
     findLogsByWorkoutId,
-    findWorkoutById,
-    saveLog,
     fetchSaveableRecord,
     createSaveableRecord,
 };

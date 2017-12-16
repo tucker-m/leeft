@@ -24,7 +24,7 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
         sets: [],
     })
     let expectedRepNumbers: Array<number> = []
-    db.findWorkoutById(vnode.attrs.id).then((returnedWorkout) => {
+    db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout
         log.workout = workout
         // For each exercise in the workout, for the number of sets for that
@@ -42,7 +42,7 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
             }
         })
         m.redraw() // TODO: mobx to make this unnecessary?
-    });
+    })
 
     return {
         view: function(vnode: LogWorkoutVnode) {

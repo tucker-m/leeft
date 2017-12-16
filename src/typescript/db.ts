@@ -15,9 +15,7 @@ const init = function() {
             fields: ['name'],
         }
     }).then((result) => {
-        console.log(result);
     }).catch((error) => {
-        console.log(error);
     });
     // TODO: wait until callback finishes?
 
@@ -26,9 +24,7 @@ const init = function() {
             fields: ['workout._id', 'date']
         }
     }).then((result) => {
-        console.log(result)
     }).catch((error) => {
-        console.log(error)
     })
 };
 

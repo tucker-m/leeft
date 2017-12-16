@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, Workout, Exercise, WorkoutLog} from './exercise';
+import {Saveable, Saved, Workout, Exercise} from './exercise';
 import {observable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -35,18 +35,9 @@ const getAllExercises = function() {
 const getAllWorkouts = function() {
     return db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true});
 }
-const put = function(object: Workout | Exercise) {
-    return db.put(object);
-};
 
 const remove = function(object: Workout) {
     db.remove(object);
-};
-
-const findByName = function(name: string) {
-    return db.find({
-        selector: {name: name}
-    });
 };
 
 const findLogsByWorkoutId = (id: string) => {
@@ -100,9 +91,7 @@ export default {
     init,
     getAllExercises,
     getAllWorkouts,
-    put,
     remove,
-    findByName,
     findLogsByWorkoutId,
     fetchSaveableRecord,
     createSaveableRecord,

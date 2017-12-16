@@ -49,24 +49,6 @@ let componentList = {
                 allWorkouts.splice(index, 1);
                 db.remove(workout);
             },
-            updateDefaultExercise: function(exerciseName: string, repType: SetUnits) {
-                db.findByName(exerciseName).then((results) => {
-                    let exercise: Exercise & Saveable = null;
-                    if (results.docs.length == 1) {
-                        exercise = results.docs[0];
-                        exercise.setUnits = repType;
-                    }
-                    else if (results.docs.length == 0) {
-                        exercise = {
-                            _id: 'exercise_' + Date.now().toString() + exerciseName,
-                            name: exerciseName,
-                            setUnits: repType,
-                        };
-                        allExercises.push(exercise);
-                    }
-                    db.put(exercise);
-                });
-            }
         };
         return m('div', [
             WorkoutList(workoutListAttrs)

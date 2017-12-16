@@ -10,7 +10,6 @@ interface WorkoutListAttrs {
     allExercises: Array<Exercise>,
     saveWorkout: (w: Workout & IObservableObject, i: number) => void,
     deleteWorkout: (w: Workout, i: number) => void,
-    updateDefaultExercise: (name: string, repType: SetUnits) => void,
 };
 
 interface WorkoutListVnode {

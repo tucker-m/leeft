@@ -22,6 +22,7 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
         workout: workout,
         date: Date.now(),
         sets: [],
+        comments: '',
     })
     let expectedRepNumbers: Array<number> = []
     db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
@@ -70,6 +71,13 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
                             m('span.input-group-label', 'pounds'),
                         ])
                     ]);
+                }),
+                m('textarea', {
+                    onchange: m.withAttr('value', (value) => {
+                        log.comments = value
+                    }),
+                    value: log.comments,
+                    placeholder: 'Put workout comments here...',
                 }),
                 m('button.button.primary', {
                     onclick: () => {

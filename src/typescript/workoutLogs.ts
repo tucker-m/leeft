@@ -34,10 +34,13 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                     }, 'New Log Entry')
                 ]),
                 logs.reverse().map((log) => {
-                    return m('p', m('a', {
-                        href: '/viewlog/' + log._id,
-                        oncreate: m.route.link,
-                    }, utils.formatDate(log.date)))
+                    return m('p', [
+                        m('a', {
+                            href: '/viewlog/' + log._id,
+                            oncreate: m.route.link,
+                        }, utils.formatDate(log.date)),
+                        m('span', ' - ' + log.comments),
+                    ])
                 })
             ])
         }

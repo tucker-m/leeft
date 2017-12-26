@@ -39,7 +39,8 @@ export default (vnode: ViewLogVnode) => {
                             m('td', set.amount)
                         ])
                     }))
-                ])
+                ]),
+                m('p', log.comments),
             ])
         }
     }

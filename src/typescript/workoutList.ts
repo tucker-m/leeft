@@ -9,7 +9,6 @@ interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Saveable>,
     allExercises: Array<Exercise>,
     saveWorkout: (w: Workout & IObservableObject, i: number) => void,
-    deleteWorkout: (w: Workout, i: number) => void,
 };
 
 interface WorkoutListVnode {

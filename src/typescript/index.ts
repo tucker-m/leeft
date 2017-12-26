@@ -45,10 +45,6 @@ let componentList = {
             saveWorkout: function(workout: Workout & Saveable & IObservableObject, index: number) {
                 allWorkouts[index] = workout; // TODO: does the index need to be here?
             },
-            deleteWorkout: function(workout: Workout, index: number) {
-                allWorkouts.splice(index, 1);
-                db.remove(workout);
-            },
         };
         return m('div', [
             WorkoutList(workoutListAttrs)

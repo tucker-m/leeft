@@ -2,6 +2,7 @@ type SetUnits = 'reps' | 'seconds';
 
 interface Saveable {
     readonly _id: string,
+    _deleted?: boolean,
 }
 
 interface Saved extends Saveable {

@@ -1,9 +1,10 @@
 import * as m from 'mithril';
 import db from './db';
-import {Workout} from './exercise';
+import {Saveable, Workout} from './exercise';
+import {IObservableObject} from 'mobx'
 
 interface MenuAttrs {
-    workout: Workout,
+    workout: Workout & Saveable & IObservableObject,
     showEditButtons: () => void,
     editNameFunction: () => void,
 };
@@ -21,7 +22,7 @@ export default {
             }, 'Change Name'),
             m('button.button.alert.hollow.cell.shrink.small', {
                 onclick: () => {
-                    db.remove(vnode.attrs.workout);
+                    db.deleteSaveableRecord(vnode.attrs.workout);
                     window.location.href = '/';
                 }
             }, 'Delete Workout'),

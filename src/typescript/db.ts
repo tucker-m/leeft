@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 import {Saveable, Saved, Workout, Exercise} from './exercise';
-import {observable, autorun, IObservableObject, toJS} from 'mobx'
+import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
 
@@ -36,8 +36,8 @@ const getAllWorkouts = function() {
     return db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true});
 }
 
-const remove = function(object: Workout) {
-    db.remove(object);
+const remove = function(object: Saveable & IObservableObject) {
+    object._deleted = true
 };
 
 const findLogsByWorkoutId = (id: string) => {
@@ -57,6 +57,9 @@ function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservable
         db.get(id).then((record: Saved & T) => {
             rev = record._rev
             delete record._rev
+            if (typeof record._deleted == 'undefined') {
+                record._deleted = false
+            }
             let observableRecord = observable(record)
             autorun(() => {
                 let plainObject: Saveable & T = toJS(observableRecord)
@@ -72,7 +75,7 @@ function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservable
 
 function createSaveableRecord<T> (object: T & Saveable): Saveable & T & IObservableObject {
     let rev = ''
-    let observeMe = observable(object)
+    let observeMe = observable(Object.assign(object, {_deleted: false}))
     db.put(object).then((response) => {
         rev = response.rev
         autorun(() => {
@@ -86,6 +89,9 @@ function createSaveableRecord<T> (object: T & Saveable): Saveable & T & IObserva
     return observeMe
 }
 
+function deleteSaveableRecord (object: Saveable & IObservableObject): void {
+    object._deleted = true
+}
 
 export default {
     init,
@@ -95,4 +101,5 @@ export default {
     findLogsByWorkoutId,
     fetchSaveableRecord,
     createSaveableRecord,
+    deleteSaveableRecord,
 };

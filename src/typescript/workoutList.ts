@@ -1,7 +1,6 @@
 import * as m from 'mithril';
 import {Saveable, Workout, Exercise, SetUnits} from './exercise';
 import preventDefault from './preventDefaultFunction';
-import workoutDisplayList from './workoutDisplayList';
 import {IObservableObject} from 'mobx'
 import db from './db'
 

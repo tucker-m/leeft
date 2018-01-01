@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import db from './db';
 import {Saveable, Workout, WorkoutLog, ExercisePrescription, ExerciseSetLog} from './exercise';
-import {observable, IObservableObject} from 'mobx'
+import {observable, toJS, computed, IObservableObject} from 'mobx'
 
 interface LogWorkoutAttrs {
     id: string
@@ -25,16 +25,21 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
         comments: '',
     })
     let expectedRepNumbers: Array<number> = []
+    let logViewModel = toJS(log)
+
+
     db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
+
         workout = returnedWorkout
         log.workout = workout
+        logViewModel = toJS(log)
         // For each exercise in the workout, for the number of sets for that
         // exercise, create a setLog in the workout log. So, there will be
         // (number of exercises) x (sets per exercise) setLogs in the
         // workout log.
         workout.prescriptions.map((prescription) => {
             for (let i = 0; i < prescription.sets; i++) {
-                log.sets.push({
+                logViewModel.sets.push({
                     exercise: prescription.exercise,
                     amount: 0,
                     reps: 0,
@@ -48,7 +53,7 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
     return {
         view: function(vnode: LogWorkoutVnode) {
             return m('div', [
-                log.sets.map((setLog, index) => {
+                logViewModel.sets.map((setLog, index) => {
                     return m('div', [
                         m('h2', setLog.exercise.name),
                         m('p', expectedRepNumbers[index] + ' reps'),
@@ -76,14 +81,17 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
                     onchange: m.withAttr('value', (value) => {
                         log.comments = value
                     }),
-                    value: log.comments,
+                    value: logViewModel.comments,
                     placeholder: 'Put workout comments here...',
                 }),
-                m('button.button.primary', {
+                m('a.button.primary', {
                     onclick: () => {
-                        // TODO: immutablejs here
-                        console.log('it is already saved')
+                        let filteredSets = logViewModel.sets.filter((set) => {
+                            return (set.amount > 0 || set.reps > 0)
+                        })
+                        log.sets = filteredSets
                     },
+                    href: '#!/'
                 }, 'Save')
             ]);
         }

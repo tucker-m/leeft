@@ -25,6 +25,7 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
             }
         },
         view: (vnode: WorkoutLogVnode) => {
+            let reverseMe = JSON.parse(JSON.stringify(logs))
             return m('div', [
                 m('div.grid-x.grid-margin-x.align-middle', [
                     m('h2.cell.auto', 'Log Entries'),
@@ -33,7 +34,7 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                         oncreate: m.route.link,
                     }, 'New Log Entry')
                 ]),
-                logs.reverse().map((log) => {
+                reverseMe.reverse().map((log) => {
                     return m('p', [
                         m('a', {
                             href: '/viewlog/' + log._id,

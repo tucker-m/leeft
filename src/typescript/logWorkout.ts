@@ -73,6 +73,12 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
                         m(ExerciseTitle, {setLog}),
                         (expectedRepNumbers[index] > 0)
                             ? m('p', expectedRepNumbers[index] + ' reps') : null,
+                        m('button.button.warning', {
+                            onclick: () => {
+                                logViewModel.sets.splice(index, 1)
+                                expectedRepNumbers.splice(index, 1)
+                            }
+                        }, 'Remove this exercise'),
                         m('div.input-group', [
                             m('input[type=number].input-group-field', {
                                 placeholder: 'Reps done',
@@ -107,7 +113,7 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
                         })
                         log.sets = filteredSets
                     },
-                    href: '#!/'
+                    href: `#!/workouts/${workout._id}`
                 }, 'Save')
             ]);
         }

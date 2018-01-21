@@ -2,6 +2,7 @@ import * as m from 'mithril';
 import db from './db';
 import {Saveable, Workout, WorkoutLog, ExercisePrescription, ExerciseSetLog} from './exercise';
 import {observable, toJS, computed, IObservableObject} from 'mobx'
+import ExerciseTitle from './exerciseTitleInLog'
 
 interface LogWorkoutAttrs {
     id: string
@@ -53,10 +54,25 @@ const LogWorkoutComponent = function(vnode: LogWorkoutVnode) {
     return {
         view: function(vnode: LogWorkoutVnode) {
             return m('div', [
+                m('h4', 'Today\'s plan:'),
+                m('ul', workout.prescriptions.map((prescription) => {
+                    return m('li', `${prescription.exercise.name} ${prescription.sets}x${prescription.amount}`)
+                })),
                 logViewModel.sets.map((setLog, index) => {
                     return m('div', [
-                        m('h2', setLog.exercise.name),
-                        m('p', expectedRepNumbers[index] + ' reps'),
+                        m('button.button', {
+                            onclick: () => {
+                                logViewModel.sets.splice(index, 0, {
+                                    exercise: {name: '', setUnits: 'reps'},
+                                    amount: 0,
+                                    reps: 0,
+                                })
+                                expectedRepNumbers.splice(index, 0, -1)
+                            }
+                        }, 'Insert new exercise'),
+                        m(ExerciseTitle, {setLog}),
+                        (expectedRepNumbers[index] > 0)
+                            ? m('p', expectedRepNumbers[index] + ' reps') : null,
                         m('div.input-group', [
                             m('input[type=number].input-group-field', {
                                 placeholder: 'Reps done',

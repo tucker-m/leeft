@@ -23,7 +23,7 @@ export default {
             m('button.button.alert.hollow.cell.shrink.small', {
                 onclick: () => {
                     db.deleteSaveableRecord(vnode.attrs.workout);
-                    window.location.href = '/';
+                    window.location.href = '#!/';
                 }
             }, 'Delete Workout'),
         ]);

@@ -7,7 +7,6 @@ import db from './db'
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Saveable>,
     allExercises: Array<Exercise>,
-    saveWorkout: (w: Workout & IObservableObject, i: number) => void,
 };
 
 interface WorkoutListVnode {
@@ -17,7 +16,19 @@ interface WorkoutListVnode {
 let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
-            let elements: Array<m.Vnode<{}, {}>> = [];
+            let elements: Array<m.Vnode<{}, {}>> = [
+                m('button.button', {
+                    onclick: preventDefault(() => {
+                        let newWorkout: Workout & Saveable & IObservableObject = db.createSaveableRecord({
+                            _id: 'workout_' + Date.now(), // TODO: add a random number here
+                            name: '',
+                            prescriptions: []
+                        });
+                        window.location.href = `#!/workouts/${newWorkout._id}`
+                    }),
+                    class: 'button primary'
+                }, '+ New Workout')
+            ];
             if (vnode.attrs.allWorkouts.length == 0) {
                 elements.push(m('p', 'You haven\'t created any workouts yet.'))
             }
@@ -29,18 +40,6 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                     }, workout.name))
                 })));
             }
-            elements.push(m('button.button', {
-                onclick: preventDefault(() => {
-                    let newWorkout: Workout & Saveable & IObservableObject = db.createSaveableRecord({
-                        _id: 'workout_' + Date.now(), // TODO: add a random number here
-                        name: 'New Workout',
-                        prescriptions: []
-                    });
-                    const newIndex = vnode.attrs.allWorkouts.length;
-                    vnode.attrs.saveWorkout(newWorkout, newIndex);
-                }),
-                class: 'button primary'
-            }, 'Add Workout'));
 
             return elements;
         }

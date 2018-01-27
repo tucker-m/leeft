@@ -10,7 +10,8 @@ interface ViewWorkoutAttrs {
     id: string
 };
 interface ViewWorkoutVnode {
-    attrs: ViewWorkoutAttrs
+    attrs: ViewWorkoutAttrs,
+    dom?: any
 };
 
 export default (vnode: ViewWorkoutVnode) => {
@@ -29,15 +30,24 @@ export default (vnode: ViewWorkoutVnode) => {
     let titleBeingEdited = false;
 
     return {
+        onbeforeupdate: (vnode: ViewWorkoutVnode) => {
+            titleBeingEdited = titleBeingEdited || workout.name == ''
+        },
+        onupdate: (vnode: ViewWorkoutVnode) => {
+            if (titleBeingEdited) {
+                vnode.dom.querySelector('input.title').focus()
+            }
+        },
         view: (vnode: ViewWorkoutVnode) => {
             return m('div', [
                 m('div.grid-x.grid-margin-x.align-middle', [
                     titleBeingEdited
-                        ? m('input[type=text].cell.auto', {
+                        ? m('input[type=text].cell.auto.title', {
                             value: workout.name,
                             onchange: m.withAttr('value', (value) => {
                                 workout.name = value;
                             }),
+                            placeholder: "New Workout Name...",
                         })
                     : m('h1.cell.auto', workout.name),
                     showEditButtons || titleBeingEdited
@@ -46,7 +56,7 @@ export default (vnode: ViewWorkoutVnode) => {
                                 showEditButtons = false;
                                 titleBeingEdited = false;
                             },
-                        }, 'Done Editing')
+                        }, 'Done')
                     : m('button.button.dropdown.secondary.hollow.cell.shrink', {
                         onclick: () => { showMenu = !showMenu; }
                     }, 'Edit'),

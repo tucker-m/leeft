@@ -23,11 +23,13 @@ db.getAllExercises().then(function(docs) {
     m.redraw();
 });
 
-let allWorkouts:Array<Workout & Saveable & IObservableObject> = [];
-db.fetchSaveableCollection<Workout>('workout_').then((observableRecords) => {
-    allWorkouts = observableRecords
+let allWorkouts:Array<Workout & Saveable> = [];
+db.getAllWorkouts().then((docs) => {
+    allWorkouts = docs.rows.map((row) => {
+        return row.doc;
+    });
     m.redraw();
-})
+});
 
 let someWorkout = observable({
     _id: 'initial',

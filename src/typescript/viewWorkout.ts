@@ -22,6 +22,9 @@ export default (vnode: ViewWorkoutVnode) => {
     })
     db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout;
+        if (workout.name == '') {
+            titleBeingEdited = true
+        }
         m.redraw();
     })
 
@@ -30,9 +33,6 @@ export default (vnode: ViewWorkoutVnode) => {
     let titleBeingEdited = false;
 
     return {
-        onbeforeupdate: (vnode: ViewWorkoutVnode) => {
-            titleBeingEdited = titleBeingEdited || workout.name == ''
-        },
         onupdate: (vnode: ViewWorkoutVnode) => {
             if (titleBeingEdited) {
                 vnode.dom.querySelector('input.title').focus()
@@ -88,20 +88,18 @@ export default (vnode: ViewWorkoutVnode) => {
                         });
                     }))
                 ]),
-                showEditButtons
-                    ? m('button.button.small', {
-                        onclick: () => {
-                            workout.prescriptions.push({
-                                exercise: {
-                                    name: 'New Exercise',
-                                    setUnits: 'reps',
-                                },
-                                sets: 0,
-                                amount: 0,
-                            });
-                        }
-                    }, 'Add Exercise')
-                : null,
+                m('button.button.small', {
+                    onclick: () => {
+                        workout.prescriptions.push({
+                            exercise: {
+                                name: '',
+                                setUnits: 'reps',
+                            },
+                            sets: 0,
+                            amount: 0,
+                        });
+                    }
+                }, 'Add Exercise'),
                 WorkoutLogs({
                     workout_id: workout._id
                 })

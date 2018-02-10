@@ -32,7 +32,7 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                     m('a.button.cell.shrink', {
                         href: '/log/' + vnode.attrs.workout_id,
                         oncreate: m.route.link,
-                    }, 'New Log Entry')
+                    }, '+ Log Entry')
                 ]),
                 reverseMe.reverse().map((log) => {
                     return m('p', [

@@ -11,7 +11,7 @@ interface RowVnode {
 };
 
 export default (vnode: RowVnode) => {
-    let beingEdited = false;
+    let beingEdited = vnode.attrs.prescription.exercise.name == '';
     return {
         view: (vnode: RowVnode) => {
             let prescription = vnode.attrs.prescription;

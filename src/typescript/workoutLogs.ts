@@ -1,10 +1,11 @@
 import * as m from 'mithril'
-import {Saveable, WorkoutLog} from './exercise'
+import {Saveable, Workout, WorkoutLog} from './exercise'
 import db from './db'
 import utils from './utils'
+import preventDefault from './preventDefaultFunction'
 
 interface WorkoutLogAttrs {
-    workout_id: string
+    workout: Workout & Saveable
 }
 interface WorkoutLogVnode {
     attrs: WorkoutLogAttrs
@@ -13,15 +14,15 @@ interface WorkoutLogVnode {
 let logs: Array<WorkoutLog & Saveable> = []
 
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
-    let currentWorkoutId = vnode.attrs.workout_id;
+    let currentWorkoutId = vnode.attrs.workout._id;
     return {
         onbeforeupdate: (vnode: WorkoutLogVnode) => {
-            if (currentWorkoutId != vnode.attrs.workout_id) {
-                db.findLogsByWorkoutId(vnode.attrs.workout_id).then((results) => {
+            if (currentWorkoutId != vnode.attrs.workout._id) {
+                db.findLogsByWorkoutId(vnode.attrs.workout._id).then((results) => {
                     logs = results.docs
                     m.redraw()
                 })
-                currentWorkoutId = vnode.attrs.workout_id
+                currentWorkoutId = vnode.attrs.workout._id
             }
         },
         view: (vnode: WorkoutLogVnode) => {
@@ -30,14 +31,22 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                 m('div.grid-x.grid-margin-x.align-middle', [
                     m('h2.cell.auto', 'Log Entries'),
                     m('a.button.cell.shrink', {
-                        href: '/log/' + vnode.attrs.workout_id,
-                        oncreate: m.route.link,
+                        onclick: preventDefault(() => {
+                            const workoutLog = db.createSaveableRecord<WorkoutLog>({
+                                _id: 'workoutlog_' + Date.now(),
+                                workout: vnode.attrs.workout,
+                                sets: [],
+                                date: Date.now(),
+                                comments: '',
+                            })
+                            window.location.href = `#!/logs/${workoutLog._id}`
+                        })
                     }, '+ Log Entry')
                 ]),
                 reverseMe.reverse().map((log) => {
                     return m('p', [
                         m('a', {
-                            href: '/viewlog/' + log._id,
+                            href: '/logs/' + log._id,
                             oncreate: m.route.link,
                         }, utils.formatDate(log.date)),
                         m('span', ' - ' + log.comments),

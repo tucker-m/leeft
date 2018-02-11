@@ -56,5 +56,5 @@ m.route(document.getElementById('main'), '/', {
     '/': App,
     '/log/:id': LogWorkout,
     '/workouts/:id': ViewWorkout,
-    '/viewlog/:id': ViewLog,
+    '/logs/:id': ViewLog,
 });

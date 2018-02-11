@@ -101,7 +101,7 @@ export default (vnode: ViewWorkoutVnode) => {
                     }
                 }, 'Add Exercise'),
                 WorkoutLogs({
-                    workout_id: workout._id
+                    workout: workout
                 })
             ]);
         }

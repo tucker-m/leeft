@@ -52,9 +52,12 @@ let componentList = {
     }
 };
 
-m.route(document.getElementById('main'), '/', {
-    '/': App,
-    '/log/:id': LogWorkout,
-    '/workouts/:id': ViewWorkout,
-    '/logs/:id': ViewLog,
-});
+const element = document.getElementById('main')
+if (element != null) {
+    m.route(element, '/', {
+        '/': App,
+        '/log/:id': LogWorkout,
+        '/workouts/:id': ViewWorkout,
+        '/logs/:id': ViewLog,
+    })
+}

@@ -21,10 +21,11 @@ interface ExerciseSetLog {
 };
 
 interface WorkoutLog {
-    workout: Workout,
+    workout: Workout & Saveable,
     sets: Array<ExerciseSetLog>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,
+    _deleted?: boolean,
 };
 
 interface ExercisePrescription {

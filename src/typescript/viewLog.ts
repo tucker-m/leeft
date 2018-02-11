@@ -2,6 +2,7 @@ import * as m from 'mithril'
 import {WorkoutLog} from './exercise'
 import db from './db'
 import utils from './utils'
+import preventDefault from './preventDefaultFunction'
 
 interface ViewLogAttrs {
     id: string
@@ -22,8 +23,14 @@ export default (vnode: ViewLogVnode) => {
                 return m('p', 'Loading')
             }
             return m('div', [
-                m('h3', log.workout.name),
+                m('h3', log.workout.name == '' ? 'Untitled' : log.workout.name),
                 m('h4', utils.formatDate(log.date)),
+                m('a', {
+                    onclick: preventDefault(() => {
+                        log._deleted = true
+                        window.location.href = `#!/workouts/${log.workout._id}`
+                    })
+                }, 'Delete'),
                 m('table', [
                     m('thead', [
                         m('tr', [

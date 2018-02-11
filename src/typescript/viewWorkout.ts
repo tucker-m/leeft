@@ -22,9 +22,6 @@ export default (vnode: ViewWorkoutVnode) => {
     })
     db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout;
-        if (workout.name == '') {
-            titleBeingEdited = true
-        }
         m.redraw();
     })
 

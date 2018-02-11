@@ -1,8 +1,8 @@
 import * as m from 'mithril'
-import {Saveable, Workout, WorkoutLog} from './exercise'
-import db from './db'
-import utils from './utils'
-import preventDefault from './preventDefaultFunction'
+import {Saveable, Workout, WorkoutLog} from '../types/exercise'
+import db from '../helpers/db'
+import utils from '../helpers/utils'
+import preventDefault from '../helpers/preventDefaultFunction'
 
 interface WorkoutLogAttrs {
     workout: Workout & Saveable

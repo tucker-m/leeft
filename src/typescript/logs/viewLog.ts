@@ -1,8 +1,8 @@
 import * as m from 'mithril'
-import {WorkoutLog} from './exercise'
-import db from './db'
-import utils from './utils'
-import preventDefault from './preventDefaultFunction'
+import {WorkoutLog} from '../types/exercise'
+import db from '../helpers/db'
+import utils from '../helpers/utils'
+import preventDefault from '../helpers/preventDefaultFunction'
 
 interface ViewLogAttrs {
     id: string

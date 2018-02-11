@@ -1,10 +1,10 @@
 import * as m from "mithril";
-import {Saveable, Exercise, Workout, SetUnits} from "./exercise";
-import WorkoutList from './workoutList';
-import db from './db';
-import LogWorkout from './logWorkout';
-import ViewWorkout from './viewWorkout';
-import ViewLog from './viewLog'
+import {Saveable, Exercise, Workout, SetUnits} from "./types/exercise";
+import WorkoutList from './workouts/workoutList';
+import db from './helpers/db';
+import LogWorkout from './logs/logWorkout';
+import ViewWorkout from './workouts/viewWorkout';
+import ViewLog from './logs/viewLog'
 import {observable, IObservableObject} from 'mobx'
 
 db.init();

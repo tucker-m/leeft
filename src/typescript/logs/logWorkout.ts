@@ -1,6 +1,6 @@
 import * as m from 'mithril';
-import db from './db';
-import {Saveable, Workout, WorkoutLog, ExercisePrescription, ExerciseSetLog} from './exercise';
+import db from '../helpers/db';
+import {Saveable, Workout, WorkoutLog, ExercisePrescription, ExerciseSetLog} from '../types/exercise';
 import {observable, toJS, computed, IObservableObject} from 'mobx'
 import ExerciseTitle from './exerciseTitleInLog'
 

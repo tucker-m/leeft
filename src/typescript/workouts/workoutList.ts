@@ -1,8 +1,8 @@
 import * as m from 'mithril';
-import {Saveable, Workout, Exercise, SetUnits} from './exercise';
-import preventDefault from './preventDefaultFunction';
+import {Saveable, Workout, Exercise, SetUnits} from '../types/exercise';
+import preventDefault from '../helpers/preventDefaultFunction';
 import {IObservableObject} from 'mobx'
-import db from './db'
+import db from '../helpers/db'
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Saveable>,

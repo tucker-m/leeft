@@ -1,6 +1,6 @@
 import * as m from 'mithril';
-import db from './db';
-import {Saveable, Workout} from './exercise';
+import db from '../helpers/db';
+import {Saveable, Workout} from '../types/exercise';
 import {IObservableObject} from 'mobx'
 
 interface MenuAttrs {

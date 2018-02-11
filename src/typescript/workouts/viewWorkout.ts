@@ -1,9 +1,9 @@
 import * as m from 'mithril';
-import db from './db';
-import {Saveable, Workout} from './exercise';
-import ViewWorkoutMenu from './viewWorkoutMenu';
-import ViewWorkoutRow from './viewWorkoutRow';
-import WorkoutLogs from './workoutLogs';
+import db from '../helpers/db';
+import {Saveable, Workout} from '../types/exercise';
+import ViewWorkoutMenu from '../workouts/viewWorkoutMenu';
+import ViewWorkoutRow from '../workouts/viewWorkoutRow';
+import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
 
 interface ViewWorkoutAttrs {

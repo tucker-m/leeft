@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import {ExercisePrescription} from './exercise';
+import {ExercisePrescription} from '../types/exercise';
 
 interface RowAttrs {
     prescription: ExercisePrescription,

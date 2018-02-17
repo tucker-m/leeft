@@ -39,12 +39,12 @@ export default (vnode: ViewLogVnode) => {
                         log._deleted = true
                         window.location.href = `#!/workouts/${log.workout._id}`
                     })
-                }, 'Delete'),
+                }, 'Delete this log'),
                 m('table', [
                     m('thead', [
                         m('tr', [
                             m('td', 'Exercise'),
-                            m('td', 'Sets'),
+                            m('td', 'Reps'),
                             m('td', 'Amount')
                         ])
                     ]),

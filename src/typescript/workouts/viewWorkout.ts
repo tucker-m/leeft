@@ -5,6 +5,7 @@ import ViewWorkoutMenu from '../workouts/viewWorkoutMenu';
 import ViewWorkoutRow from '../workouts/viewWorkoutRow';
 import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
+import EditableH1 from '../ui/editableH1'
 
 interface ViewWorkoutAttrs {
     id: string
@@ -46,7 +47,10 @@ export default (vnode: ViewWorkoutVnode) => {
                             }),
                             placeholder: "New Workout Name...",
                         })
-                    : m('h1.cell.auto', workout.name),
+                    : EditableH1({
+                        name: workout.name,
+                        updateFunc: (newName: string) => { workout.name = newName },
+                    }),
                     showEditButtons || titleBeingEdited
                         ? m('button.button.secondary', {
                             onclick: () => {

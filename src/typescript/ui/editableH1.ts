@@ -1,20 +1,25 @@
 import * as m from 'mithril'
 
-const EditableH1 = function(vnode: {
+interface EditableVnode {
     attrs: {
         name: string,
-        updateFunc: (newName: string) => void
+        updateFunc: (newName: string) => void,
+        showEditButton: boolean,
     }
-}) {
+}
+
+const EditableH1 = function(vnode: EditableVnode) {
     let beingEdited = false
     return {
-        view: function(vnode) {
+        view: function(vnode: EditableVnode) {
             if (!beingEdited) {
                 return m('div.cell.auto', [
                     m('h1', vnode.attrs.name),
-                    m('button.button.secondary', {
-                        onclick: () => { beingEdited = true }
-                    }, 'Edit')
+                    vnode.attrs.showEditButton
+                        ? m('button.button.secondary', {
+                            onclick: () => { beingEdited = true }
+                        }, 'Edit')
+                    : null
                 ])
             }
             else {
@@ -23,15 +28,17 @@ const EditableH1 = function(vnode: {
                         value: vnode.attrs.name,
                         onchange: m.withAttr('value', vnode.attrs.updateFunc),
                     }),
-                    m('button.button', {
-                        onclick: () => { beingEdited = false }
-                    }, 'Done'),
+                    vnode.attrs.showEditButton
+                        ? m('button.button', {
+                            onclick: () => { beingEdited = false }
+                        }, 'Done')
+                    : null
                 ])
             }
         }
     }
 }
 
-export default function(attrs) {
+export default function(attrs: EditableVnode['attrs']) {
     return m(EditableH1, attrs)
 }

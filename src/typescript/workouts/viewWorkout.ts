@@ -50,6 +50,7 @@ export default (vnode: ViewWorkoutVnode) => {
                     : EditableH1({
                         name: workout.name,
                         updateFunc: (newName: string) => { workout.name = newName },
+                        showEditButton: false,
                     }),
                     showEditButtons || titleBeingEdited
                         ? m('button.button.secondary', {

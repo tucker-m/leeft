@@ -16,6 +16,10 @@ const TopBarComponent = (vnode: TopBarVnode) => {
         view: (vnode) => {
             console.log(editState)
             return m('div', [
+                m('a', {
+                    href: '/',
+                    oncreate: m.route.link,
+                }, 'Home'),
                 m('button.button', {
                     onclick: () => {
                         editState = !editState

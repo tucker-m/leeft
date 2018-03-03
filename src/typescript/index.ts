@@ -6,6 +6,7 @@ import LogWorkout from './logs/logWorkout';
 import ViewWorkout from './workouts/viewWorkout';
 import ViewLog from './logs/viewLog'
 import {observable, IObservableObject} from 'mobx'
+import TopBar from './ui/topBar'
 
 db.init();
 
@@ -47,6 +48,7 @@ let componentList = {
             },
         };
         return m('div', [
+            TopBar({editToggleFunc: () => {}}),
             WorkoutList(workoutListAttrs)
         ]);
     }

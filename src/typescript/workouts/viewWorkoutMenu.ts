@@ -17,9 +17,6 @@ export default {
             m('button.button.cell.shrink.small', {
                 onclick: vnode.attrs.showEditButtons,
             }, 'Add/Edit Exercises'),
-            m('button.button.secondary.hollow.cell.shrink.small', {
-                onclick: vnode.attrs.editNameFunction,
-            }, 'Change Name'),
             m('button.button.alert.hollow.cell.shrink.small', {
                 onclick: () => {
                     db.deleteSaveableRecord(vnode.attrs.workout);

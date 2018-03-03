@@ -6,6 +6,7 @@ import ViewWorkoutRow from '../workouts/viewWorkoutRow';
 import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
 import EditableH1 from '../ui/editableH1'
+import TopBar from '../ui/topBar'
 
 interface ViewWorkoutAttrs {
     id: string
@@ -29,6 +30,7 @@ export default (vnode: ViewWorkoutVnode) => {
     let showMenu = false;
     let showEditButtons = false;
     let titleBeingEdited = false;
+    let pageEditable = false; // master edit toggle from top bar. Go with only this
 
     return {
         onupdate: (vnode: ViewWorkoutVnode) => {
@@ -38,6 +40,9 @@ export default (vnode: ViewWorkoutVnode) => {
         },
         view: (vnode: ViewWorkoutVnode) => {
             return m('div', [
+                TopBar({
+                    editToggleFunc: (value) => {pageEditable = value}
+                }),
                 m('div.grid-x.grid-margin-x.align-middle', [
                     titleBeingEdited
                         ? m('input[type=text].cell.auto.title', {
@@ -50,7 +55,7 @@ export default (vnode: ViewWorkoutVnode) => {
                     : EditableH1({
                         name: workout.name,
                         updateFunc: (newName: string) => { workout.name = newName },
-                        showEditButton: false,
+                        showEditButton: pageEditable,
                     }),
                     showEditButtons || titleBeingEdited
                         ? m('button.button.secondary', {

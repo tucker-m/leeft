@@ -1,3 +1,24 @@
+body {
+    margin: 0;
+}
+.constraint {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.top-bar {
+    background: #333;
+    padding: .5rem;
+}
+.top-bar-alignment {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 2rem;
+}
+.top-bar a, .top-bar a:visited {
+    color: white;
+}
 .editable-h1 {
     display: inline-block;
 }

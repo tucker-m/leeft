@@ -19,19 +19,21 @@ const TopBarComponent = (vnode: TopBarVnode) => {
             let editButton = m('div')
             const editButtonAttr = vnode.attrs.editButton
             if (editButtonAttr) {
-                editButton = m('button.button', {
+                editButton = m('button', {
                     onclick: () => {
                         editEnabled = !editEnabled
                         editButtonAttr.changeEditMode(editEnabled)
                     }
                 }, editEnabled ? 'Done Editing' : `Edit ${editButtonAttr.buttonText}`)
             }
-            return m('div', [
-                m('a', {
-                    href: '/',
-                    oncreate: m.route.link,
-                }, 'Home'),
-                editButton
+            return m('div.top-bar', [
+                m('div.constraint.top-bar-alignment', [
+                    m('a', {
+                        href: '/',
+                        oncreate: m.route.link,
+                    }, 'Home'),
+                    editButton
+                ])
             ])
         }
     }

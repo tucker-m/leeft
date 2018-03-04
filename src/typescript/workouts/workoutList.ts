@@ -17,7 +17,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
             let elements: Array<m.Vnode<{}, {}>> = [
-                m('button.button', {
+                m('button', {
                     onclick: preventDefault(() => {
                         let newWorkout: Workout & Saveable & IObservableObject = db.createSaveableRecord({
                             _id: 'workout_' + Date.now(), // TODO: add a random number here
@@ -26,7 +26,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         });
                         window.location.href = `#!/workouts/${newWorkout._id}`
                     }),
-                    class: 'button primary'
+                    class: 'button'
                 }, '+ New Workout')
             ];
             if (vnode.attrs.allWorkouts.length == 0) {

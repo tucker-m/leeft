@@ -37,46 +37,46 @@ export default (vnode: ViewWorkoutVnode) => {
                         buttonText: 'Workout',
                     }
                 }),
-                m('div.grid-x.grid-margin-x.align-middle', [
+                m('div.constraint', [
                     EditableH1({
                         name: workout.name,
                         updateFunc: (newName: string) => { workout.name = newName },
                         showEditButton: pageEditable,
                     }),
-                ]),
-                m('table', [
-                    m('thead', m('tr', [
-                        m('td', 'Exercise'),
-                        m('td', 'Amount'),
-                        pageEditable ? m('td') : null,
-                    ])),
-                    m('tbody', workout.prescriptions.map((prescription, index) => {
-                        return m(ViewWorkoutRow, {
-                            prescription,
-                            showEditButtons: pageEditable,
-                            deleteFunction: () => {
-                                workout.prescriptions.splice(index, 1);
-                            },
-                        });
-                    }))
-                ]),
-                pageEditable ?
-                    m('button.button.small', {
-                        onclick: () => {
-                            workout.prescriptions.push({
-                                exercise: {
-                                    name: '',
-                                    setUnits: 'reps',
+                    m('table', [
+                        m('thead', m('tr', [
+                            m('td', 'Exercise'),
+                            m('td', 'Amount'),
+                            pageEditable ? m('td') : null,
+                        ])),
+                        m('tbody', workout.prescriptions.map((prescription, index) => {
+                            return m(ViewWorkoutRow, {
+                                prescription,
+                                showEditButtons: pageEditable,
+                                deleteFunction: () => {
+                                    workout.prescriptions.splice(index, 1);
                                 },
-                                sets: 0,
-                                amount: 0,
                             });
-                        }
-                    }, 'Add Exercise')
-                : null,
-                WorkoutLogs({
-                    workout: workout
-                })
+                        }))
+                    ]),
+                    pageEditable ?
+                        m('button', {
+                            onclick: () => {
+                                workout.prescriptions.push({
+                                    exercise: {
+                                        name: '',
+                                        setUnits: 'reps',
+                                    },
+                                    sets: 0,
+                                    amount: 0,
+                                });
+                            }
+                        }, 'Add Exercise')
+                    : null,
+                    WorkoutLogs({
+                        workout: workout
+                    })
+                ]),
             ]);
         }
     };

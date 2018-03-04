@@ -60,18 +60,20 @@ export default (vnode: ViewWorkoutVnode) => {
                         });
                     }))
                 ]),
-                m('button.button.small', {
-                    onclick: () => {
-                        workout.prescriptions.push({
-                            exercise: {
-                                name: '',
-                                setUnits: 'reps',
-                            },
-                            sets: 0,
-                            amount: 0,
-                        });
-                    }
-                }, 'Add Exercise'),
+                pageEditable ?
+                    m('button.button.small', {
+                        onclick: () => {
+                            workout.prescriptions.push({
+                                exercise: {
+                                    name: '',
+                                    setUnits: 'reps',
+                                },
+                                sets: 0,
+                                amount: 0,
+                            });
+                        }
+                    }, 'Add Exercise')
+                : null,
                 WorkoutLogs({
                     workout: workout
                 })

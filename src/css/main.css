@@ -19,6 +19,44 @@ body {
 .top-bar a, .top-bar a:visited {
     color: white;
 }
+h1 {
+    font-size: 3.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+h2 {
+    font-size: 2.2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+p {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+.editable-showing {
+    background-color: #e3fcf6;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.table {
+    border: 1px solid #efefef;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.table thead {
+    font-weight: bold;
+}
+.table tr:nth-of-type(2) {
+    background: #efefef;
+}
+.table td {
+    padding: 0.5rem;
+}
+.table td:not(:last-of-type) {
+    padding-right: 1.5rem;
+}
 .editable-h1 {
     display: inline-block;
 }
@@ -27,7 +65,7 @@ body {
 }
 .editable-h1 button {
     position: absolute;
-    right: 0;
+    right: -1rem;
     top: 0;
 }
 .editable-h1.being-edited button {

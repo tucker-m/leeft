@@ -43,7 +43,7 @@ export default (vnode: ViewWorkoutVnode) => {
                         updateFunc: (newName: string) => { workout.name = newName },
                         showEditButton: pageEditable,
                     }),
-                    m('table', [
+                    m('table.table', [
                         m('thead', m('tr', [
                             m('td', 'Exercise'),
                             m('td', 'Amount'),

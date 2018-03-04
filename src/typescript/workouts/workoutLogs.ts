@@ -50,9 +50,9 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
         view: (vnode: WorkoutLogVnode) => {
             let reverseMe = JSON.parse(JSON.stringify(logs))
             return m('div', [
-                m('div.grid-x.grid-margin-x.align-middle', [
-                    m('h2.cell.auto', 'Log Entries'),
-                    m('a.button.cell.shrink', {
+                m('div', [
+                    m('h2', 'Log Entries'),
+                    m('a', {
                         onclick: preventDefault(() => {
                             const workoutLog = db.createSaveableRecord<WorkoutLog>(
                                 getEmptyLogForWorkout(vnode.attrs.workout)

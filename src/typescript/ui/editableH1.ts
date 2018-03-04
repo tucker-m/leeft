@@ -13,7 +13,7 @@ const EditableH1 = function(vnode: EditableVnode) {
     return {
         view: function(vnode: EditableVnode) {
             return m('div.editable-h1', {
-                class: beingEdited ? 'being-edited' : '',
+                class: (beingEdited ? 'being-edited' : '') + (vnode.attrs.showEditButton ? 'editable-showing' : ''),
             }, [
                 !beingEdited ?
                     m('div', [

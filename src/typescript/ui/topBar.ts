@@ -1,8 +1,10 @@
 import * as m from 'mithril'
 
 interface TopBarAttrs {
-    editToggleFunc: (on: boolean) => void,
-    defaultEditState?: boolean,
+    editButton?: {
+        buttonText: string,
+        changeEditMode: (on: boolean) => void,
+    }
 }
 
 interface TopBarVnode {
@@ -10,22 +12,26 @@ interface TopBarVnode {
 }
 
 const TopBarComponent = (vnode: TopBarVnode) => {
-    let editState = false
+    let editEnabled = false
 
     return {
-        view: (vnode) => {
-            console.log(editState)
+        view: (vnode: TopBarVnode) => {
+            let editButton = m('div')
+            const editButtonAttr = vnode.attrs.editButton
+            if (editButtonAttr) {
+                editButton = m('button.button', {
+                    onclick: () => {
+                        editEnabled = !editEnabled
+                        editButtonAttr.changeEditMode(editEnabled)
+                    }
+                }, editEnabled ? 'Done Editing' : `Edit ${editButtonAttr.buttonText}`)
+            }
             return m('div', [
                 m('a', {
                     href: '/',
                     oncreate: m.route.link,
                 }, 'Home'),
-                m('button.button', {
-                    onclick: () => {
-                        editState = !editState
-                        vnode.attrs.editToggleFunc(editState)
-                    }
-                }, editState ? 'Done Editing' : 'Top Bar Edit')
+                editButton
             ])
         }
     }

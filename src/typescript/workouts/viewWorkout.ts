@@ -32,7 +32,10 @@ export default (vnode: ViewWorkoutVnode) => {
         view: (vnode: ViewWorkoutVnode) => {
             return m('div', [
                 TopBar({
-                    editToggleFunc: (value) => {pageEditable = value}
+                    editButton: {
+                        changeEditMode: (value) => {pageEditable = value},
+                        buttonText: 'Workout',
+                    }
                 }),
                 m('div.grid-x.grid-margin-x.align-middle', [
                     EditableH1({

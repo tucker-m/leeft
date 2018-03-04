@@ -48,7 +48,7 @@ let componentList = {
             },
         };
         return m('div', [
-            TopBar({editToggleFunc: () => {}}),
+            TopBar({}),
             WorkoutList(workoutListAttrs)
         ]);
     }

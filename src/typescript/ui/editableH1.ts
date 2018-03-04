@@ -12,29 +12,30 @@ const EditableH1 = function(vnode: EditableVnode) {
     let beingEdited = false
     return {
         view: function(vnode: EditableVnode) {
-            if (!beingEdited) {
-                return m('div.cell.auto', [
-                    m('h1', vnode.attrs.name),
-                    vnode.attrs.showEditButton
-                        ? m('button.button.secondary', {
-                            onclick: () => { beingEdited = true }
-                        }, 'Edit')
-                    : null
-                ])
-            }
-            else {
-                return m('div', [
+            return m('div.editable-h1', {
+                class: beingEdited ? 'being-edited' : '',
+            }, [
+                !beingEdited ?
+                    m('div', [
+                        m('h1', vnode.attrs.name),
+                        vnode.attrs.showEditButton
+                            ? m('button', {
+                                onclick: () => { beingEdited = true }
+                            }, 'Edit')
+                        : null
+                    ])
+                : m('div', [
                     m('input[type=text]', {
                         value: vnode.attrs.name,
                         onchange: m.withAttr('value', vnode.attrs.updateFunc),
                     }),
                     vnode.attrs.showEditButton
-                        ? m('button.button', {
+                        ? m('button', {
                             onclick: () => { beingEdited = false }
                         }, 'Done')
                     : null
                 ])
-            }
+            ])
         }
     }
 }

@@ -1,32 +1,14 @@
-h3, .h3 {
-    margin-bottom: 0; /* overriding foundation style */
+.editable-h1 {
+    display: inline-block;
 }
-.workout-title {
-    text-transform: uppercase;
-    letter-spacing: .15rem;
+.editable-h1 > div {
+    position: relative;
 }
-.rep-type {
-    border-radius: .5em;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #1779ba;
-    color: #1779ba;
-    background: none;
-    margin-left: .5em;
+.editable-h1 button {
+    position: absolute;
+    right: 0;
+    top: 0;
 }
-.rep-type.seconds {
-    border-color: green;
-    color: green;
-}
-.exercise-name {
-    text-transform: uppercase;
-}
-.prescription-sets {
-    font-size: 3rem;
-}
-.prescription-reps {
-    font-size: 2rem;
-}
-.workout-row:not(:last-of-type) {
-    border-bottom: 1px solid pink;
+.editable-h1.being-edited button {
+    position: relative;
 }

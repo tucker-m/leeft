@@ -1,12 +1,11 @@
 import * as m from 'mithril';
-import {Saveable, Workout, Exercise, SetUnits} from '../types/exercise';
+import {Saveable, Workout, SetUnits} from '../types/exercise';
 import preventDefault from '../helpers/preventDefaultFunction';
 import {IObservableObject} from 'mobx'
 import db from '../helpers/db'
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Saveable>,
-    allExercises: Array<Exercise>,
 };
 
 interface WorkoutListVnode {

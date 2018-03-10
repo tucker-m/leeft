@@ -42,17 +42,13 @@ let componentList = {
     view: function() {
         const workoutListAttrs = {
             allWorkouts,
-            allExercises,
-            saveWorkout: function(workout: Workout & Saveable & IObservableObject, index: number) {
-                allWorkouts[index] = workout; // TODO: does the index need to be here?
-            },
-        };
+        }
         return m('div', [
             TopBar({}),
             WorkoutList(workoutListAttrs)
-        ]);
+        ])
     }
-};
+}
 
 const element = document.getElementById('main')
 if (element != null) {

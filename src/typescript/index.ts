@@ -7,6 +7,10 @@ import ViewWorkout from './workouts/viewWorkout';
 import ViewLog from './logs/viewLog'
 import {observable, IObservableObject} from 'mobx'
 import TopBar from './ui/topBar'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+
+jss.setup(preset())
 
 db.init();
 

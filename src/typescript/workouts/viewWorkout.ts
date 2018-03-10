@@ -6,6 +6,12 @@ import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
 import EditableH1 from '../ui/editableH1'
 import TopBar from '../ui/topBar'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+import style from '../../styles'
+
+jss.setup(preset())
+const {classes: main} = jss.createStyleSheet(style.main).attach()
 
 interface ViewWorkoutAttrs {
     id: string
@@ -37,7 +43,9 @@ export default (vnode: ViewWorkoutVnode) => {
                         buttonText: 'Workout',
                     }
                 }),
-                m('div.constraint', [
+                m('div', {
+                    class: main.constraint
+                }, [
                     EditableH1({
                         name: workout.name,
                         updateFunc: (newName: string) => { workout.name = newName },

@@ -1,24 +1,6 @@
 body {
     margin: 0;
 }
-.constraint {
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.top-bar {
-    background: #333;
-    padding: .5rem;
-}
-.top-bar-alignment {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 2rem;
-}
-.top-bar a, .top-bar a:visited {
-    color: white;
-}
 h1 {
     font-size: 3.5rem;
     margin-top: 1rem;
@@ -34,7 +16,7 @@ p {
     margin-bottom: .5rem;
 }
 .editable-showing {
-    background-color: #e3fcf6;
+    background-color: #efef81;
     margin-left: -1rem;
     margin-right: -1rem;
     padding-left: 1rem;

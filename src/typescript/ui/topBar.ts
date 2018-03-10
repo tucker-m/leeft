@@ -1,4 +1,7 @@
 import * as m from 'mithril'
+import style from '../../styles'
+import jss from 'jss'
+import preset from 'jss-preset-default'
 
 interface TopBarAttrs {
     editButton?: {
@@ -10,6 +13,10 @@ interface TopBarAttrs {
 interface TopBarVnode {
     attrs: TopBarAttrs,
 }
+
+jss.setup(preset())
+const {classes} = jss.createStyleSheet(style.topBar).attach()
+const {classes: main} = jss.createStyleSheet(style.main).attach()
 
 const TopBarComponent = (vnode: TopBarVnode) => {
     let editEnabled = false
@@ -26,11 +33,16 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                     }
                 }, editEnabled ? 'Done Editing' : `Edit ${editButtonAttr.buttonText}`)
             }
-            return m('div.top-bar', [
-                m('div.constraint.top-bar-alignment', [
+            return m('div', {
+                class: classes.main + ' ' + (editButtonAttr ? classes.editable : '') + ' ' + (editEnabled ? classes.beingEdited : ''),
+            }, [
+                m('div', {
+                    class: classes.alignment + ' ' + main.constraint,
+                }, [
                     m('a', {
                         href: '/',
                         oncreate: m.route.link,
+                        class: classes.link,
                     }, 'Home'),
                     editButton
                 ])

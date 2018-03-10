@@ -3,6 +3,13 @@ import {Saveable, Workout, SetUnits} from '../types/exercise';
 import preventDefault from '../helpers/preventDefaultFunction';
 import {IObservableObject} from 'mobx'
 import db from '../helpers/db'
+import style from '../../styles'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+
+jss.setup(preset())
+const {classes} = jss.createStyleSheet(style.main).attach()
+
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Saveable>,
@@ -40,7 +47,9 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                 })));
             }
 
-            return elements;
+            return m('div', {
+                class: classes.constraint,
+            }, elements)
         }
     }
 };

@@ -43,7 +43,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                     return m('li', m('a', {
                         href: '/workouts/' + workout._id,
                         oncreate: m.route.link,
-                    }, workout.name))
+                    }, workout.name ? workout.name : 'Untitled Workout'))
                 })));
             }
 

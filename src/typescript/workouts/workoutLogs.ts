@@ -52,7 +52,7 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
             return m('div', [
                 m('div', [
                     m('h2', 'Log Entries'),
-                    m('a', {
+                    m('button', {
                         onclick: preventDefault(() => {
                             const workoutLog = db.createSaveableRecord<WorkoutLog>(
                                 getEmptyLogForWorkout(vnode.attrs.workout)

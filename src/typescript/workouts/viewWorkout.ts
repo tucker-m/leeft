@@ -48,6 +48,7 @@ export default (vnode: ViewWorkoutVnode) => {
                 }, [
                     EditableH1({
                         name: workout.name,
+                        placeholder: 'Untitled Workout',
                         updateFunc: (newName: string) => { workout.name = newName },
                         showEditButton: pageEditable,
                     }),

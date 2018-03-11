@@ -1,23 +1,38 @@
 import * as m from 'mithril'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+import style from '../../styles'
 
 interface EditableVnode {
     attrs: {
         name: string,
+        placeholder: string,
         updateFunc: (newName: string) => void,
         showEditButton: boolean,
     }
 }
 
+jss.setup(preset())
+const {classes} = jss.createStyleSheet(style.typography).attach()
+
 const EditableH1 = function(vnode: EditableVnode) {
     let beingEdited = false
     return {
         view: function(vnode: EditableVnode) {
+            let name = vnode.attrs.name
+            let className = classes.editableH1
+            if (!name) {
+                name = vnode.attrs.placeholder
+                className = classes.placeholderEditableH1
+            }
             return m('div.editable-h1', {
                 class: (beingEdited ? 'being-edited' : '') + (vnode.attrs.showEditButton ? 'editable-showing' : ''),
             }, [
                 !beingEdited ?
                     m('div', [
-                        m('h1', vnode.attrs.name),
+                        m('h1', {
+                            class: className,
+                        }, name),
                         vnode.attrs.showEditButton
                             ? m('button', {
                                 onclick: () => { beingEdited = true }

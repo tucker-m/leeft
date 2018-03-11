@@ -1,5 +1,11 @@
 import * as m from 'mithril';
 import {ExercisePrescription} from '../types/exercise';
+import jss from 'jss'
+import preset from 'jss-preset-default'
+import style from '../../styles'
+
+jss.setup(preset())
+const {classes} = jss.createStyleSheet(style.main).attach()
 
 interface RowAttrs {
     prescription: ExercisePrescription,
@@ -17,8 +23,11 @@ export default (vnode: RowVnode) => {
             let prescription = vnode.attrs.prescription;
 
             if (beingEdited) {
-                return m('tr', m('td', {
+                return m('tr', {
+                    class: classes.tr,
+                }, m('td', {
                     colspan: 3,
+                    class: classes.td,
                 }, [
                     m('input[type=text]', {
                         value: prescription.exercise.name,
@@ -71,9 +80,15 @@ export default (vnode: RowVnode) => {
                 ]))
             }
             else {
-                return m('tr', [
-                    m('td', prescription.exercise.name),
-                    m('td', prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits),
+                return m('tr', {
+                    class: classes.tr,
+                }, [
+                    m('td', {
+                        class: classes.td,
+                    }, prescription.exercise.name),
+                    m('td', {
+                        class: classes.td,
+                    }, prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits),
                     vnode.attrs.showEditButtons ? m('td', [
                         m('a', {
                             onclick: () => { beingEdited = true; },

@@ -1,10 +1,10 @@
 import * as m from 'mithril';
 import db from '../helpers/db';
 import {Saveable, Workout} from '../types/exercise';
-import ViewWorkoutRow from '../workouts/viewWorkoutRow';
 import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
 import EditableH1 from '../ui/editableH1'
+import WorkoutTable from '../ui/workoutTable'
 import TopBar from '../ui/topBar'
 import jss from 'jss'
 import preset from 'jss-preset-default'
@@ -52,22 +52,11 @@ export default (vnode: ViewWorkoutVnode) => {
                         updateFunc: (newName: string) => { workout.name = newName },
                         showEditButton: pageEditable,
                     }),
-                    m('table.table', [
-                        m('thead', m('tr', [
-                            m('td', 'Exercise'),
-                            m('td', 'Amount'),
-                            pageEditable ? m('td') : null,
-                        ])),
-                        m('tbody', workout.prescriptions.map((prescription, index) => {
-                            return m(ViewWorkoutRow, {
-                                prescription,
-                                showEditButtons: pageEditable,
-                                deleteFunction: () => {
-                                    workout.prescriptions.splice(index, 1);
-                                },
-                            });
-                        }))
-                    ]),
+                    WorkoutTable({
+                        headers: ['Exercise', 'Amount'],
+                        prescriptions: workout.prescriptions,
+                        showEditButtons: pageEditable,
+                    }),
                     pageEditable ?
                         m('button', {
                             onclick: () => {

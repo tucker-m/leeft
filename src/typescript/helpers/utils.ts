@@ -11,6 +11,11 @@ const formatDate = (timestamp: number) => {
     return month + ' ' + day + ', ' + year + ' at ' + hour + ':' + minutes.toString().padStart(2, '0') + meridian
 }
 
+const combineStyles = (styles: Array<string>) => {
+    return styles.join(' ')
+}
+
 export default {
     formatDate,
+    combineStyles,
 };

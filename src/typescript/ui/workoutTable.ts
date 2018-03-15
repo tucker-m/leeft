@@ -27,7 +27,7 @@ const TableComponent = (vnode: TableVnode) => {
                 m('thead', {
                     class: classes.tableHead,
                 }, m('tr', vnode.attrs.headers.map((header) => {
-                    return m('td', {}, header)
+                    return m('td', header)
                 }))),
                 m('tbody', vnode.attrs.prescriptions.map((prescription, index) => {
                     return m(ViewWorkoutRow, {

@@ -2,6 +2,7 @@ import * as m from 'mithril'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
+import utils from '../helpers/utils'
 
 interface EditableVnode {
     attrs: {
@@ -26,7 +27,10 @@ const EditableH1 = function(vnode: EditableVnode) {
                 className = classes.placeholderEditableH1
             }
             return m('div.editable-h1', {
-                class: (beingEdited ? 'being-edited' : '') + (vnode.attrs.showEditButton ? 'editable-showing' : ''),
+                class: utils.combineStyles([
+                    beingEdited ? 'being-edited' : '',
+                    vnode.attrs.showEditButton ? 'editable-showing' : '',
+                ])
             }, [
                 !beingEdited ?
                     m('div', [

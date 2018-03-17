@@ -22,19 +22,7 @@ interface WorkoutListVnode {
 let WorkoutListComponent = function(vnode: WorkoutListVnode) {
     return {
         view: function(vnode: WorkoutListVnode) {
-            let elements: Array<m.Vnode<{}, {}>> = [
-                m('button', {
-                    onclick: preventDefault(() => {
-                        let newWorkout: Workout & Saveable & IObservableObject = db.createSaveableRecord({
-                            _id: 'workout_' + Date.now(), // TODO: add a random number here
-                            name: '',
-                            prescriptions: []
-                        });
-                        window.location.href = `#!/workouts/${newWorkout._id}`
-                    }),
-                    class: 'button'
-                }, '+ New Workout')
-            ];
+            let elements: Array<m.Vnode<{}, {}>> = [];
             if (vnode.attrs.allWorkouts.length == 0) {
                 elements.push(m('p', 'You haven\'t created any workouts yet.'))
             }

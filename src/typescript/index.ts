@@ -48,7 +48,20 @@ let componentList = {
             allWorkouts,
         }
         return m('div', [
-            TopBar({}),
+            TopBar({
+                buttons: [{
+                    text: '+ New Workout',
+                    action: () => {
+                        db.promiseSaveableRecord({
+                            _id: 'workout_' + Date.now(),
+                            name: '',
+                            prescriptions: [],
+                        }).then((workout) => {
+                            window.location.href = `#!/workouts/${workout._id}`
+                        })
+                    }
+                }]
+            }),
             WorkoutList(workoutListAttrs)
         ])
     }

@@ -38,10 +38,14 @@ export default (vnode: ViewWorkoutVnode) => {
         view: (vnode: ViewWorkoutVnode) => {
             return m('div', [
                 TopBar({
-                    editButton: {
-                        changeEditMode: (value) => {pageEditable = value},
-                        buttonText: 'Workout',
-                    }
+                    buttons: [
+                        {
+                            text: 'Edit Workout',
+                            action: () => {
+                                pageEditable = !pageEditable
+                            }
+                        }
+                    ]
                 }),
                 m('div', {
                     class: main.constraint

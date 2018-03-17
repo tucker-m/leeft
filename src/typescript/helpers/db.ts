@@ -89,6 +89,24 @@ function createSaveableRecord<T> (object: T & Saveable): Saveable & T & IObserva
     return observeMe
 }
 
+function promiseSaveableRecord<T> (object: T & Saveable): Promise<Saveable & T & IObservableObject> {
+    return new Promise((resolve, reject) => {
+        let rev = ''
+        let observeMe = observable(Object.assign(object, {_deleted: false}))
+        db.put(object).then((response) => {
+            rev = response.rev
+            autorun(() => {
+                let plainObject: Saveable & T = toJS(observeMe)
+                let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
+                db.put(savedObject).then((response) => {
+                    rev = response.rev
+                })
+            })
+            resolve(observeMe)
+        })
+    })
+}
+
 function deleteSaveableRecord (object: Saveable & IObservableObject): void {
     object._deleted = true
 }
@@ -101,5 +119,6 @@ export default {
     findLogsByWorkoutId,
     fetchSaveableRecord,
     createSaveableRecord,
+    promiseSaveableRecord,
     deleteSaveableRecord,
 };

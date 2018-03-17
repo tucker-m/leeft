@@ -3,12 +3,10 @@ import style from '../../styles'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import utils from '../helpers/utils'
+import {TopBarButton} from '../types/components'
 
 interface TopBarAttrs {
-    editButton?: {
-        buttonText: string,
-        changeEditMode: (on: boolean) => void,
-    }
+    buttons: Array<TopBarButton>,
 }
 
 interface TopBarVnode {
@@ -24,16 +22,12 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 
     return {
         view: (vnode: TopBarVnode) => {
-            let editButton = m('div')
-            const editButtonAttr = vnode.attrs.editButton
-            if (editButtonAttr) {
-                editButton = m('button', {
-                    onclick: () => {
-                        editEnabled = !editEnabled
-                        editButtonAttr.changeEditMode(editEnabled)
-                    }
-                }, editEnabled ? 'Done Editing' : `Edit ${editButtonAttr.buttonText}`)
-            }
+            const buttons = m('div', vnode.attrs.buttons.map((button) => {
+                return m('button', {
+                    onclick: button.action
+                }, button.text)
+            }))
+
             return m('div', [
                 m('div', {
                     class: classes.headerSection,
@@ -45,14 +39,11 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                     class: utils.combineStyles([
                         classes.alignment,
                         classes.main,
-                        (editButtonAttr ? classes.editable : ''),
                         (editEnabled ? classes.beingEdited : ''),
                     ]),
                 }, m('div', {
                     class: main.constraint,
-                }, [
-                    editButton
-                ]))
+                }, buttons))
             ])
         }
     }

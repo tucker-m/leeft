@@ -1,25 +1,22 @@
 export default {
     main: {
-        background: '#81d5ef',
-        padding: '.5rem'
+        background: '#271dd6',
+        padding: '.5rem',
+        marginBottom: '1rem',
     },
     editable: {
-        background: '#81efb1',
+        background: '#831dd6',
     },
     beingEdited: {
-        background: '#efef81',
+        background: '#1d70d6',
     },
     alignment: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        minHeight: '2rem'
     },
-    link: {
-        color: 'black',
-        textDecoration: 'none',
-        '&:visited': {
-            color: 'black',
-        }
+    headerSection: {
+        textAlign: 'center',
+        padding: '1.5rem',
     }
 }

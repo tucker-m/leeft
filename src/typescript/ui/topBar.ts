@@ -3,9 +3,19 @@ import style from '../../styles'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import utils from '../helpers/utils'
+import {TopBarButton, TopBarButtonAttrs} from '../types/components'
 
 interface TopBarAttrs {
-    buttons: Array<any>,
+    buttons: Array<{
+        text: string,
+        action: () => void,
+        secondState?: {
+            text: string,
+            action: () => void,
+            color: string,
+        }
+    }>,
+    color?: string,
 }
 
 interface TopBarVnode {
@@ -17,12 +27,32 @@ const {classes} = jss.createStyleSheet(style.topBar).attach()
 const {classes: main} = jss.createStyleSheet(style.main).attach()
 
 const TopBarComponent = (vnode: TopBarVnode) => {
-    let editEnabled = false
     let currentColor = ''
+    let defaultColor = ''
+    if (vnode.attrs.color) {
+        currentColor= vnode.attrs.color
+        defaultColor = vnode.attrs.color
+    }
 
     return {
         view: (vnode: TopBarVnode) => {
-            const buttons = m('div', vnode.attrs.buttons)
+            const buttons = m('div', vnode.attrs.buttons.map((buttonAttr) => {
+                let attrs = {
+                    text: buttonAttr.text,
+                    action: buttonAttr.action,
+                    setColor: (color: string) => {
+                        currentColor = color ? color : defaultColor
+                    }
+                }
+                if (buttonAttr.secondState) {
+                    attrs['secondState'] = {
+                        text: buttonAttr.secondState.text,
+                        action: buttonAttr.secondState.action,
+                        color: buttonAttr.secondState.color,
+                    }
+                }
+                return TopBarButton(attrs)
+            }))
 
             return m('div', [
                 m('div', {
@@ -35,8 +65,8 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                     class: utils.combineStyles([
                         classes.alignment,
                         classes.main,
-                        (editEnabled ? classes.beingEdited : ''),
                     ]),
+                    style: currentColor ? `background-color: ${currentColor}` : '',
                 }, m('div', {
                     class: main.constraint,
                 }, buttons))

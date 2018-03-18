@@ -6,8 +6,9 @@ interface TopBarButtonAttrs {
     secondState?: {
         text: string,
         action: () => void,
-        activeColor: string,
+        color: string,
     }
+    setColor: (string) => void,
 }
 
 interface TopBarButtonVnode {
@@ -15,9 +16,10 @@ interface TopBarButtonVnode {
 }
 
 const TopBarButtonComponent = (vnode: TopBarButtonVnode) => {
-    let buttonStates = [{text: vnode.attrs.text, action: vnode.attrs.action}]
-    if (vnode.attrs.secondState) {
-        buttonStates.push({text: vnode.attrs.secondState.text, action: vnode.attrs.secondState.action})
+    let buttonStates = [{text: vnode.attrs.text, action: vnode.attrs.action, color: ''}]
+    const secondState = vnode.attrs.secondState
+    if (secondState) {
+        buttonStates.push({text: secondState.text, action: secondState.action, color: secondState.color})
     }
     let currentBtnIdx = 0
     return {
@@ -26,12 +28,18 @@ const TopBarButtonComponent = (vnode: TopBarButtonVnode) => {
                 onclick: () => {
                     buttonStates[currentBtnIdx].action()
                     currentBtnIdx = (currentBtnIdx + 1) % buttonStates.length
+                    vnode.attrs.setColor(buttonStates[currentBtnIdx].color)
                 }
             }, buttonStates[currentBtnIdx].text)
         }
     }
 }
 
-export default (attrs: TopBarButtonAttrs) => {
+const TopBarButton = (attrs: TopBarButtonAttrs) => {
     return m(TopBarButtonComponent, attrs)
+}
+
+export {
+    TopBarButton,
+    TopBarButtonAttrs,
 }

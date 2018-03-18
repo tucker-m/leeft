@@ -4,12 +4,6 @@ export default {
         padding: '.5rem',
         marginBottom: '1rem',
     },
-    editable: {
-        background: '#831dd6',
-    },
-    beingEdited: {
-        background: '#1d70d6',
-    },
     alignment: {
         display: 'flex',
         alignItems: 'center',

@@ -9,7 +9,6 @@ import {observable, IObservableObject} from 'mobx'
 import TopBar from './ui/topBar'
 import jss from 'jss'
 import preset from 'jss-preset-default'
-import TopBarButton from './types/components'
 
 jss.setup(preset())
 
@@ -50,7 +49,7 @@ let componentList = {
         }
         return m('div', [
             TopBar({
-                buttons: [TopBarButton({
+                buttons: [{
                     text: '+ New Workout',
                     action: () => {
                         db.promiseSaveableRecord({
@@ -61,7 +60,7 @@ let componentList = {
                             window.location.href = `#!/workouts/${workout._id}`
                         })
                     }
-                })]
+                }]
             }),
             WorkoutList(workoutListAttrs)
         ])

@@ -9,7 +9,6 @@ import TopBar from '../ui/topBar'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
-import TopBarButton from '../types/components'
 
 jss.setup(preset())
 const {classes: main} = jss.createStyleSheet(style.main).attach()
@@ -39,15 +38,16 @@ export default (vnode: ViewWorkoutVnode) => {
         view: (vnode: ViewWorkoutVnode) => {
             return m('div', [
                 TopBar({
-                    buttons: [TopBarButton({
+                    buttons: [{
                         text: 'Edit Workout',
                         action: () => { pageEditable = true },
                         secondState: {
                             text: 'Done Editing',
                             action: () => { pageEditable = false },
-                            activeColor: 'red',
+                            color: '#1d70d6',
                         }
-                    })]
+                    }],
+                    color: '#831dd6',
                 }),
                 m('div', {
                     class: main.constraint

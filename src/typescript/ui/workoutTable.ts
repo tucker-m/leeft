@@ -24,12 +24,12 @@ const TableComponent = (vnode: TableVnode) => {
             return m('table', {
                 class: classes.table,
             }, [
-                m('thead', {
-                    class: classes.tableHead,
-                }, m('tr', vnode.attrs.headers.map((header) => {
-                    return m('td', header)
-                }))),
-                m('tbody', vnode.attrs.prescriptions.map((prescription, index) => {
+                m('tr', {
+                    class: classes.tr,
+                }, vnode.attrs.headers.map((header) => {
+                    return m('th', header)
+                })),
+                vnode.attrs.prescriptions.map((prescription, index) => {
                     return m(ViewWorkoutRow, {
                         prescription,
                         showEditButtons: vnode.attrs.showEditButtons,
@@ -37,7 +37,7 @@ const TableComponent = (vnode: TableVnode) => {
                             vnode.attrs.prescriptions.splice(index, 1);
                         },
                     });
-                }))
+                })
             ])
         }
     }

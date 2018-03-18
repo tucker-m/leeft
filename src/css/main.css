@@ -10,6 +10,16 @@ p {
     margin-top: .5rem;
     margin-bottom: .5rem;
 }
+a {
+    text-decoration: none;
+}
+th {
+    font-weight: bold;
+    padding: 0.5rem;
+}
+th:not(:last-of-type) {
+    padding-right: 1.5rem;
+}
 button {
     border-radius: 0;
     border: 2px solid black;
@@ -20,25 +30,9 @@ button {
 .editable-showing {
     box-sizing: border-box;
     border: .15rem dashed #1d70d6;
-    margin-top: -.15rem;
-    margin-left: -.15rem;
-}
-.table {
-    border: 1px solid #efefef;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-.table thead {
-    font-weight: bold;
-}
-.table tr:nth-of-type(2) {
-    background: #efefef;
-}
-.table td {
-    padding: 0.5rem;
-}
-.table td:not(:last-of-type) {
-    padding-right: 1.5rem;
+    padding: .5rem;
+    margin-top: -.65rem;
+    margin-left: -.65rem;
 }
 .editable-h1 {
     display: inline-block;
@@ -53,4 +47,7 @@ button {
 }
 .editable-h1.being-edited button {
     position: relative;
+}
+.being-edited input[type=text] {
+    font-size: 2.5rem;
 }

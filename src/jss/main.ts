@@ -6,12 +6,8 @@ export default {
         marginRight: 'auto',
     },
     table: {
-        border: '1px solid #efefef',
         marginTop: '1rem',
         marginBottom: '1rem',
-    },
-    tableHead: {
-        fontWeight: 'bold',
     },
     tr: {
         '&:nth-of-type(2)': {

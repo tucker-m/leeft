@@ -4,6 +4,7 @@ import ViewWorkoutRow from './viewWorkoutRow'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
+import utils from '../helpers/utils'
 
 jss.setup(preset())
 const {classes} = jss.createStyleSheet(style.main).attach()
@@ -22,7 +23,10 @@ const TableComponent = (vnode: TableVnode) => {
     return {
         view: (vnode: TableVnode) => {
             return m('table', {
-                class: classes.table,
+                class: utils.combineStyles([
+                    classes.table,
+                    vnode.attrs.showEditButtons ? classes.editable : ''
+                ]),
             }, [
                 m('tr', {
                     class: classes.tr,

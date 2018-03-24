@@ -9,8 +9,10 @@ import {observable, IObservableObject} from 'mobx'
 import TopBar from './ui/topBar'
 import jss from 'jss'
 import preset from 'jss-preset-default'
+import styles from '../styles'
 
 jss.setup(preset())
+const {classes: typography} = jss.createStyleSheet(styles.typography).attach()
 
 db.init();
 
@@ -62,6 +64,9 @@ let componentList = {
                     }
                 }]
             }),
+            m('h1', {
+                class: typography.h1,
+            }, 'All Workouts'),
             WorkoutList(workoutListAttrs)
         ])
     }

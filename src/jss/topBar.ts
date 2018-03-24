@@ -12,5 +12,10 @@ export default {
     headerSection: {
         textAlign: 'center',
         padding: '1.5rem',
-    }
+    },
+    button: {
+        '&:not(:last-of-type)': {
+            marginRight: '1rem',
+        }
+    },
 }

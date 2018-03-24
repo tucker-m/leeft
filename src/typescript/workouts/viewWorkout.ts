@@ -38,15 +38,24 @@ export default (vnode: ViewWorkoutVnode) => {
         view: (vnode: ViewWorkoutVnode) => {
             return m('div', [
                 TopBar({
-                    buttons: [{
-                        text: 'Edit Workout',
-                        action: () => { pageEditable = true },
-                        secondState: {
-                            text: 'Done Editing',
-                            action: () => { pageEditable = false },
-                            color: '#1d70d6',
+                    buttons: [
+                        {
+                            text: 'Edit Workout',
+                            action: () => { pageEditable = true },
+                            secondState: {
+                                text: 'Done Editing',
+                                action: () => { pageEditable = false },
+                                color: '#1d70d6',
+                            }
+                        },
+                        {
+                            text: 'Delete Workout',
+                            action: () => {
+                                db.deleteSaveableRecord(workout)
+                                window.location.href = '#!'
+                            },
                         }
-                    }],
+                    ],
                     color: '#831dd6',
                 }),
                 m('div', {

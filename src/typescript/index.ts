@@ -2,7 +2,6 @@ import * as m from "mithril";
 import {Saveable, Exercise, Workout, SetUnits} from "./types/exercise";
 import WorkoutList from './workouts/workoutList';
 import db from './helpers/db';
-import LogWorkout from './logs/logWorkout';
 import ViewWorkout from './workouts/viewWorkout';
 import ViewLog from './logs/viewLog'
 import {observable, IObservableObject} from 'mobx'
@@ -76,7 +75,6 @@ const element = document.getElementById('main')
 if (element != null) {
     m.route(element, '/', {
         '/': App,
-        '/log/:id': LogWorkout,
         '/workouts/:id': ViewWorkout,
         '/logs/:id': ViewLog,
     })

@@ -54,10 +54,11 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                     m('h2', 'Log Entries'),
                     m('button', {
                         onclick: preventDefault(() => {
-                            const workoutLog = db.createSaveableRecord<WorkoutLog>(
+                            const workoutLog = db.promiseSaveableRecord<WorkoutLog>(
                                 getEmptyLogForWorkout(vnode.attrs.workout)
-                            )
-                            window.location.href = `#!/logs/${workoutLog._id}`
+                            ).then((workoutLog) => {
+                                window.location.href = `#!/logs/${workoutLog._id}`
+                            })
                         })
                     }, '+ Log Entry')
                 ]),

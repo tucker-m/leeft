@@ -9,6 +9,7 @@ import jss from 'jss'
 import preset from 'jss-preset-default'
 import styles from '../styles'
 import Page from './ui/page'
+import H1 from './ui/h1'
 
 jss.setup(preset())
 const {classes: typography} = jss.createStyleSheet(styles.typography).attach()
@@ -49,9 +50,7 @@ let componentList = {
             allWorkouts,
         }
         const contents = [
-            m('h1', {
-                class: typography.h1,
-            }, 'All Workouts'),
+            H1({text: 'All Workouts'}),
             WorkoutList(workoutListAttrs)
         ]
         return Page({

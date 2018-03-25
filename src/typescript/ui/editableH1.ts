@@ -3,6 +3,7 @@ import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
 import utils from '../helpers/utils'
+import H1 from './h1'
 
 interface EditableVnode {
     attrs: {
@@ -34,9 +35,7 @@ const EditableH1 = function(vnode: EditableVnode) {
             }, [
                 !beingEdited ?
                     m('div', [
-                        m('h1', {
-                            class: className,
-                        }, name),
+                        H1({text: name, classes: [className]}),
                         vnode.attrs.showEditButton
                             ? m('button', {
                                 onclick: () => { beingEdited = true }

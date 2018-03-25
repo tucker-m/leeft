@@ -18,7 +18,6 @@ interface ViewWorkoutAttrs {
 };
 interface ViewWorkoutVnode {
     attrs: ViewWorkoutAttrs,
-    dom?: any
 };
 
 export default (vnode: ViewWorkoutVnode) => {

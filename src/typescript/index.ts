@@ -22,14 +22,6 @@ let App = {
     }
 };
 
-let allExercises:Array<Exercise> = [];
-db.getAllExercises().then(function(docs) {
-    allExercises = docs.rows.map(function(row) {
-        return row.doc;
-    });
-    m.redraw();
-});
-
 let allWorkouts:Array<Workout & Saveable> = [];
 db.getAllWorkouts().then((docs) => {
     allWorkouts = docs.rows.map((row) => {

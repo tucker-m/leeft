@@ -28,14 +28,9 @@ const init = function() {
     })
 };
 
-const getAllExercises = function() {
-    return db.allDocs({startkey: 'exercise_', endkey: 'exercise_\uffff', include_docs: true});
-};
-
-const getAllWorkouts = function() {
-    return db.allDocs({startkey: 'workout_', endkey: 'workout_\uffff', include_docs: true});
+const getAllItems = (key: string) => {
+    return db.allDocs({startkey: key+'_', endkey: key+'_\uffff', include_docs: true});
 }
-
 const remove = function(object: Saveable & IObservableObject) {
     object._deleted = true
 };
@@ -97,8 +92,7 @@ function deleteSaveableRecord (object: Saveable & IObservableObject): void {
 
 export default {
     init,
-    getAllExercises,
-    getAllWorkouts,
+    getAllItems,
     remove,
     findLogsByWorkoutId,
     fetchSaveableRecord,

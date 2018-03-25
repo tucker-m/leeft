@@ -30,10 +30,6 @@ db.getAllWorkouts().then((docs) => {
     m.redraw();
 });
 
-let someWorkout = observable({
-    _id: 'initial',
-    name: '',
-    prescriptions: [],
 })
 
 let componentList = {

@@ -8,8 +8,9 @@ jss.setup(preset())
 const {classes} = jss.createStyleSheet(style.main).attach()
 
 interface PageAttrs {
-    contents: Array<m.Vnode<{}, {}>>,
+    contents: Array<m.Vnode<{}, {}> | null>,
     topBarButtons: Array<TopBarButtonAttrs>,
+    topBarColor?: string,
 }
 interface PageComponent {
     attrs: PageAttrs,
@@ -19,7 +20,7 @@ const PageComponent = (vnode: PageComponent) => {
     return {
         view: (vnode: PageComponent) => {
             return m('div', [
-                TopBar({buttons: vnode.attrs.topBarButtons}),
+                TopBar({buttons: vnode.attrs.topBarButtons, color: vnode.attrs.topBarColor}),
                 m('div', {
                     class: classes.constraint
                 }, vnode.attrs.contents)

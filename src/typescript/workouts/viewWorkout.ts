@@ -5,7 +5,7 @@ import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
 import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
-import {TopBar} from '../ui/topBar'
+import Page from '../ui/page'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
@@ -36,31 +36,27 @@ export default (vnode: ViewWorkoutVnode) => {
 
     return {
         view: (vnode: ViewWorkoutVnode) => {
-            return m('div', [
-                TopBar({
-                    buttons: [
-                        {
-                            text: 'Edit Workout',
-                            action: () => { pageEditable = true },
-                            secondState: {
-                                text: 'Done Editing',
-                                action: () => { pageEditable = false },
-                                color: '#1d70d6',
-                            }
-                        },
-                        {
-                            text: 'Delete Workout',
-                            action: () => {
-                                db.deleteSaveableRecord(workout)
-                                window.location.href = '#!'
-                            },
+            return Page({
+                topBarButtons: [
+                    {
+                        text: 'Edit Workout',
+                        action: () => { pageEditable = true },
+                        secondState: {
+                            text: 'Done Editing',
+                            action: () => { pageEditable = false },
+                            color: '#1d70d6',
                         }
-                    ],
-                    color: '#831dd6',
-                }),
-                m('div', {
-                    class: main.constraint
-                }, [
+                    },
+                    {
+                        text: 'Delete Workout',
+                        action: () => {
+                            db.deleteSaveableRecord(workout)
+                            window.location.href = '#!'
+                        },
+                    }
+                ],
+                topBarColor: '#831dd6',
+                contents: [
                     EditableH1({
                         name: workout.name,
                         placeholder: 'Untitled Workout',
@@ -89,8 +85,8 @@ export default (vnode: ViewWorkoutVnode) => {
                     WorkoutLogs({
                         workout: workout
                     })
-                ]),
-            ]);
+                ],
+            })
         }
     };
 };

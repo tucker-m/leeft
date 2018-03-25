@@ -34,12 +34,9 @@ db.getAllWorkouts().then((docs) => {
 
 let componentList = {
     view: function() {
-        const workoutListAttrs = {
-            allWorkouts,
-        }
         const contents = [
             H1({text: 'All Workouts'}),
-            WorkoutList(workoutListAttrs)
+            WorkoutList({allWorkouts})
         ]
         return Page({
             topBarButtons: [{

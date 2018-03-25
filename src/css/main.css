@@ -34,9 +34,6 @@ button {
     margin-top: -.65rem;
     margin-left: -.65rem;
 }
-.editable-h1 {
-    display: inline-block;
-}
 .editable-h1 > div {
     position: relative;
 }

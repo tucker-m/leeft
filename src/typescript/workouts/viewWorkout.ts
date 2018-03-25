@@ -5,7 +5,7 @@ import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
 import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
-import TopBar from '../ui/topBar'
+import {TopBar} from '../ui/topBar'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'

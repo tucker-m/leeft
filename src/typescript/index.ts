@@ -5,10 +5,10 @@ import db from './helpers/db';
 import ViewWorkout from './workouts/viewWorkout';
 import ViewLog from './logs/viewLog'
 import {observable, IObservableObject} from 'mobx'
-import TopBar from './ui/topBar'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import styles from '../styles'
+import Page from './ui/page'
 
 jss.setup(preset())
 const {classes: typography} = jss.createStyleSheet(styles.typography).attach()
@@ -48,26 +48,27 @@ let componentList = {
         const workoutListAttrs = {
             allWorkouts,
         }
-        return m('div', [
-            TopBar({
-                buttons: [{
-                    text: '+ New Workout',
-                    action: () => {
-                        db.promiseSaveableRecord({
-                            _id: 'workout_' + Date.now(),
-                            name: '',
-                            prescriptions: [],
-                        }).then((workout) => {
-                            window.location.href = `#!/workouts/${workout._id}`
-                        })
-                    }
-                }]
-            }),
+        const contents = [
             m('h1', {
                 class: typography.h1,
             }, 'All Workouts'),
             WorkoutList(workoutListAttrs)
-        ])
+        ]
+        return Page({
+            topBarButtons: [{
+                text: '+ New Workout',
+                action: () => {
+                    db.promiseSaveableRecord({
+                        _id: 'workout_' + Date.now(),
+                        name: '',
+                        prescriptions: [],
+                    }).then((workout) => {
+                        window.location.href = `#!/workouts/${workout._id}`
+                    })
+                }
+            }],
+            contents: contents
+        })
     }
 }
 

@@ -32,7 +32,7 @@ export default (vnode: ViewLogVnode) => {
                 return m('p', 'Loading')
             }
             return m('div', [
-                m('h3', log.workout.name == '' ? 'Untitled' : log.workout.name),
+                m('h1', log.workout.name == '' ? 'Untitled' : log.workout.name),
                 m('h4', utils.formatDate(log.date)),
                 m('a', {
                     onclick: preventDefault(() => {

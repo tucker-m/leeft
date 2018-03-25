@@ -1,5 +1,6 @@
 export default {
     h1: {
+        display: 'inline-block',
         fontSize: '3.5rem',
         marginTop: '1rem',
         marginBottom: '1rem',

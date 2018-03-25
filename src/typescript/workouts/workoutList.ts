@@ -53,9 +53,7 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                 })));
             }
 
-            return m('div', {
-                class: classes.constraint,
-            }, elements)
+            return m('div', elements)
         }
     }
 };

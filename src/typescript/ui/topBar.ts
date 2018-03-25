@@ -3,18 +3,20 @@ import style from '../../styles'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import utils from '../helpers/utils'
-import {TopBarButton, TopBarButtonAttrs} from '../types/components'
+import {TopBarButton} from '../types/components'
 
-interface TopBarAttrs {
-    buttons: Array<{
+interface TopBarButtonAttrs {
+    text: string,
+    action: () => void,
+    secondState?: {
         text: string,
         action: () => void,
-        secondState?: {
-            text: string,
-            action: () => void,
-            color: string,
-        }
-    }>,
+        color: string,
+    }
+}
+
+interface TopBarAttrs {
+    buttons: Array<TopBarButtonAttrs>,
     color?: string,
 }
 
@@ -75,6 +77,11 @@ const TopBarComponent = (vnode: TopBarVnode) => {
     }
 }
 
-export default (attrs: TopBarAttrs) => {
+const TopBar = (attrs: TopBarAttrs) => {
     return m(TopBarComponent, attrs)
+}
+
+export {
+    TopBar,
+    TopBarButtonAttrs,
 }

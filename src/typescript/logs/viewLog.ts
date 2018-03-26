@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {WorkoutLog} from '../types/exercise'
+import {WorkoutLog, Puttable} from '../types/exercise'
 import db from '../helpers/db'
 import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
@@ -13,7 +13,7 @@ interface ViewLogVnode {
 }
 
 export default (vnode: ViewLogVnode) => {
-    let log: WorkoutLog = {
+    let log: WorkoutLog & Puttable = {
         workout: {
             _id: '',
             name: '',
@@ -24,6 +24,7 @@ export default (vnode: ViewLogVnode) => {
         date: 0,
         comments: '',
         tag: 'workoutlog',
+        _id: '',
     }
     db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then((logResult) => {
         log = logResult

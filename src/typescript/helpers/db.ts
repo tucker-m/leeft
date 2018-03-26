@@ -111,7 +111,7 @@ function promiseSaveableRecord<T> (object: T & Saveable): Promise<Puttable & T &
     })
 }
 
-function deleteSaveableRecord (object: Saveable): void {
+function deleteSaveableRecord (object: Puttable): void {
     object._deleted = true
 }
 

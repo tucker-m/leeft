@@ -32,6 +32,32 @@ const getAllItems = (key: ModelName) => {
     return db.allDocs({startkey: key+'_', endkey: key+'_\uffff', include_docs: true});
 }
 
+function fetchSaveableCollection<T> (tag: ModelName): Promise<Array<Puttable & T & IObservableObject>> {
+    return new Promise<Array<Puttable & T & IObservableObject>>((resolve, reject) => {
+        getAllItems(tag).then((records) => {
+            const rows: Array<{doc: T & Saved}> = records.rows
+            const observableRecords = rows.map((record) => {
+                const doc = record.doc
+                let rev = doc._rev
+                delete doc._rev
+                if (typeof doc._deleted == 'undefined') {
+                    doc._deleted = false
+                }
+                let observableRecord: Puttable & T & IObservableObject = observable(doc)
+                autorun(() => {
+                    let plainObject: Puttable & T = toJS(observableRecord)
+                    let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
+                    db.put(savedObject).then((response) => {
+                        rev = response.rev
+                    })
+                })
+                return observableRecord
+            })
+            resolve(observableRecords)
+        })
+    })
+}
+
 const findLogsByWorkoutId = (id: string) => {
     return db.find({
         selector: {
@@ -91,8 +117,8 @@ function deleteSaveableRecord (object: Saveable): void {
 
 export default {
     init,
-    getAllItems,
     findLogsByWorkoutId,
+    fetchSaveableCollection,
     fetchSaveableRecord,
     promiseSaveableRecord,
     deleteSaveableRecord,

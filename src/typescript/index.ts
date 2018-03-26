@@ -25,18 +25,14 @@ let App = {
 };
 
 let allWorkouts:Array<Workout & Puttable> = [];
-db.getAllItems('workout').then((docs) => {
-    allWorkouts = docs.rows.map((row) => {
-        return row.doc;
-    });
-    m.redraw();
-});
+db.fetchSaveableCollection<Workout>('workout').then((collection) => {
+    allWorkouts = collection
+    m.redraw()
+})
 
 let allPrograms: Array<Program & Puttable> = []
-db.getAllItems('program').then((docs) => {
-    allPrograms = docs.rows.map((row) => {
-        return row.doc
-    })
+db.fetchSaveableCollection<Program>('program').then((collection) => {
+    allPrograms = collection
     m.redraw()
 })
 

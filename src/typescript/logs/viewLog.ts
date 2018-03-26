@@ -18,10 +18,12 @@ export default (vnode: ViewLogVnode) => {
             _id: '',
             name: '',
             prescriptions: [],
+            tag: 'workout',
         },
         sets: [],
         date: 0,
         comments: '',
+        tag: 'log',
     }
     db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then((logResult) => {
         log = logResult

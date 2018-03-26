@@ -31,6 +31,7 @@ const getEmptyLogForWorkout = (workout: Workout & Saveable) => {
         sets: setLogs,
         date: Date.now(),
         comments: '',
+        tag: 'log',
     }
     return log
 }

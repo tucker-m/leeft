@@ -21,11 +21,12 @@ interface ViewWorkoutVnode {
 };
 
 export default (vnode: ViewWorkoutVnode) => {
-    let workout: (Workout & Saveable & IObservableObject) = observable({
+    let workout: (Workout & Saveable) = {
         _id: '',
         name: '',
         prescriptions: [],
-    })
+        tag: 'workout',
+    }
     db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout;
         m.redraw();
@@ -74,6 +75,7 @@ export default (vnode: ViewWorkoutVnode) => {
                                     exercise: {
                                         name: '',
                                         setUnits: 'reps',
+                                        tag: 'exercise',
                                     },
                                     sets: 0,
                                     amount: 0,

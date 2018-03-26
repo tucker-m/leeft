@@ -1,8 +1,11 @@
 type SetUnits = 'reps' | 'seconds';
 
+type ModelName = 'workout' | 'exercise' | 'log' | 'program' | 'rest'
+
 interface Saveable {
     readonly _id: string,
     _deleted?: boolean,
+    readonly tag: ModelName,
 }
 
 interface Saved extends Saveable {
@@ -11,7 +14,8 @@ interface Saved extends Saveable {
 
 interface Exercise {
     name: string,
-    setUnits: SetUnits
+    setUnits: SetUnits,
+    tag: 'exercise',
 };
 
 interface ExerciseSetLog {
@@ -26,6 +30,7 @@ interface WorkoutLog {
     date: number,
     comments: string,
     _deleted?: boolean,
+    tag: 'log',
 };
 
 interface ExercisePrescription {
@@ -36,16 +41,29 @@ interface ExercisePrescription {
 
 interface Workout {
     name: string,
-    prescriptions: Array<ExercisePrescription>
+    prescriptions: Array<ExercisePrescription>,
+    tag: 'workout',
 };
+
+interface Rest {
+    tag: 'rest',
+}
+
+interface Program {
+    schedule: Array<Workout | Rest>,
+    name: string,
+    tag: 'program',
+}
 
 export {
     Saveable,
     Saved,
+    ModelName,
     Exercise,
     SetUnits,
     ExercisePrescription,
     Workout,
     WorkoutLog,
-    ExerciseSetLog
+    ExerciseSetLog,
+    Program,
 };

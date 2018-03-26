@@ -7,8 +7,9 @@ import style from '../../styles'
 jss.setup(preset())
 const {classes} = jss.createStyleSheet(style.main).attach()
 
+type DisplayElement = null | m.Vnode<{}, {}> | Array<m.Vnode<{}, {}>>
 interface PageAttrs {
-    contents: Array<m.Vnode<{}, {}> | null>,
+    contents: Array<DisplayElement>,
     topBarButtons: Array<TopBarButtonAttrs>,
     topBarColor?: string,
 }

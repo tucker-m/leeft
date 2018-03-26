@@ -35,16 +35,18 @@ export default (vnode: ViewLogVnode) => {
                 return m('p', 'Loading')
             }
             return Page({
-                topBarButtons: [],
+                topBarButtons: [
+                    {
+                        text: 'Delete this log',
+                        action: () => {
+                            db.deleteSaveableRecord(log)
+                            window.location.href = `#!/workouts/${log.workout._id}`
+                        }
+                    }
+                ],
                 contents: [
                     m('h1', log.workout.name == '' ? 'Untitled' : log.workout.name),
                     m('h4', utils.formatDate(log.date)),
-                    m('a', {
-                        onclick: preventDefault(() => {
-                            log._deleted = true
-                            window.location.href = `#!/workouts/${log.workout._id}`
-                        })
-                    }, 'Delete this log'),
                     m('table', [
                         m('thead', [
                             m('tr', [

@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import {Saveable, Workout, SetUnits} from '../types/exercise';
+import {Saveable, Saved, Puttable, Workout, SetUnits} from '../types/exercise';
 import preventDefault from '../helpers/preventDefaultFunction';
 import {IObservableObject} from 'mobx'
 import db from '../helpers/db'
@@ -13,7 +13,7 @@ const {classes} = jss.createStyleSheet(style.main).attach()
 const {classes: typography} = jss.createStyleSheet(style.typography).attach()
 
 interface WorkoutListAttrs {
-    allWorkouts: Array<Workout & Saveable>,
+    allWorkouts: Array<Workout & Puttable>,
 };
 
 interface WorkoutListVnode {

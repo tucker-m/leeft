@@ -1,8 +1,8 @@
 import * as m from 'mithril'
-import {Saveable, Program} from '../types/exercise'
+import {Saveable, Puttable, Saved, Program} from '../types/exercise'
 
 interface ProgramListAttrs {
-    allPrograms: Array<Program & Saveable>,
+    allPrograms: Array<Program & Puttable>,
 }
 interface ProgramListVnode {
     attrs: ProgramListAttrs

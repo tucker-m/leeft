@@ -1,6 +1,6 @@
 import * as m from 'mithril';
 import db from '../helpers/db';
-import {Saveable, Workout} from '../types/exercise';
+import {Saveable, Saved, Puttable, Workout} from '../types/exercise';
 import WorkoutLogs from '../workouts/workoutLogs';
 import {observable, IObservableObject} from 'mobx';
 import EditableH1 from '../ui/editableH1'
@@ -21,11 +21,11 @@ interface ViewWorkoutVnode {
 };
 
 export default (vnode: ViewWorkoutVnode) => {
-    let workout: (Workout & Saveable) = {
-        _id: '',
+    let workout: (Workout & Puttable) = {
         name: '',
         prescriptions: [],
         tag: 'workout',
+        _id: 'fakeid',
     }
     db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
         workout = returnedWorkout;

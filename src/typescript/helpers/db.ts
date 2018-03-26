@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, ModelName, Workout, Exercise} from '../types/exercise';
+import {Saveable, Saved, Puttable, ModelName, Workout, Exercise} from '../types/exercise';
 import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -43,8 +43,8 @@ const findLogsByWorkoutId = (id: string) => {
     })
 }
 
-function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservableObject> {
-    return new Promise<Saveable & T & IObservableObject>((resolve, reject) => {
+function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservableObject> {
+    return new Promise<Puttable & T & IObservableObject>((resolve, reject) => {
         let rev = ''
         db.get(id).then((record: Saved & T) => {
             rev = record._rev
@@ -52,9 +52,9 @@ function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservable
             if (typeof record._deleted == 'undefined') {
                 record._deleted = false
             }
-            let observableRecord = observable(record)
+            let observableRecord: Puttable & T & IObservableObject = observable(record)
             autorun(() => {
-                let plainObject: Saveable & T = toJS(observableRecord)
+                let plainObject: Puttable & T = toJS(observableRecord)
                 let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
                 db.put(savedObject).then((response) => {
                     rev = response.rev
@@ -65,14 +65,16 @@ function fetchSaveableRecord<T> (id: string): Promise<Saveable & T & IObservable
     })
 }
 
-function promiseSaveableRecord<T> (object: T & Saveable): Promise<Saveable & T & IObservableObject> {
-    return new Promise<Saveable & T & IObservableObject>((resolve, reject) => {
+function promiseSaveableRecord<T> (object: T & Saveable): Promise<Puttable & T & IObservableObject> {
+    return new Promise<Puttable & T & IObservableObject>((resolve, reject) => {
+        const id = object.tag + '_' + Date.now()
         let rev = ''
-        let observeMe = observable(Object.assign(object, {_deleted: false}))
-        db.put(object).then((response) => {
+        let objectWithId: Puttable & T = Object.assign(object, {_id: id, _deleted: false})
+        let observeMe = observable(objectWithId)
+        db.put(objectWithId).then((response) => {
             rev = response.rev
             autorun(() => {
-                let plainObject: Saveable & T = toJS(observeMe)
+                let plainObject: Puttable & T = toJS(observeMe)
                 let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
                 db.put(savedObject).then((response) => {
                     rev = response.rev

@@ -1,11 +1,11 @@
 import * as m from 'mithril'
-import {Saveable, Workout, WorkoutLog, ExerciseSetLog, ExercisePrescription} from '../types/exercise'
+import {Saveable, Saved, Puttable, Workout, WorkoutLog, ExerciseSetLog, ExercisePrescription} from '../types/exercise'
 import db from '../helpers/db'
 import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
 
 interface WorkoutLogAttrs {
-    workout: Workout & Saveable
+    workout: Workout & Puttable
 }
 interface WorkoutLogVnode {
     attrs: WorkoutLogAttrs
@@ -13,7 +13,7 @@ interface WorkoutLogVnode {
 
 let logs: Array<WorkoutLog & Saveable> = []
 
-const getEmptyLogForWorkout = (workout: Workout & Saveable) => {
+const getEmptyLogForWorkout = (workout: Workout & Puttable) => {
     let setLogs: Array<ExerciseSetLog> = []
     workout.prescriptions.forEach((prescription: ExercisePrescription) => {
         const emptySet: ExerciseSetLog = {
@@ -26,7 +26,6 @@ const getEmptyLogForWorkout = (workout: Workout & Saveable) => {
     })
 
     let log: WorkoutLog & Saveable = {
-        _id: 'workoutlog_' + Date.now(),
         workout: workout,
         sets: setLogs,
         date: Date.now(),
@@ -57,7 +56,7 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                         onclick: preventDefault(() => {
                             const workoutLog = db.promiseSaveableRecord<WorkoutLog>(
                                 getEmptyLogForWorkout(vnode.attrs.workout)
-                            ).then((workoutLog) => {
+                            ).then((workoutLog: WorkoutLog & Puttable) => {
                                 window.location.href = `#!/logs/${workoutLog._id}`
                             })
                         })

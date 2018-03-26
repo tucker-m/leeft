@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import {Saveable, Exercise, Workout, Program} from "./types/exercise";
+import {Saveable, Puttable, Exercise, Workout, Program} from "./types/exercise";
 import WorkoutList from './workouts/workoutList';
 import ProgramList from './programs/programList'
 import db from './helpers/db';
@@ -24,7 +24,7 @@ let App = {
     }
 };
 
-let allWorkouts:Array<Workout & Saveable> = [];
+let allWorkouts:Array<Workout & Puttable> = [];
 db.getAllItems('workout').then((docs) => {
     allWorkouts = docs.rows.map((row) => {
         return row.doc;
@@ -32,7 +32,7 @@ db.getAllItems('workout').then((docs) => {
     m.redraw();
 });
 
-let allPrograms: Array<Program & Saveable> = []
+let allPrograms: Array<Program & Puttable> = []
 db.getAllItems('program').then((docs) => {
     allPrograms = docs.rows.map((row) => {
         return row.doc
@@ -54,7 +54,6 @@ let componentList = {
                     text: '+ Workout',
                     action: () => {
                         db.promiseSaveableRecord<Workout>({
-                            _id: 'workout_' + Date.now(),
                             name: '',
                             prescriptions: [],
                             tag: 'workout',

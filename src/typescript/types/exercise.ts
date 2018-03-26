@@ -3,12 +3,15 @@ type SetUnits = 'reps' | 'seconds';
 type ModelName = 'workout' | 'exercise' | 'log' | 'program' | 'rest'
 
 interface Saveable {
-    readonly _id: string,
     _deleted?: boolean,
     readonly tag: ModelName,
 }
 
-interface Saved extends Saveable {
+interface Puttable extends Saveable {
+    _id: string,
+}
+
+interface Saved extends Puttable {
     _rev: string,
 }
 
@@ -25,7 +28,7 @@ interface ExerciseSetLog {
 };
 
 interface WorkoutLog {
-    workout: Workout & Saveable,
+    workout: Workout & Puttable,
     sets: Array<ExerciseSetLog>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,
@@ -58,6 +61,7 @@ interface Program {
 export {
     Saveable,
     Saved,
+    Puttable,
     ModelName,
     Exercise,
     SetUnits,

@@ -31,9 +31,6 @@ const init = function() {
 const getAllItems = (key: ModelName) => {
     return db.allDocs({startkey: key+'_', endkey: key+'_\uffff', include_docs: true});
 }
-const remove = function(object: Saveable & IObservableObject) {
-    object._deleted = true
-};
 
 const findLogsByWorkoutId = (id: string) => {
     return db.find({
@@ -93,7 +90,6 @@ function deleteSaveableRecord (object: Saveable): void {
 export default {
     init,
     getAllItems,
-    remove,
     findLogsByWorkoutId,
     fetchSaveableRecord,
     promiseSaveableRecord,

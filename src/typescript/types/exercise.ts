@@ -1,6 +1,6 @@
 type SetUnits = 'reps' | 'seconds';
 
-type ModelName = 'workout' | 'exercise' | 'log' | 'program' | 'rest'
+type ModelName = 'workout' | 'exercise' | 'workoutlog' | 'program' | 'rest'
 
 interface Saveable {
     _deleted?: boolean,
@@ -33,7 +33,7 @@ interface WorkoutLog {
     date: number,
     comments: string,
     _deleted?: boolean,
-    tag: 'log',
+    tag: 'workoutlog',
 };
 
 interface ExercisePrescription {

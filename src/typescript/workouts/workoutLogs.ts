@@ -30,7 +30,7 @@ const getEmptyLogForWorkout = (workout: Workout & Puttable) => {
         sets: setLogs,
         date: Date.now(),
         comments: '',
-        tag: 'log',
+        tag: 'workoutlog',
     }
     return log
 }

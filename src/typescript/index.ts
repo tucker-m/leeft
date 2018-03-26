@@ -47,6 +47,18 @@ let componentList = {
         return Page({
             topBarButtons: [
                 {
+                    text: '+ Program',
+                    action: () => {
+                        db.promiseSaveableRecord<Program>({
+                            name: '',
+                            schedule: [],
+                            tag: 'program',
+                        }).then((program) => {
+                            window.location.href = `#!/programs/${program._id}`
+                        })
+                    }
+                },
+                {
                     text: '+ Workout',
                     action: () => {
                         db.promiseSaveableRecord<Workout>({

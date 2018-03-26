@@ -4,6 +4,7 @@ import db from '../helpers/db'
 import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
 import Page from '../ui/page'
+import H1 from '../ui/h1'
 
 interface ViewLogAttrs {
     id: string
@@ -46,8 +47,8 @@ export default (vnode: ViewLogVnode) => {
                     }
                 ],
                 contents: [
-                    m('h1', log.workout.name == '' ? 'Untitled' : log.workout.name),
-                    m('h4', utils.formatDate(log.date)),
+                    H1({text: utils.formatDate(log.date)}),
+                    m('h4', log.workout.name == '' ? 'Untitled' : log.workout.name),
                     m('table', [
                         m('thead', [
                             m('tr', [

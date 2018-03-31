@@ -9,7 +9,7 @@ const {classes} = jss.createStyleSheet(style.main).attach()
 
 type DisplayElement = null | m.Vnode<{}, {}> | Array<m.Vnode<{}, {}>>
 interface PageAttrs {
-    contents: Array<DisplayElement>,
+    contents: Array<DisplayElement> | DisplayElement,
     topBarButtons: Array<TopBarButtonAttrs>,
     topBarColor?: string,
 }

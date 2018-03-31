@@ -9,6 +9,7 @@ import Page from '../ui/page'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
+import colors from '../../jss/variables/colors'
 
 jss.setup(preset())
 const {classes: main} = jss.createStyleSheet(style.main).attach()
@@ -44,7 +45,7 @@ export default (vnode: ViewWorkoutVnode) => {
                         secondState: {
                             text: 'Done Editing',
                             action: () => { pageEditable = false },
-                            color: '#1d70d6',
+                            color: colors.editable,
                         }
                     },
                     {

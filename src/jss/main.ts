@@ -1,3 +1,5 @@
+import colors from './variables/colors'
+
 export default {
     constraint: {
         maxWidth: '1000px',
@@ -34,7 +36,7 @@ export default {
         fontStyle: 'italic',
     },
     editable: {
-        border: '.15rem dashed #1d70d6',
+        border: `.15rem dashed ${colors.editable}`,
         padding: '.5rem',
         marginTop: '-.65rem',
         marginBottom: '-.65rem',

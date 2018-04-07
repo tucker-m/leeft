@@ -2,6 +2,9 @@ import * as m from 'mithril'
 import {Program, Workout} from '../types/exercise'
 import db from '../helpers/db'
 import EditableH1 from '../ui/editableH1'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+import styles from '../../styles'
 
 interface ContentAttrs {
     program: Program,
@@ -11,6 +14,9 @@ interface ContentAttrs {
 interface ContentVnode {
     attrs: ContentAttrs
 }
+
+jss.setup(preset())
+const {classes} = jss.createStyleSheet(styles.typography).attach()
 
 const ProgramContent = (vnode: ContentVnode) => {
     let allWorkouts: Array<Workout> = []
@@ -37,7 +43,9 @@ const ProgramContent = (vnode: ContentVnode) => {
                             return prescription.exercise.name
                         }).join(', ')
                     return m('div', [
-                        m('h3', `Day ${index + 1}: ${workoutText}`),
+                        m('h3', {
+                            class: classes.h3,
+                        }, `Day ${index + 1}: ${workoutText}`),
                         m('p', workoutDescription)
                     ])
                 }),

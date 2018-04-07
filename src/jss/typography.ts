@@ -5,6 +5,9 @@ export default {
         marginTop: '1rem',
         marginBottom: '1rem',
     },
+    h3: {
+        fontSize: '1.5rem',
+    },
     editableH1: {
         extend: 'h1',
     },

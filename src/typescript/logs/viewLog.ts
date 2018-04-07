@@ -5,6 +5,12 @@ import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
 import Page from '../ui/page'
 import H1 from '../ui/h1'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+import style from '../../styles'
+
+jss.setup(preset())
+const {classes} = jss.createStyleSheet(style).attach()
 
 interface ViewLogAttrs {
     id: string
@@ -37,6 +43,7 @@ export default (vnode: ViewLogVnode) => {
                 return m('p', 'Loading')
             }
             return Page({
+                css: classes,
                 topBarButtons: [
                     {
                         text: 'Delete this log',
@@ -47,7 +54,7 @@ export default (vnode: ViewLogVnode) => {
                     }
                 ],
                 contents: [
-                    H1({text: utils.formatDate(log.date)}),
+                    H1({text: utils.formatDate(log.date), css: classes}),
                     m('h4', log.workout.name == '' ? 'Untitled' : log.workout.name),
                     m('table', [
                         m('thead', [

@@ -12,7 +12,7 @@ import style from '../../styles'
 import colors from '../../jss/variables/colors'
 
 jss.setup(preset())
-const {classes: main} = jss.createStyleSheet(style.main).attach()
+const {classes} = jss.createStyleSheet(style).attach()
 
 interface ViewWorkoutAttrs {
     id: string
@@ -38,6 +38,7 @@ export default (vnode: ViewWorkoutVnode) => {
     return {
         view: (vnode: ViewWorkoutVnode) => {
             return Page({
+                css: classes,
                 topBarButtons: [
                     {
                         text: 'Edit Workout',
@@ -63,11 +64,13 @@ export default (vnode: ViewWorkoutVnode) => {
                         placeholder: 'Untitled Workout',
                         updateFunc: (newName: string) => { workout.name = newName },
                         showEditButton: pageEditable,
+                        css: classes,
                     }),
                     WorkoutTable({
                         headers: ['Exercise', 'Amount'],
                         prescriptions: workout.prescriptions,
                         showEditButtons: pageEditable,
+                        css: classes,
                     }),
                     pageEditable ?
                         m('button', {

@@ -2,21 +2,16 @@ import * as m from 'mithril'
 import {Program, Workout} from '../types/exercise'
 import db from '../helpers/db'
 import EditableH1 from '../ui/editableH1'
-import jss from 'jss'
-import preset from 'jss-preset-default'
-import styles from '../../styles'
 
 interface ContentAttrs {
     program: Program,
     pageEditable: boolean,
+    css: any,
 }
 
 interface ContentVnode {
     attrs: ContentAttrs
 }
-
-jss.setup(preset())
-const {classes} = jss.createStyleSheet(styles.typography).attach()
 
 const ProgramContent = (vnode: ContentVnode) => {
     let allWorkouts: Array<Workout> = []
@@ -25,6 +20,7 @@ const ProgramContent = (vnode: ContentVnode) => {
         m.redraw()
     })
     let selectedIndex = 0
+    const css = vnode.attrs.css
     return {
         view: (vnode: ContentVnode) => {
             const program = vnode.attrs.program
@@ -34,7 +30,8 @@ const ProgramContent = (vnode: ContentVnode) => {
                     name: program.name,
                     placeholder: 'Untitled Program',
                     updateFunc: (newName) => {program.name = newName},
-                    showEditButton: pageEditable
+                    showEditButton: pageEditable,
+                    css: css,
                 }),
                 program.schedule.map((workout, index) => {
                     const workoutText = workout.tag === 'rest' ? 'Rest' : workout.name
@@ -44,7 +41,7 @@ const ProgramContent = (vnode: ContentVnode) => {
                         }).join(', ')
                     return m('div', [
                         m('h3', {
-                            class: classes.h3,
+                            class: css.h3,
                         }, `Day ${index + 1}: ${workoutText}`),
                         m('p', workoutDescription)
                     ])

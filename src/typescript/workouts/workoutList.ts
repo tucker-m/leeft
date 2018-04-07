@@ -3,17 +3,11 @@ import {Saveable, Saved, Puttable, Workout, SetUnits} from '../types/exercise';
 import preventDefault from '../helpers/preventDefaultFunction';
 import {IObservableObject} from 'mobx'
 import db from '../helpers/db'
-import style from '../../styles'
-import jss from 'jss'
-import preset from 'jss-preset-default'
 import utils from '../helpers/utils'
-
-jss.setup(preset())
-const {classes} = jss.createStyleSheet(style.main).attach()
-const {classes: typography} = jss.createStyleSheet(style.typography).attach()
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Puttable>,
+    css: any,
 };
 
 interface WorkoutListVnode {
@@ -21,6 +15,7 @@ interface WorkoutListVnode {
 };
 
 let WorkoutListComponent = function(vnode: WorkoutListVnode) {
+    const css = vnode.attrs.css
     return {
         view: function(vnode: WorkoutListVnode) {
             let elements: Array<m.Vnode<{}, {}>> = [];
@@ -33,18 +28,18 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         return prescription.exercise.name
                     })
                     return m('li', {
-                        class: classes.workoutList,
+                        class: css.workoutList,
                     }, [
                         m('a', {
                             href: '/workouts/' + workout._id,
                             oncreate: m.route.link,
-                            class: typography.workoutTitle,
+                            class: css.workoutTitle,
                         }, workout.name ? workout.name : 'Untitled Workout'),
                         m('p', {
                             class: utils.combineStyles([
-                                classes.workoutListExercises,
+                                css.workoutListExercises,
                                 workoutExerciseNames.length == 0
-                                    ? classes.noExercises : '',
+                                    ? css.noExercises : '',
                             ])
                         }, workoutExerciseNames.length > 0
                           ? workoutExerciseNames.join(', ')

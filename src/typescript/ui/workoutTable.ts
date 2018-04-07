@@ -1,18 +1,13 @@
 import * as m from 'mithril'
 import {ExercisePrescription} from '../types/exercise'
 import ViewWorkoutRow from './viewWorkoutRow'
-import jss from 'jss'
-import preset from 'jss-preset-default'
-import style from '../../styles'
 import utils from '../helpers/utils'
-
-jss.setup(preset())
-const {classes} = jss.createStyleSheet(style.main).attach()
 
 interface TableAttributes {
     headers: Array<String>,
     prescriptions: Array<ExercisePrescription>,
     showEditButtons: boolean,
+    css: any,
 }
 
 interface TableVnode {
@@ -20,16 +15,17 @@ interface TableVnode {
 }
 
 const TableComponent = (vnode: TableVnode) => {
+    const css = vnode.attrs.css
     return {
         view: (vnode: TableVnode) => {
             return m('table', {
                 class: utils.combineStyles([
-                    classes.table,
-                    vnode.attrs.showEditButtons ? classes.editable : ''
+                    css.table,
+                    vnode.attrs.showEditButtons ? css.editable : ''
                 ]),
             }, [
                 m('tr', {
-                    class: classes.tr,
+                    class: css.tr,
                 }, vnode.attrs.headers.map((header) => {
                     return m('th', header)
                 })),
@@ -40,6 +36,7 @@ const TableComponent = (vnode: TableVnode) => {
                         deleteFunction: () => {
                             vnode.attrs.prescriptions.splice(index, 1);
                         },
+                        css: css,
                     });
                 })
             ])

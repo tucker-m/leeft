@@ -1,10 +1,4 @@
 import * as m from 'mithril'
-import jss from 'jss'
-import preset from 'jss-preset-default'
-import style from '../../styles'
-
-jss.setup(preset())
-const {classes} = jss.createStyleSheet(style.topBar).attach()
 
 interface TopBarButtonAttrs {
     text: string,
@@ -15,6 +9,7 @@ interface TopBarButtonAttrs {
         color: string,
     }
     setColor: (string) => void,
+    css: any,
 }
 
 interface TopBarButtonVnode {
@@ -36,7 +31,7 @@ const TopBarButtonComponent = (vnode: TopBarButtonVnode) => {
                     currentBtnIdx = (currentBtnIdx + 1) % buttonStates.length
                     vnode.attrs.setColor(buttonStates[currentBtnIdx].color)
                 },
-                class: classes.button,
+                class: vnode.attrs.css.button,
             }, buttonStates[currentBtnIdx].text)
         }
     }

@@ -14,8 +14,7 @@ import Page from './ui/page'
 import H1 from './ui/h1'
 
 jss.setup(preset())
-const {classes: typography} = jss.createStyleSheet(styles.typography).attach()
-
+const {classes} = jss.createStyleSheet(styles).attach()
 db.init();
 
 let App = {
@@ -39,12 +38,13 @@ db.fetchSaveableCollection<Program>('program').then((collection) => {
 let componentList = {
     view: function() {
         const contents = [
-            H1({text: 'All Programs'}),
+            H1({text: 'All Programs', css: classes}),
             ProgramList({allPrograms}),
-            H1({text: 'All Workouts'}),
-            WorkoutList({allWorkouts})
+            H1({text: 'All Workouts', css: classes}),
+            WorkoutList({allWorkouts, css: classes})
         ]
         return Page({
+            css: classes,
             topBarButtons: [
                 {
                     text: '+ Program',

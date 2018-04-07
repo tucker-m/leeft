@@ -9,7 +9,7 @@ import preset from 'jss-preset-default'
 import style from '../../styles'
 
 jss.setup(preset())
-const {classes: main} = jss.createStyleSheet(style.main).attach()
+const {classes} = jss.createStyleSheet(style).attach()
 
 interface ViewProgramAttrs {
     id: string
@@ -30,6 +30,7 @@ export default (vnode: ViewProgramVnode) => {
     return {
         view: (vnode: ViewProgramVnode) => {
             return Page({
+                css: classes,
                 topBarButtons: [
                     {
                         text: 'Edit Program',
@@ -42,7 +43,7 @@ export default (vnode: ViewProgramVnode) => {
                     },
                 ],
                 topBarColor: '#831dd6',
-                contents: program === null ? null : ProgramContents({program, pageEditable})
+                contents: program === null ? null : ProgramContents({program, pageEditable, css: classes})
             })
         }
     };

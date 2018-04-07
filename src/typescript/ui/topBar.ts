@@ -1,7 +1,4 @@
 import * as m from 'mithril'
-import style from '../../styles'
-import jss from 'jss'
-import preset from 'jss-preset-default'
 import utils from '../helpers/utils'
 import {TopBarButton} from '../types/components'
 
@@ -18,15 +15,12 @@ interface TopBarButtonAttrs {
 interface TopBarAttrs {
     buttons: Array<TopBarButtonAttrs>,
     color?: string,
+    css: any,
 }
 
 interface TopBarVnode {
     attrs: TopBarAttrs,
 }
-
-jss.setup(preset())
-const {classes} = jss.createStyleSheet(style.topBar).attach()
-const {classes: main} = jss.createStyleSheet(style.main).attach()
 
 const TopBarComponent = (vnode: TopBarVnode) => {
     let currentColor = ''
@@ -35,7 +29,7 @@ const TopBarComponent = (vnode: TopBarVnode) => {
         currentColor= vnode.attrs.color
         defaultColor = vnode.attrs.color
     }
-
+    const css = vnode.attrs.css
     return {
         view: (vnode: TopBarVnode) => {
             const buttons = m('div', vnode.attrs.buttons.map((buttonAttr) => {
@@ -44,7 +38,8 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                     action: buttonAttr.action,
                     setColor: (color: string) => {
                         currentColor = color ? color : defaultColor
-                    }
+                    },
+                    css: css,
                 }
                 if (buttonAttr.secondState) {
                     attrs['secondState'] = {
@@ -58,19 +53,19 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 
             return m('div', [
                 m('div', {
-                    class: classes.headerSection,
+                    class: css.headerSection,
                 }, m('a', {
                     href: '/',
                     oncreate: m.route.link,
                 }, 'Home')),
                 m('div', {
                     class: utils.combineStyles([
-                        classes.alignment,
-                        classes.main,
+                        css.alignment,
+                        css.main,
                     ]),
                     style: currentColor ? `background-color: ${currentColor}` : '',
                 }, m('div', {
-                    class: main.constraint,
+                    class: css.constraint,
                 }, buttons))
             ])
         }

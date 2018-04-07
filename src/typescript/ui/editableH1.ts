@@ -1,7 +1,4 @@
 import * as m from 'mithril'
-import jss from 'jss'
-import preset from 'jss-preset-default'
-import style from '../../styles'
 import utils from '../helpers/utils'
 import H1 from './h1'
 
@@ -11,21 +8,20 @@ interface EditableVnode {
         placeholder: string,
         updateFunc: (newName: string) => void,
         showEditButton: boolean,
+        css: any,
     }
 }
 
-jss.setup(preset())
-const {classes} = jss.createStyleSheet(style.typography).attach()
-
 const EditableH1 = function(vnode: EditableVnode) {
     let beingEdited = false
+    const css = vnode.attrs.css
     return {
         view: function(vnode: EditableVnode) {
             let name = vnode.attrs.name
-            let className = classes.editableH1
+            let className = css.editableH1
             if (!name) {
                 name = vnode.attrs.placeholder
-                className = classes.placeholderEditableH1
+                className = css.placeholderEditableH1
             }
             return m('div.editable-h1', {
                 class: utils.combineStyles([
@@ -35,7 +31,7 @@ const EditableH1 = function(vnode: EditableVnode) {
             }, [
                 !beingEdited ?
                     m('div', [
-                        H1({text: name, classes: [className]}),
+                        H1({text: name, classes: [className], css: css}),
                         vnode.attrs.showEditButton
                             ? m('button', {
                                 onclick: () => { beingEdited = true }

@@ -19,4 +19,10 @@ export default {
     workoutTitle: {
         fontSize: '1.5rem',
     },
+    workoutNameInProgram: {
+        fontSize: '1.3rem',
+    },
+    exerciseNamesInProgram: {
+        paddingLeft: '1rem',
+    }
 }

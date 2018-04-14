@@ -18,7 +18,7 @@ export default {
         }
     },
     td: {
-        padding: '0.5rem',
+        padding: '0.25rem',
         '&:not(:last-of-type)': {
             paddingRight: '1.5rem',
         }

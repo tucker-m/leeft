@@ -33,19 +33,39 @@ const ProgramContent = (vnode: ContentVnode) => {
                     showEditButton: pageEditable,
                     css: css,
                 }),
-                program.schedule.map((workout, index) => {
+                m('table', {
+                    class: css.table,
+                }, program.schedule.map((workout, index) => {
                     const workoutText = workout.tag === 'rest' ? 'Rest' : workout.name
                     const workoutDescription = workout.tag === 'rest' ? ''
                         : workout.prescriptions.map((prescription) => {
                             return prescription.exercise.name
                         }).join(', ')
-                    return m('div', [
-                        m('h3', {
-                            class: css.h3,
-                        }, `Day ${index + 1}: ${workoutText}`),
-                        m('p', workoutDescription)
+                    return m('tr', [
+                        m('td', {class: css.td}, `Day ${index + 1}`),
+                        m('td', {class: css.td}, [
+                            m('p', {class: css.workoutNameInProgram}, workoutText),
+                            m('p', {class: css.exerciseNamesInProgram}, workoutDescription),
+                        ]),
+                        pageEditable ? m('td', {class: css.td}, [
+                            m('a', {
+                                onclick: () => {
+                                    let newArray = program.schedule.slice(0, index).concat(program.schedule.slice(index + 1, program.schedule.length))
+                                    newArray.splice(index - 1, 0, workout)
+                                    program.schedule = newArray
+                                }
+                            }, 'Move Up'),
+                            m('span', ' / '),
+                            m('a', {
+                                onclick: () => {
+                                    let newArray = program.schedule.slice(0, index).concat(program.schedule.slice(index + 1, program.schedule.length))
+                                    newArray.splice(index + 1, 0, workout)
+                                    program.schedule = newArray
+                                }
+                            }, 'Move Down'),
+                        ]) : null,
                     ])
-                }),
+                })),
                 pageEditable ? m('div', [
                     m('label', 'Add workout to this program: '),
                     m('select', {

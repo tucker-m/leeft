@@ -63,6 +63,11 @@ const ProgramContent = (vnode: ContentVnode) => {
                                     program.schedule = newArray
                                 }
                             }, 'Move Down'),
+                            m('a', {
+                                onclick: () => {
+                                    program.schedule.splice(index, 1)
+                                }
+                            }, 'remove'),
                         ]) : null,
                     ])
                 })),

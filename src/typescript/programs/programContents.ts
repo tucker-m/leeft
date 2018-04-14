@@ -48,21 +48,24 @@ const ProgramContent = (vnode: ContentVnode) => {
                             m('p', {class: css.exerciseNamesInProgram}, workoutDescription),
                         ]),
                         pageEditable ? m('td', {class: css.td}, [
-                            m('a', {
-                                onclick: () => {
-                                    let newArray = program.schedule.slice(0, index).concat(program.schedule.slice(index + 1, program.schedule.length))
-                                    newArray.splice(index - 1, 0, workout)
-                                    program.schedule = newArray
-                                }
-                            }, 'Move Up'),
-                            m('span', ' / '),
-                            m('a', {
-                                onclick: () => {
-                                    let newArray = program.schedule.slice(0, index).concat(program.schedule.slice(index + 1, program.schedule.length))
-                                    newArray.splice(index + 1, 0, workout)
-                                    program.schedule = newArray
-                                }
-                            }, 'Move Down'),
+                            index != 0
+                                ? m('a', {
+                                    onclick: () => {
+                                        let newArray = program.schedule.slice(0, index).concat(program.schedule.slice(index + 1, program.schedule.length))
+                                        newArray.splice(index - 1, 0, workout)
+                                        program.schedule = newArray
+                                    }
+                                }, 'Move Up')
+                            : null,
+                            index != program.schedule.length - 1
+                                ? m('a', {
+                                    onclick: () => {
+                                        let newArray = program.schedule.slice(0, index).concat(program.schedule.slice(index + 1, program.schedule.length))
+                                        newArray.splice(index + 1, 0, workout)
+                                        program.schedule = newArray
+                                    }
+                                }, 'Move Down')
+                            : null,
                             m('a', {
                                 onclick: () => {
                                     program.schedule.splice(index, 1)

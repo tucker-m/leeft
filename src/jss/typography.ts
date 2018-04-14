@@ -16,7 +16,7 @@ export default {
         color: '#969696',
         fontStyle: 'italic',
     },
-    workoutTitle: {
+    itemTitle: {
         fontSize: '1.5rem',
     },
     workoutNameInProgram: {
@@ -24,5 +24,9 @@ export default {
     },
     exerciseNamesInProgram: {
         paddingLeft: '1rem',
-    }
+    },
+    empty: {
+        opacity: '0.6',
+        fontStyle: 'italic',
+    },
 }

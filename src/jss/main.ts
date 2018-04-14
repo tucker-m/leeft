@@ -31,10 +31,6 @@ export default {
     workoutListExercises: {
         fontSize: '1.1rem',
     },
-    noExercises: {
-        color: '#969696',
-        fontStyle: 'italic',
-    },
     editable: {
         border: `.15rem dashed ${colors.editable}`,
         padding: '.5rem',

@@ -39,7 +39,7 @@ let componentList = {
     view: function() {
         const contents = [
             H1({text: 'All Programs', css: classes}),
-            ProgramList({allPrograms}),
+            ProgramList({allPrograms, css: classes}),
             H1({text: 'All Workouts', css: classes}),
             WorkoutList({allWorkouts, css: classes})
         ]

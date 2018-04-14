@@ -33,13 +33,16 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         m('a', {
                             href: '/workouts/' + workout._id,
                             oncreate: m.route.link,
-                            class: css.workoutTitle,
+                            class: utils.combineStyles([
+                                css.itemTitle,
+                                !workout.name ? css.empty : ''
+                            ]),
                         }, workout.name ? workout.name : 'Untitled Workout'),
                         m('p', {
                             class: utils.combineStyles([
                                 css.workoutListExercises,
                                 workoutExerciseNames.length == 0
-                                    ? css.noExercises : '',
+                                    ? css.empty: '',
                             ])
                         }, workoutExerciseNames.length > 0
                           ? workoutExerciseNames.join(', ')

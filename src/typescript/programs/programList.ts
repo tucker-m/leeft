@@ -3,6 +3,7 @@ import {Saveable, Puttable, Saved, Program} from '../types/exercise'
 
 interface ProgramListAttrs {
     allPrograms: Array<Program & Puttable>,
+    css: any,
 }
 interface ProgramListVnode {
     attrs: ProgramListAttrs
@@ -15,6 +16,7 @@ const ProgramList = (vnode: ProgramListVnode) => {
                 return m('a', {
                     href: '/programs/' + program._id,
                     oncreate: m.route.link,
+                    class: vnode.attrs.css.itemTitle,
                 }, program.name)
             }))
         }

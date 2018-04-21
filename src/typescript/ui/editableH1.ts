@@ -41,6 +41,7 @@ const EditableH1 = function(vnode: EditableVnode) {
                 : m('div', [
                     m('input[type=text]', {
                         value: vnode.attrs.name,
+                        placeholder: vnode.attrs.placeholder,
                         onchange: m.withAttr('value', vnode.attrs.updateFunc),
                     }),
                     vnode.attrs.showEditButton

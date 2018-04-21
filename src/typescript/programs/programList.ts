@@ -17,7 +17,7 @@ const ProgramList = (vnode: ProgramListVnode) => {
                     href: '/programs/' + program._id,
                     oncreate: m.route.link,
                     class: vnode.attrs.css.itemTitle,
-                }, program.name))
+                }, program.name ? program.name : 'Untitled Program'))
             }))
         }
     }

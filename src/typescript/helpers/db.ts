@@ -108,8 +108,6 @@ function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservable
             resolve(observableRecord)
         }).catch((error) => {
             reject(error)
-        }).finally((thing) => {
-            console.log(thing)
         })
     })
 }

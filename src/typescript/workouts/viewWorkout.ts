@@ -57,7 +57,7 @@ export default (vnode: ViewWorkoutVnode) => {
                         },
                     }
                 ],
-                topBarColor: '#831dd6',
+                topBarColor: 'none',
                 contents: [
                     EditableH1({
                         name: workout.name,

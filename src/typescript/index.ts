@@ -47,7 +47,7 @@ let componentList = {
             css: classes,
             topBarButtons: [
                 {
-                    text: '+ Program',
+                    text: '+ New Program',
                     action: () => {
                         db.promiseSaveableRecord<Program>({
                             name: '',
@@ -59,7 +59,7 @@ let componentList = {
                     }
                 },
                 {
-                    text: '+ Workout',
+                    text: '+ New Workout',
                     action: () => {
                         db.promiseSaveableRecord<Workout>({
                             name: '',

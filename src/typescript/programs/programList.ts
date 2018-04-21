@@ -13,11 +13,11 @@ const ProgramList = (vnode: ProgramListVnode) => {
     return {
         view: (vnode: ProgramListVnode) => {
             return m('div', vnode.attrs.allPrograms.map((program) => {
-                return m('a', {
+                return m('p', m('a', {
                     href: '/programs/' + program._id,
                     oncreate: m.route.link,
                     class: vnode.attrs.css.itemTitle,
-                }, program.name)
+                }, program.name))
             }))
         }
     }

@@ -38,11 +38,11 @@ export default (vnode: ViewProgramVnode) => {
                         secondState: {
                             text: 'Done Editing',
                             action: () => { pageEditable = false },
-                            color: '#1d70d6',
+                            color: 'none',
                         }
                     },
                 ],
-                topBarColor: '#831dd6',
+                topBarColor: 'none',
                 contents: program === null ? null : ProgramContents({program, pageEditable, css: classes})
             })
         }

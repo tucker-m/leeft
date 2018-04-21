@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, Puttable, ModelName, Workout, Exercise} from '../types/exercise';
+import {Saveable, Saved, Puttable, ModelName, Workout, Exercise, Settings} from '../types/exercise';
 import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -30,6 +30,23 @@ const init = function() {
 
 const getAllItems = (key: ModelName) => {
     return db.allDocs({startkey: key+'_', endkey: key+'_\uffff', include_docs: true});
+}
+
+const getSettings = () => {
+    return new Promise<Settings>((resolve, reject) => {
+        fetchSaveableRecord<Settings>('settings').then((settings) => {
+            resolve(settings)
+        }).catch((error) => {
+            const newSettings: Settings = {
+                tag: 'settings',
+                currentProgram: null,
+                nextWorkoutIndex: 0,
+            }
+            promiseSaveableRecord(newSettings).then((settings) => {
+                resolve(settings)
+            })
+        })
+    })
 }
 
 function fetchSaveableCollection<T> (tag: ModelName): Promise<Array<Puttable & T & IObservableObject>> {
@@ -84,16 +101,22 @@ function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservable
                 let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
                 db.put(savedObject).then((response) => {
                     rev = response.rev
+                }).catch((error) => {
+                    console.log(error)
                 })
             })
             resolve(observableRecord)
+        }).catch((error) => {
+            reject(error)
+        }).finally((thing) => {
+            console.log(thing)
         })
     })
 }
 
 function promiseSaveableRecord<T> (object: T & Saveable): Promise<Puttable & T & IObservableObject> {
     return new Promise<Puttable & T & IObservableObject>((resolve, reject) => {
-        const id = object.tag + '_' + Date.now()
+        const id = object.tag == 'settings' ? 'settings' : object.tag + '_' + Date.now()
         let rev = ''
         let objectWithId: Puttable & T = Object.assign(object, {_id: id, _deleted: false})
         let observeMe = observable(objectWithId)
@@ -117,6 +140,7 @@ function deleteSaveableRecord (object: Puttable): void {
 
 export default {
     init,
+    getSettings,
     findLogsByWorkoutId,
     fetchSaveableCollection,
     fetchSaveableRecord,

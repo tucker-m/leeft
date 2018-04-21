@@ -1,6 +1,6 @@
 import * as m from 'mithril'
 import db from '../helpers/db'
-import {Saveable, Program} from '../types/exercise'
+import {Saveable, Program, Settings} from '../types/exercise'
 import EditableH1 from '../ui/editableH1'
 import Page from '../ui/page'
 import ProgramContents from './programContents'
@@ -20,10 +20,13 @@ interface ViewProgramVnode {
 
 export default (vnode: ViewProgramVnode) => {
     let pageEditable = false
+    let settings: Settings = {tag: 'settings', currentProgram: null, nextWorkoutIndex: 0}
+    db.getSettings().then(record => {
+        settings = record
+        m.redraw()
+    })
     let program: Program | null = null
     db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
-        console.log('here')
-        console.log(returnedProgram)
         program = returnedProgram
         m.redraw()
     })
@@ -32,6 +35,10 @@ export default (vnode: ViewProgramVnode) => {
             return Page({
                 css: classes,
                 topBarButtons: [
+                    {
+                        text: 'Set as Current Program',
+                        action: () => {settings.currentProgram = program}
+                    },
                     {
                         text: 'Edit Program',
                         action: () => { pageEditable = true },

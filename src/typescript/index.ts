@@ -1,5 +1,5 @@
 import * as m from "mithril";
-import {Saveable, Puttable, Exercise, Workout, Program} from "./types/exercise";
+import {Saveable, Puttable, Exercise, Workout, Program, Settings} from "./types/exercise";
 import WorkoutList from './workouts/workoutList';
 import ProgramList from './programs/programList'
 import db from './helpers/db';
@@ -34,10 +34,16 @@ db.fetchSaveableCollection<Program>('program').then((collection) => {
     allPrograms = collection
     m.redraw()
 })
-
+let settings: Settings = {tag: 'settings', currentProgram: null, nextWorkoutIndex: 0}
+db.getSettings().then(record => {
+    settings = record
+    m.redraw()
+})
 let componentList = {
     view: function() {
         const contents = [
+            H1({text: 'Current Program', css: classes}),
+            m('p', settings.currentProgram ? settings.currentProgram.name : 'none'),
             H1({text: 'All Programs', css: classes}),
             ProgramList({allPrograms, css: classes}),
             H1({text: 'All Workouts', css: classes}),

@@ -1,6 +1,6 @@
 type SetUnits = 'reps' | 'seconds';
 
-type ModelName = 'workout' | 'exercise' | 'workoutlog' | 'program' | 'rest'
+type ModelName = 'workout' | 'exercise' | 'workoutlog' | 'program' | 'rest' | 'settings'
 
 interface Saveable {
     _deleted?: boolean,
@@ -58,6 +58,12 @@ interface Program {
     tag: 'program',
 }
 
+interface Settings {
+    tag: 'settings',
+    currentProgram: Program | null,
+    nextWorkoutIndex: number,
+}
+
 export {
     Saveable,
     Saved,
@@ -70,4 +76,5 @@ export {
     WorkoutLog,
     ExerciseSetLog,
     Program,
+    Settings,
 };

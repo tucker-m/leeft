@@ -2,6 +2,7 @@ import * as m from 'mithril'
 import {Program, Workout} from '../types/exercise'
 import db from '../helpers/db'
 import EditableH1 from '../ui/editableH1'
+import WorkoutTable from '../ui/workoutTable'
 
 interface ContentAttrs {
     program: Program,
@@ -21,6 +22,11 @@ const ProgramContent = (vnode: ContentVnode) => {
     })
     let selectedIndex = 0
     const css = vnode.attrs.css
+    const workoutToAdd: Workout = {
+        name: '',
+        prescriptions: [],
+        tag: 'workout',
+    }
     return {
         view: (vnode: ContentVnode) => {
             const program = vnode.attrs.program
@@ -75,7 +81,8 @@ const ProgramContent = (vnode: ContentVnode) => {
                     ])
                 })),
                 pageEditable ? m('div', [
-                    m('label', 'Add workout to this program: '),
+                    m('h3', 'Add workout to this program: '),
+                    m('label', 'Select existing workout'),
                     m('select', {
                         onchange: m.withAttr('value', (value: string) => {selectedIndex = parseInt(value)})
                     }, allWorkouts.map((workout, index) => {
@@ -86,6 +93,31 @@ const ProgramContent = (vnode: ContentVnode) => {
                             program.schedule.push(allWorkouts[selectedIndex])
                         }
                     }, 'Add'),
+                    WorkoutTable({
+                        headers: ['Exercise', 'Amount'],
+                        prescriptions: workoutToAdd.prescriptions,
+                        showEditButtons: true,
+                        css: vnode.attrs.css,
+                    }),
+                    m('button', {
+                        onclick: () => {
+                            workoutToAdd.prescriptions.push({
+                                exercise: {
+                                    name: '',
+                                    setUnits: 'reps',
+                                    tag: 'exercise',
+                                },
+                                sets: 0,
+                                amount: 0,
+                            })
+                        }
+                    }, 'Add Exercise'),
+                    m('button', {
+                        onclick: () => {
+                            program.schedule.push(workoutToAdd)
+                        }
+                    }, 'Add this workout to program'),
+
                 ]) : null
             ])
         }

@@ -29,8 +29,10 @@ export default (vnode: ViewWorkoutVnode) => {
         tag: 'workout',
     }
     const day = vnode.attrs.day
+    let program: (Program & Puttable) | null = null
     if (day) {
         db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
+            program = returnedProgram
             const temp = <Workout>returnedProgram.schedule[parseInt(day)]
             workout = temp
             m.redraw()
@@ -47,6 +49,14 @@ export default (vnode: ViewWorkoutVnode) => {
 
     return {
         view: (vnode: ViewWorkoutVnode) => {
+            let contentAttrs = {
+                workout,
+                pageEditable,
+                css: classes
+            }
+            if (program) {
+                contentAttrs['program'] = program
+            }
             return Page({
                 css: classes,
                 topBarButtons: [
@@ -62,17 +72,13 @@ export default (vnode: ViewWorkoutVnode) => {
                     {
                         text: 'Delete Workout',
                         action: () => {
-                            //db.deleteSaveableRecord(workout)
+                            //db.deleteSaveableRecord(workout) TODO: make this work again
                             window.location.href = '#!'
                         },
                     }
                 ],
                 topBarColor: 'none',
-                contents: workout == null ? null : WorkoutContent({
-                    workout,
-                    pageEditable,
-                    css: classes
-                }),
+                contents: workout == null ? null : WorkoutContent(contentAttrs),
             })
         }
     };

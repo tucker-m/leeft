@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import db from '../helpers/db';
-import {Saveable, Saved, Puttable, Workout} from '../types/exercise';
-import WorkoutLogs from '../workouts/workoutLogs';
+import {Saveable, Saved, Puttable, Workout, Program} from '../types/exercise';
+import WorkoutContent from './workoutContents'
 import {observable, IObservableObject} from 'mobx';
 import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
@@ -15,23 +15,33 @@ jss.setup(preset())
 const {classes} = jss.createStyleSheet(style).attach()
 
 interface ViewWorkoutAttrs {
-    id: string
+    id: string,
+    day?: string,
 };
 interface ViewWorkoutVnode {
     attrs: ViewWorkoutAttrs,
 };
 
 export default (vnode: ViewWorkoutVnode) => {
-    let workout: (Workout & Puttable) = {
+    let workout: (Workout) = {
         name: '',
         prescriptions: [],
         tag: 'workout',
-        _id: 'fakeid',
     }
-    db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
-        workout = returnedWorkout;
-        m.redraw();
-    })
+    const day = vnode.attrs.day
+    if (day) {
+        db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
+            const temp = <Workout>returnedProgram.schedule[parseInt(day)]
+            workout = temp
+            m.redraw()
+        })
+    }
+    else {
+        db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
+            workout = returnedWorkout;
+            m.redraw();
+        })
+    }
 
     let pageEditable = false
 
@@ -52,45 +62,17 @@ export default (vnode: ViewWorkoutVnode) => {
                     {
                         text: 'Delete Workout',
                         action: () => {
-                            db.deleteSaveableRecord(workout)
+                            //db.deleteSaveableRecord(workout)
                             window.location.href = '#!'
                         },
                     }
                 ],
                 topBarColor: 'none',
-                contents: [
-                    EditableH1({
-                        name: workout.name,
-                        placeholder: 'Untitled Workout',
-                        updateFunc: (newName: string) => { workout.name = newName },
-                        showEditButton: pageEditable,
-                        css: classes,
-                    }),
-                    WorkoutTable({
-                        headers: ['Exercise', 'Amount'],
-                        prescriptions: workout.prescriptions,
-                        showEditButtons: pageEditable,
-                        css: classes,
-                    }),
-                    pageEditable ?
-                        m('button', {
-                            onclick: () => {
-                                workout.prescriptions.push({
-                                    exercise: {
-                                        name: '',
-                                        setUnits: 'reps',
-                                        tag: 'exercise',
-                                    },
-                                    sets: 0,
-                                    amount: 0,
-                                });
-                            }
-                        }, 'Add Exercise')
-                    : null,
-                    WorkoutLogs({
-                        workout: workout
-                    })
-                ],
+                contents: workout == null ? null : WorkoutContent({
+                    workout,
+                    pageEditable,
+                    css: classes
+                }),
             })
         }
     };

@@ -5,7 +5,7 @@ import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
 
 interface WorkoutLogAttrs {
-    workout: Workout & Puttable
+    workout: Workout
 }
 interface WorkoutLogVnode {
     attrs: WorkoutLogAttrs
@@ -13,7 +13,7 @@ interface WorkoutLogVnode {
 
 let logs: Array<WorkoutLog & Saveable> = []
 
-const getEmptyLogForWorkout = (workout: Workout & Puttable) => {
+const getEmptyLogForWorkout = (workout: Workout) => {
     let setLogs: Array<ExerciseSetLog> = []
     workout.prescriptions.forEach((prescription: ExercisePrescription) => {
         const emptySet: ExerciseSetLog = {
@@ -36,15 +36,15 @@ const getEmptyLogForWorkout = (workout: Workout & Puttable) => {
 }
 
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
-    let currentWorkoutId = vnode.attrs.workout._id;
+    let currentWorkoutName = vnode.attrs.workout.name;
     return {
         onbeforeupdate: (vnode: WorkoutLogVnode) => {
-            if (currentWorkoutId != vnode.attrs.workout._id) {
-                db.findLogsByWorkoutId(vnode.attrs.workout._id).then((results) => {
+            if (currentWorkoutName != vnode.attrs.workout.name) {
+                db.findLogsByWorkoutName(vnode.attrs.workout.name).then((results) => {
                     logs = results.docs
                     m.redraw()
                 })
-                currentWorkoutId = vnode.attrs.workout._id
+                currentWorkoutName = vnode.attrs.workout.name
             }
         },
         view: (vnode: WorkoutLogVnode) => {

@@ -21,7 +21,7 @@ const init = function() {
 
     db.createIndex({
         index: {
-            fields: ['workout._id', 'date']
+            fields: ['workout.name', 'date']
         }
     }).then((result) => {
     }).catch((error) => {
@@ -75,11 +75,11 @@ function fetchSaveableCollection<T> (tag: ModelName): Promise<Array<Puttable & T
     })
 }
 
-const findLogsByWorkoutId = (id: string) => {
+const findLogsByWorkoutName = (name: string) => {
     return db.find({
         selector: {
             $and: [
-                {'workout._id': id},
+                {'workout.name': name},
                 {'date': {$gt: null}}
             ]
         },
@@ -139,7 +139,7 @@ function deleteSaveableRecord (object: Puttable): void {
 export default {
     init,
     getSettings,
-    findLogsByWorkoutId,
+    findLogsByWorkoutName,
     fetchSaveableCollection,
     fetchSaveableRecord,
     promiseSaveableRecord,

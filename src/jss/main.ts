@@ -11,17 +11,18 @@ export default {
     table: {
         marginTop: '1rem',
         marginBottom: '1rem',
+        width: '100%',
     },
     tr: {
-        '&:nth-of-type(2)': {
+        '&:nth-of-type(2n)': {
             background: '#efefef',
         }
     },
     td: {
-        padding: '0.25rem',
+        padding: '0.5rem',
         '&:not(:last-of-type)': {
             paddingRight: '1.5rem',
-        }
+        },
     },
     workoutList: {
         '&:not(:last-of-type)': {
@@ -33,8 +34,5 @@ export default {
     },
     editable: {
         border: `.15rem dashed ${colors.editable}`,
-        padding: '.5rem',
-        marginTop: '-.65rem',
-        marginBottom: '-.65rem',
     }
 }

@@ -4,7 +4,6 @@ import ViewWorkoutRow from './viewWorkoutRow'
 import utils from '../helpers/utils'
 
 interface TableAttributes {
-    headers: Array<String>,
     prescriptions: Array<ExercisePrescription>,
     showEditButtons: boolean,
     css: any,
@@ -18,27 +17,47 @@ const TableComponent = (vnode: TableVnode) => {
     const css = vnode.attrs.css
     return {
         view: (vnode: TableVnode) => {
-            return m('table', {
-                class: utils.combineStyles([
-                    css.table,
-                    vnode.attrs.showEditButtons ? css.editable : ''
-                ]),
-            }, [
-                m('tr', {
-                    class: css.tr,
-                }, vnode.attrs.headers.map((header) => {
-                    return m('th', header)
-                })),
-                vnode.attrs.prescriptions.map((prescription, index) => {
-                    return m(ViewWorkoutRow, {
-                        prescription,
-                        showEditButtons: vnode.attrs.showEditButtons,
-                        deleteFunction: () => {
-                            vnode.attrs.prescriptions.splice(index, 1);
-                        },
-                        css: css,
-                    });
-                })
+            return m('div', [
+                vnode.attrs.prescriptions.length > 0 ?
+                    m('table', {
+                        class: utils.combineStyles([
+                            css.table,
+                            vnode.attrs.showEditButtons ? css.editable : ''
+                        ]),
+                    }, [
+                        m('tr', {
+                            class: css.tr,
+                        }, [
+                            m('th', 'Exercise'),
+                            m('th', 'Amount'),
+                        ]),
+                        vnode.attrs.prescriptions.map((prescription, index) => {
+                            return m(ViewWorkoutRow, {
+                                prescription,
+                                showEditButtons: vnode.attrs.showEditButtons,
+                                deleteFunction: () => {
+                                    vnode.attrs.prescriptions.splice(index, 1);
+                                },
+                                css: css,
+                            });
+                        })
+                    ])
+                : m('p', 'This workout has no exercises added to it.'),
+                vnode.attrs.showEditButtons ?
+                    m('button', {
+                        onclick: () => {
+                            vnode.attrs.prescriptions.push({
+                                exercise: {
+                                    name: '',
+                                    setUnits: 'reps',
+                                    tag: 'exercise',
+                                },
+                                sets: 0,
+                                amount: 0,
+                            });
+                        }
+                    }, 'Add Exercise')
+                : null,
             ])
         }
     }

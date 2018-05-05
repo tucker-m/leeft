@@ -28,7 +28,7 @@ interface ExerciseSetLog {
 };
 
 interface WorkoutLog {
-    workout: Workout & Puttable,
+    workout: Workout,
     sets: Array<ExerciseSetLog>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,

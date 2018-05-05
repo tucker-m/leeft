@@ -1,11 +1,11 @@
 import * as m from 'mithril'
-import {Program, Workout} from '../types/exercise'
+import {Program, Workout, Puttable} from '../types/exercise'
 import db from '../helpers/db'
 import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
 
 interface ContentAttrs {
-    program: Program,
+    program: Program & Puttable,
     pageEditable: boolean,
     css: any,
 }
@@ -15,14 +15,9 @@ interface ContentVnode {
 }
 
 const ProgramContent = (vnode: ContentVnode) => {
-    let allWorkouts: Array<Workout> = []
-    db.fetchSaveableCollection<Workout>('workout').then((workouts) => {
-        allWorkouts = workouts
-        m.redraw()
-    })
     let selectedIndex = 0
     const css = vnode.attrs.css
-    const workoutToAdd: Workout = {
+    let workoutToAdd: Workout = {
         name: '',
         prescriptions: [],
         tag: 'workout',
@@ -42,15 +37,20 @@ const ProgramContent = (vnode: ContentVnode) => {
                 m('table', {
                     class: css.table,
                 }, program.schedule.map((workout, index) => {
-                    const workoutText = workout.tag === 'rest' ? 'Rest' : workout.name
                     const workoutDescription = workout.tag === 'rest' ? ''
                         : workout.prescriptions.map((prescription) => {
                             return prescription.exercise.name
                         }).join(', ')
-                    return m('tr', [
+                    return m('tr', {class: css.tr}, [
                         m('td', {class: css.td}, `Day ${index + 1}`),
                         m('td', {class: css.td}, [
-                            m('p', {class: css.workoutNameInProgram}, workoutText),
+                            workout.tag == 'rest'
+                                ? m('p', 'Rest')
+                                : m('a', {
+                                    class: css.workoutNameInProgram,
+                                    href: `/programs/${program._id}/workouts/${index}`,
+                                    oncreate: m.route.link,
+                                }, workout.name),
                             m('p', {class: css.exerciseNamesInProgram}, workoutDescription),
                         ]),
                         pageEditable ? m('td', {class: css.td}, [
@@ -81,43 +81,26 @@ const ProgramContent = (vnode: ContentVnode) => {
                     ])
                 })),
                 pageEditable ? m('div', [
-                    m('h3', 'Add workout to this program: '),
-                    m('label', 'Select existing workout'),
-                    m('select', {
-                        onchange: m.withAttr('value', (value: string) => {selectedIndex = parseInt(value)})
-                    }, allWorkouts.map((workout, index) => {
-                        return m('option', {value: index}, workout.name)
-                    })),
                     m('button', {
-                        onclick: () => {
-                            program.schedule.push(allWorkouts[selectedIndex])
-                        }
-                    }, 'Add'),
-                    WorkoutTable({
-                        headers: ['Exercise', 'Amount'],
-                        prescriptions: workoutToAdd.prescriptions,
-                        showEditButtons: true,
-                        css: vnode.attrs.css,
+                        onclick: () => {program.schedule.push({tag: 'rest'})}
+                    }, '+ Add a rest day'),
+                    m('h3', {class: vnode.attrs.css.h3}, 'Add a workout to this program'),
+                    m('label', 'Workout Name:'),
+                    m('input[type=text]', {
+                        placeholder: 'Untitled Workout',
+                        value: workoutToAdd.name,
+                        onchange: m.withAttr('value', value => workoutToAdd.name = value)
                     }),
-                    m('button', {
-                        onclick: () => {
-                            workoutToAdd.prescriptions.push({
-                                exercise: {
-                                    name: '',
-                                    setUnits: 'reps',
-                                    tag: 'exercise',
-                                },
-                                sets: 0,
-                                amount: 0,
-                            })
-                        }
-                    }, 'Add Exercise'),
                     m('button', {
                         onclick: () => {
                             program.schedule.push(workoutToAdd)
                         }
-                    }, 'Add this workout to program'),
-
+                    }, 'Add this workout to program ^'),
+                    WorkoutTable({
+                        prescriptions: workoutToAdd.prescriptions,
+                        showEditButtons: true,
+                        css: vnode.attrs.css,
+                    }),
                 ]) : null
             ])
         }

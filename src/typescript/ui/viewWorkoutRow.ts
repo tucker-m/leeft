@@ -12,90 +12,80 @@ interface RowVnode {
 };
 
 export default (vnode: RowVnode) => {
-    let beingEdited = vnode.attrs.prescription.exercise.name == '';
+    let beingEdited = false
     const css = vnode.attrs.css
     return {
         view: (vnode: RowVnode) => {
             let prescription = vnode.attrs.prescription;
-
-            if (beingEdited) {
-                return m('tr', {
-                    class: css.tr,
-                }, m('td', {
-                    colspan: 3,
+            return m('tr', {
+                class: css.tr,
+            }, [
+                m('td', {
                     class: css.td,
-                }, [
-                    m('input[type=text]', {
-                        value: prescription.exercise.name,
-                        onchange: m.withAttr('value', (value) => {
-                            prescription.exercise.name = value;
-                        }),
-                    }),
-                    m('div.input-group', [
-                        m('input[type=number].input-group-field', {
-                            value: prescription.sets,
-                            onchange: m.withAttr('value', (value) => {
-                                prescription.sets = parseInt(value);
-                            }),
-                        }),
-                        m('span.input-group-label', 'sets')
-                    ]),
-                    m('div.input-group', [
-                        m('input[type=number].input-group-field', {
-                            value: prescription.amount,
-                            onchange: m.withAttr('value', (value) => {
-                                prescription.amount = parseInt(value);
-                            })
-                        }),
-                        m('span.input-group-label', prescription.exercise.setUnits)
-                    ]),
-                    m('fieldset', [
-                        m('legend', 'Measured in:'),
-                        m('input[type=radio][name=setUnits]', {
-                            value: 'reps',
-                            checked: prescription.exercise.setUnits == 'reps',
-                            onclick: m.withAttr('value', (value) => {
-                                prescription.exercise.setUnits = value;
-                            }),
-                        }),
-                        m('label', 'reps'),
-                        m('input[type=radio][name=setUnits]', {
-                            value: 'seconds',
-                            checked: prescription.exercise.setUnits == 'seconds',
-                            onclick: m.withAttr('value', (value) => {
-                                prescription.exercise.setUnits = value;
-                            }),
-                        }),
-                        m('label', 'seconds')
-                    ]),
-                    m('button.button', {
-                        onclick: () => {
-                            beingEdited = false;
-                        },
-                    }, 'Save'),
-                ]))
-            }
-            else {
-                return m('tr', {
-                    class: css.tr,
-                }, [
-                    m('td', {
-                        class: css.td,
-                    }, prescription.exercise.name),
-                    m('td', {
-                        class: css.td,
-                    }, prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits),
-                    vnode.attrs.showEditButtons ? m('td', [
+                }, !beingEdited ?
+                  prescription.exercise.name
+                  : m('input[type=text]', {
+                      value: prescription.exercise.name,
+                      onchange: m.withAttr('value', (value) => {
+                          prescription.exercise.name = value;
+                      }),
+                  })),
+                m('td', {
+                    class: css.td,
+                }, !beingEdited ?
+                  (prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits)
+                  : m('div', [
+                      m('div.input-group', [
+                          m('input[type=number].input-group-field', {
+                              value: prescription.sets,
+                              onchange: m.withAttr('value', (value) => {
+                                  prescription.sets = parseInt(value);
+                              }),
+                          }),
+                          m('span.input-group-label', 'sets')
+                      ]),
+                      m('div.input-group', [
+                          m('input[type=number].input-group-field', {
+                              value: prescription.amount,
+                              onchange: m.withAttr('value', (value) => {
+                                  prescription.amount = parseInt(value);
+                              })
+                          }),
+                          m('span.input-group-label', prescription.exercise.setUnits)
+                      ]),
+                      m('fieldset', [
+                          m('legend', 'Measured in:'),
+                          m('input[type=radio][name=setUnits]', {
+                              value: 'reps',
+                              checked: prescription.exercise.setUnits == 'reps',
+                              onclick: m.withAttr('value', (value) => {
+                                  prescription.exercise.setUnits = value;
+                              }),
+                          }),
+                          m('label', 'reps'),
+                          m('input[type=radio][name=setUnits]', {
+                              value: 'seconds',
+                              checked: prescription.exercise.setUnits == 'seconds',
+                              onclick: m.withAttr('value', (value) => {
+                                  prescription.exercise.setUnits = value;
+                              }),
+                          }),
+                          m('label', 'seconds'),
+                      ]),
+                  ]),
+                 ),
+                vnode.attrs.showEditButtons ?
+                    m('td', {class: css.td}, [
                         m('a', {
-                            onclick: () => { beingEdited = true; },
-                        }, 'Edit'),
+                            onclick: () => { beingEdited = !beingEdited },
+                        }, beingEdited ? 'Done' : 'Edit'),
                         m('span', ' | '),
                         m('a', {
                             onclick: vnode.attrs.deleteFunction,
                         }, 'Remove'),
-                    ]) : null,
-                ]);
-            }
+                    ])
+                : null,
+            ]);
         }
     };
 };

@@ -49,7 +49,7 @@ export default (vnode: ViewLogVnode) => {
                         text: 'Delete this log',
                         action: () => {
                             db.deleteSaveableRecord(log)
-                            window.location.href = `#!/workouts/${log.workout._id}`
+                            window.location.href = `#!/`
                         }
                     }
                 ],

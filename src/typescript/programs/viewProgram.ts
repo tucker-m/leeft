@@ -1,6 +1,6 @@
 import * as m from 'mithril'
 import db from '../helpers/db'
-import {Saveable, Program, Settings} from '../types/exercise'
+import {Saveable, Program, Settings, Puttable} from '../types/exercise'
 import EditableH1 from '../ui/editableH1'
 import Page from '../ui/page'
 import ProgramContents from './programContents'
@@ -25,7 +25,7 @@ export default (vnode: ViewProgramVnode) => {
         settings = record
         m.redraw()
     })
-    let program: Program | null = null
+    let program: (Program & Puttable) | null = null
     db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
         program = returnedProgram
         m.redraw()

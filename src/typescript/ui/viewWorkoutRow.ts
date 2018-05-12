@@ -35,23 +35,23 @@ export default (vnode: RowVnode) => {
                 }, !beingEdited ?
                   (prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits)
                   : m('div', [
-                      m('div.input-group', [
-                          m('input[type=number].input-group-field', {
+                      m('div', [
+                          m('input[type=number]', {
                               value: prescription.sets,
                               onchange: m.withAttr('value', (value) => {
                                   prescription.sets = parseInt(value);
                               }),
                           }),
-                          m('span.input-group-label', 'sets')
+                          m('span', 'sets')
                       ]),
-                      m('div.input-group', [
-                          m('input[type=number].input-group-field', {
+                      m('div', [
+                          m('input[type=number]', {
                               value: prescription.amount,
                               onchange: m.withAttr('value', (value) => {
                                   prescription.amount = parseInt(value);
                               })
                           }),
-                          m('span.input-group-label', prescription.exercise.setUnits)
+                          m('span', prescription.exercise.setUnits)
                       ]),
                       m('fieldset', [
                           m('legend', 'Measured in:'),

@@ -17,11 +17,6 @@ interface ContentVnode {
 const ProgramContent = (vnode: ContentVnode) => {
     let selectedIndex = 0
     const css = vnode.attrs.css
-    let workoutToAdd: Workout = {
-        name: '',
-        prescriptions: [],
-        tag: 'workout',
-    }
     return {
         view: (vnode: ContentVnode) => {
             const program = vnode.attrs.program
@@ -84,23 +79,16 @@ const ProgramContent = (vnode: ContentVnode) => {
                     m('button', {
                         onclick: () => {program.schedule.push({tag: 'rest'})}
                     }, '+ Add a rest day'),
-                    m('h3', {class: vnode.attrs.css.h3}, 'Add a workout to this program'),
-                    m('label', 'Workout Name:'),
-                    m('input[type=text]', {
-                        placeholder: 'Untitled Workout',
-                        value: workoutToAdd.name,
-                        onchange: m.withAttr('value', value => workoutToAdd.name = value)
-                    }),
                     m('button', {
                         onclick: () => {
-                            program.schedule.push(workoutToAdd)
+                            const dayNum = program.schedule.push({
+                                tag: 'workout',
+                                prescriptions: [],
+                                name: ''
+                            })
+                            window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}`
                         }
-                    }, 'Add this workout to program ^'),
-                    WorkoutTable({
-                        prescriptions: workoutToAdd.prescriptions,
-                        showEditButtons: true,
-                        css: vnode.attrs.css,
-                    }),
+                    }, '+ Add a new workout'),
                 ]) : null
             ])
         }

@@ -1,5 +1,6 @@
 import * as m from 'mithril';
-import {ExercisePrescription} from '../types/exercise';
+import {Exercise, ExercisePrescription} from '../types/exercise';
+import db from '../helpers/db'
 
 interface RowAttrs {
     prescription: ExercisePrescription,
@@ -14,9 +15,10 @@ interface RowVnode {
 export default (vnode: RowVnode) => {
     let beingEdited = false
     const css = vnode.attrs.css
+    let searchResults = ['one', 'two', 'three']
     return {
         view: (vnode: RowVnode) => {
-            let prescription = vnode.attrs.prescription;
+            let prescription = vnode.attrs.prescription
             return m('tr', {
                 class: css.tr,
             }, [
@@ -24,12 +26,24 @@ export default (vnode: RowVnode) => {
                     class: css.td,
                 }, !beingEdited ?
                   prescription.exercise.name
-                  : m('input[type=text]', {
-                      value: prescription.exercise.name,
-                      onchange: m.withAttr('value', (value) => {
-                          prescription.exercise.name = value;
+                  : m('div', [
+                      m('input[type=text]', {
+                          value: prescription.exercise.name,
+                          // onchange: m.withAttr('value', (value) => {
+                          //     prescription.exercise.name = value
+                          // }),
+                          oninput: m.withAttr('value', (value) => {
+                              prescription.exercise.name = value
+                              db.findExercisesByName(value).then(result => {
+                                  searchResults = result.docs.map(result => result.name)
+                                  m.redraw()
+                              })
+                          }),
                       }),
-                  })),
+                      searchResults.map(result => {
+                          return m('p', result)
+                      }),
+                  ])),
                 m('td', {
                     class: css.td,
                 }, !beingEdited ?
@@ -77,7 +91,9 @@ export default (vnode: RowVnode) => {
                 vnode.attrs.showEditButtons ?
                     m('td', {class: css.td}, [
                         m('a', {
-                            onclick: () => { beingEdited = !beingEdited },
+                            onclick: () => {
+                                beingEdited = !beingEdited
+                            },
                         }, beingEdited ? 'Done' : 'Edit'),
                         m('span', ' | '),
                         m('a', {

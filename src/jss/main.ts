@@ -34,5 +34,13 @@ export default {
     },
     editable: {
         border: `.15rem dashed ${colors.editable}`,
+    },
+    fullScreenOverlay: {
+        backgroundColor: 'rgba(0, 0, 0, .9)',
+        color: 'white',
+        position: 'fixed',
+        width: '100vw',
+        height: '100vh',
+        padding: '3rem',
     }
 }

@@ -46,13 +46,17 @@ export default (vnode: ViewWorkoutVnode) => {
     }
 
     let pageEditable = false
+    let overlay = null
 
     return {
         view: (vnode: ViewWorkoutVnode) => {
             let contentAttrs = {
                 workout,
                 pageEditable,
-                css: classes
+                css: classes,
+                setOverlay: (overlayContent) => {
+                    overlay = overlayContent
+                }
             }
             if (program) {
                 contentAttrs['program'] = program
@@ -79,6 +83,10 @@ export default (vnode: ViewWorkoutVnode) => {
                 ],
                 topBarColor: 'none',
                 contents: workout == null ? null : WorkoutContent(contentAttrs),
+                overlay: overlay,
+                setOverlay: (overlayContent) => {
+                    overlay = overlayContent
+                }
             })
         }
     };

@@ -9,6 +9,7 @@ interface EditableVnode {
         updateFunc: (newName: string) => void,
         showEditButton: boolean,
         css: any,
+        setOverlay: (overlayContents) => void,
     }
 }
 
@@ -29,27 +30,20 @@ const EditableH1 = function(vnode: EditableVnode) {
                     vnode.attrs.showEditButton ? 'editable-showing' : '',
                 ])
             }, [
-                !beingEdited ?
-                    m('div', [
-                        H1({text: name, classes: [className], css: css}),
-                        vnode.attrs.showEditButton
-                            ? m('button', {
-                                onclick: () => { beingEdited = true }
-                            }, 'Edit')
-                        : null
-                    ])
-                : m('div', [
-                    m('input[type=text]', {
-                        value: vnode.attrs.name,
-                        placeholder: vnode.attrs.placeholder,
-                        onchange: m.withAttr('value', vnode.attrs.updateFunc),
-                    }),
+                m('div', [
+                    H1({text: name, classes: [className], css: css}),
                     vnode.attrs.showEditButton
                         ? m('button', {
-                            onclick: () => { beingEdited = false }
-                        }, 'Done')
-                    : null
-                ])
+                            onclick: () => {
+                                beingEdited = true
+                                vnode.attrs.setOverlay(m('input[type=text]', {
+                                    value: name,
+                                    onchange: m.withAttr('value', vnode.attrs.updateFunc)
+                                }))
+                            }
+                        }, 'Edit')
+                        : null
+                ]),
             ])
         }
     }

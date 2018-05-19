@@ -26,6 +26,12 @@ const init = function() {
     }).then((result) => {
     }).catch((error) => {
     })
+
+        db.createIndex({
+            index: {
+                fields: ['name', 'tag']
+            }
+        })
 };
 
 const getAllItems = (key: ModelName) => {
@@ -86,6 +92,15 @@ const findLogsByWorkoutName = (name: string) => {
     })
 }
 
+const findExercisesByName = (name: string) => {
+    return db.find({
+        selector: {
+            'name': {$regex: new RegExp(name)},
+            'tag': {$eq: 'exercise'}
+        }
+    })
+}
+
 function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservableObject> {
     return new Promise<Puttable & T & IObservableObject>((resolve, reject) => {
         let rev = ''
@@ -140,6 +155,7 @@ export default {
     init,
     getSettings,
     findLogsByWorkoutName,
+    findExercisesByName,
     fetchSaveableCollection,
     fetchSaveableRecord,
     promiseSaveableRecord,

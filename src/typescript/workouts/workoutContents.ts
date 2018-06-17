@@ -9,7 +9,7 @@ interface ContentAttrs {
     program?: Program & Puttable,
     pageEditable: boolean,
     css: any,
-    setOverlay: (overlayContents: null | m.Vnode<{}, {}> | Array<m.Vnode<{}, {}>>) => void,
+    showOverlayContent: (show: boolean) => void,
 }
 interface ContentVnode {
     attrs: ContentAttrs
@@ -34,7 +34,7 @@ const WorkoutContent = (vnode: ContentVnode) => {
                     updateFunc: (newName: string) => { workout.name = newName },
                     showEditButton: pageEditable,
                     css: classes,
-                    setOverlay: vnode.attrs.setOverlay,
+                    showOverlayContent: vnode.attrs.showOverlayContent,
                 }),
                 WorkoutTable({
                     prescriptions: workout.prescriptions,

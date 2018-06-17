@@ -46,48 +46,57 @@ export default (vnode: ViewWorkoutVnode) => {
     }
 
     let pageEditable = false
-    let overlay = null
-
+    let count = 0
+    let overlayShowing = false
+    const showOverlayContent = (show: boolean) => {
+        overlayShowing = show
+    }
     return {
         view: (vnode: ViewWorkoutVnode) => {
             let contentAttrs = {
                 workout,
                 pageEditable,
                 css: classes,
-                setOverlay: (overlayContent) => {
-                    overlay = overlayContent
-                }
+                showOverlayContent: showOverlayContent,
             }
             if (program) {
                 contentAttrs['program'] = program
             }
-            return Page({
-                css: classes,
-                topBarButtons: [
-                    {
-                        text: 'Edit Workout',
-                        action: () => { pageEditable = true },
-                        secondState: {
-                            text: 'Done Editing',
-                            action: () => { pageEditable = false },
-                            color: colors.editable,
-                        }
-                    },
-                    {
-                        text: 'Delete Workout',
-                        action: () => {
-                            //db.deleteSaveableRecord(workout) TODO: make this work again
-                            window.location.href = '#!'
+            return m('div', [
+                overlayShowing ?
+                    m('div', {
+                        class: classes.fullScreenOverlay,
+                    }, m('div', [
+                        m('button', {
+                            onclick: () => {count++}
+                        }, 'click'),
+                        m('p', count)
+                    ]))
+                    : null,
+                Page({
+                    css: classes,
+                    topBarButtons: [
+                        {
+                            text: 'Edit Workout',
+                            action: () => { pageEditable = true },
+                            secondState: {
+                                text: 'Done Editing',
+                                action: () => { pageEditable = false },
+                                color: colors.editable,
+                            }
                         },
-                    }
-                ],
-                topBarColor: 'none',
-                contents: workout == null ? null : WorkoutContent(contentAttrs),
-                overlay: overlay,
-                setOverlay: (overlayContent) => {
-                    overlay = overlayContent
-                }
-            })
+                        {
+                            text: 'Delete Workout',
+                            action: () => {
+                                //db.deleteSaveableRecord(workout) TODO: make this work again
+                                window.location.href = '#!'
+                            },
+                        }
+                    ],
+                    topBarColor: 'none',
+                    contents: workout == null ? null : WorkoutContent(contentAttrs),
+                })
+            ])
         }
     };
 };

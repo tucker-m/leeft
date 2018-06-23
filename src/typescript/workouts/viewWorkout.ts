@@ -8,6 +8,7 @@ import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
 import colors from '../../jss/variables/colors'
+import EditTitleOverlay from './overlays/editTitle'
 
 jss.setup(preset())
 const {classes} = jss.createStyleSheet(style).attach()
@@ -62,27 +63,14 @@ export default (vnode: ViewWorkoutVnode) => {
             }
             return m('div', [
                 overlayShowing ?
-                    m('div', {
-                        class: classes.fullScreenOverlay,
-                    }, m('div', [
-                        m('h2', 'Change Workout Title'),
-                        m('input[type=text]', {
-                            value: workout.name,
-                            onchange: m.withAttr('value', (value) => {
-                                db.findWorkoutsByName(value).then((results) => {
-                                    overlayResults = results
-                                    m.redraw()
-                                })
-                                workout.name = value
-                            }),
-                        }),
-                        overlayResults.map((result) => {
-                            return m('p', result.name)
-                        }),
-                        m('button', {
-                            onclick: () => { showOverlayContent(false) }
-                        }, 'Close'),
-                    ]))
+                    EditTitleOverlay({
+                        name: workout.name,
+                        css: classes,
+                        showOverlayContent: showOverlayContent,
+                        updateTitle: (newName: string) => {
+                            workout.name = newName
+                        },
+                    })
                     : null,
                 Page({
                     css: classes,

@@ -1,29 +1,49 @@
 import * as m from 'mithril'
 import db from '../../helpers/db'
-import {Exercise} from '../../types/exercise'
-import Results from './results'
+import {Workout} from '../../types/exercise'
 
 interface EditTitleAttrs {
     name: string,
+    css: any,
+    showOverlayContent: (boolean) => void,
+    updateTitle: (string) => void,
 }
 interface ComponentVnode {
     attrs: EditTitleAttrs
 }
 
 const EditTitleComponent = (vnode: ComponentVnode) => {
-    let matchingExercises: Array<any> = [{name: 'one'}, {name: 'two'}]
+    let matchingWorkouts: Array<Workout> = []
     let title = vnode.attrs.name
-    let handler = (value) => {
-        title = value
-    }
+
     return {
         view: (vnode: ComponentVnode) => {
-            return m('div', [
+            return m('div', {
+                class: vnode.attrs.css.fullScreenOverlay,
+            }, [
+                m('h2', 'Change Workout Title'),
                 m('input[type=text]', {
                     value: title,
-                    onchange: m.withAttr('value', handler)
+                    oninput: m.withAttr('value', (value) => {
+                        db.findWorkoutsByName(value).then((results) => {
+                            matchingWorkouts = results
+                            m.redraw()
+                        })
+                        title = value
+                    }),
                 }),
-                m('p', title)
+                matchingWorkouts.map((result) => {
+                    return m('p', result.name)
+                }),
+                m('button', {
+                    onclick: () => {vnode.attrs.showOverlayContent(false)}
+                }, 'Cancel'),
+                m('button', {
+                    onclick: () => {
+                        vnode.attrs.updateTitle(title)
+                        vnode.attrs.showOverlayContent(false)
+                    }
+                }, 'Save'),
             ])
         }
     }

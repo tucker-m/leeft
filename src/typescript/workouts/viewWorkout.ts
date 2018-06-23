@@ -1,10 +1,8 @@
 import * as m from 'mithril';
 import db from '../helpers/db';
-import {Saveable, Saved, Puttable, Workout, Program} from '../types/exercise';
+import {Saveable, Saved, Puttable, Workout, Program, Exercise} from '../types/exercise';
 import WorkoutContent from './workoutContents'
 import {observable, IObservableObject} from 'mobx';
-import EditableH1 from '../ui/editableH1'
-import WorkoutTable from '../ui/workoutTable'
 import Page from '../ui/page'
 import jss from 'jss'
 import preset from 'jss-preset-default'
@@ -46,8 +44,8 @@ export default (vnode: ViewWorkoutVnode) => {
     }
 
     let pageEditable = false
-    let count = 0
     let overlayShowing = false
+    let overlayResults: Array<Workout> = []
     const showOverlayContent = (show: boolean) => {
         overlayShowing = show
     }
@@ -67,10 +65,23 @@ export default (vnode: ViewWorkoutVnode) => {
                     m('div', {
                         class: classes.fullScreenOverlay,
                     }, m('div', [
+                        m('h2', 'Change Workout Title'),
+                        m('input[type=text]', {
+                            value: workout.name,
+                            onchange: m.withAttr('value', (value) => {
+                                db.findWorkoutsByName(value).then((results) => {
+                                    overlayResults = results
+                                    m.redraw()
+                                })
+                                workout.name = value
+                            }),
+                        }),
+                        overlayResults.map((result) => {
+                            return m('p', result.name)
+                        }),
                         m('button', {
-                            onclick: () => {count++}
-                        }, 'click'),
-                        m('p', count)
+                            onclick: () => { showOverlayContent(false) }
+                        }, 'Close'),
                     ]))
                     : null,
                 Page({

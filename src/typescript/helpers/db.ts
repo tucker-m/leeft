@@ -26,12 +26,11 @@ const init = function() {
     }).then((result) => {
     }).catch((error) => {
     })
-
-        db.createIndex({
-            index: {
-                fields: ['name', 'tag']
-            }
-        })
+    db.createIndex({
+        index: {
+            fields: ['name', 'tag']
+        }
+    })
 };
 
 const getAllItems = (key: ModelName) => {
@@ -92,14 +91,29 @@ const findLogsByWorkoutName = (name: string) => {
     })
 }
 
-const findExercisesByName = (name: string) => {
-    return db.find({
-        selector: {
-            'name': {$regex: new RegExp(name)},
-            'tag': {$eq: 'exercise'}
-        }
-    })
-}
+const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
+    return new Promise((resolve, reject) => {
+        db.find({
+            selector: {
+                'name': {$regex: new RegExp(name)},
+                'tag': {$eq: 'exercise'}
+            }
+        }).then((results) => {
+            resolve(results.docs)
+        })
+    })}
+
+const findWorkoutsByName = (name: string): Promise<Array<Workout>> => {
+    return new Promise((resolve, reject) => {
+        db.find({
+            selector: {
+                'name': {$regex: new RegExp(name)},
+                'tag': {$eq: 'workout'}
+            }
+        }).then((results) => {
+            resolve(results.docs)
+        })
+    })}
 
 function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservableObject> {
     return new Promise<Puttable & T & IObservableObject>((resolve, reject) => {
@@ -156,6 +170,7 @@ export default {
     getSettings,
     findLogsByWorkoutName,
     findExercisesByName,
+    findWorkoutsByName,
     fetchSaveableCollection,
     fetchSaveableRecord,
     promiseSaveableRecord,

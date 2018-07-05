@@ -79,9 +79,6 @@ const ProgramContent = (vnode: ContentVnode) => {
                 })),
                 pageEditable ? m('div', [
                     m('button', {
-                        onclick: () => {program.schedule.push({tag: 'rest'})}
-                    }, '+ Add a rest day'),
-                    m('button', {
                         onclick: () => {
                             const dayNum = program.schedule.push({
                                 tag: 'workout',
@@ -91,6 +88,9 @@ const ProgramContent = (vnode: ContentVnode) => {
                             window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}`
                         }
                     }, '+ Add a new workout'),
+                    m('button', {
+                        onclick: () => {program.schedule.push({tag: 'rest'})}
+                    }, '+ Add a rest day'),
                 ]) : null
             ])
         }

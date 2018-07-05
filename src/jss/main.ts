@@ -41,6 +41,11 @@ export default {
         position: 'fixed',
         width: '100vw',
         height: '100vh',
-        padding: '3rem',
-    }
+        padding: '1rem',
+    },
+    fullScreenOverlayContent: {
+        maxWidth: '30rem',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
 }

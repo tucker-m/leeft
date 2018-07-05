@@ -1,15 +1,12 @@
 import * as m from 'mithril'
 import db from '../../helpers/db'
-import {Workout, ExercisePrescription} from '../../types/exercise'
+import {Workout} from '../../types/exercise'
 
 interface EditTitleAttrs {
     title: string,
-    workout: Workout,
     css: any,
     showOverlayContent: (boolean) => void,
     updateTitle: (string) => void,
-    updatePrescriptions: ([]) => void,
-    updateWorkout: (Workout) => void,
 }
 interface ComponentVnode {
     attrs: EditTitleAttrs
@@ -18,7 +15,6 @@ interface ComponentVnode {
 const EditTitleComponent = (vnode: ComponentVnode) => {
     let matchingWorkouts: Array<any> = []
     let title = vnode.attrs.title
-    let workout = vnode.attrs.workout
 
     return {
         view: (vnode: ComponentVnode) => {
@@ -31,29 +27,19 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                 m('input[type=text]', {
                     value: title,
                     oninput: m.withAttr('value', (value) => {
-                        db.findWorkoutsByName(value, workout).then((results) => {
+                        db.findWorkoutsByName(value).then((results) => {
                             matchingWorkouts = results
                             m.redraw()
                         })
                         title = value
                     }),
                 }),
-                m('div', matchingWorkouts.map((result) => {
-                    return m('div', {
+                m('ul', matchingWorkouts.map((result) => {
+                    return m('li', {
                         onclick: () => {
-                            //vnode.attrs.updatePrescriptions(result.workout.prescriptions)
-                            vnode.attrs.updateWorkout(result.workout)
-                            vnode.attrs.showOverlayContent(false)
+                            title = result.workout.name
                         }
-                    }, [
-                        m('p', result.workout.name),
-                        m('ul', result.programs.map((program) => {
-                            return m('li', program.name)
-                        })),
-                        m('ul', result.workout.prescriptions.map((prescription) => {
-                            return m('li', prescription.exercise.name)
-                        }))
-                    ])
+                    }, `${result.program.name} > ${result.workout.name}`)
                 })),
                 m('div', [
                     m('button', {

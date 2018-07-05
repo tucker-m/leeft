@@ -23,12 +23,6 @@ let App = {
     }
 };
 
-let allWorkouts:Array<Workout & Puttable> = [];
-db.fetchSaveableCollection<Workout>('workout').then((collection) => {
-    allWorkouts = collection
-    m.redraw()
-})
-
 let allPrograms: Array<Program & Puttable> = []
 db.fetchSaveableCollection<Program>('program').then((collection) => {
     allPrograms = collection
@@ -46,8 +40,6 @@ let componentList = {
             m('p', settings.currentProgram ? settings.currentProgram.name : 'none'),
             H1({text: 'All Programs', css: classes}),
             ProgramList({allPrograms, css: classes}),
-            H1({text: 'All Workouts', css: classes}),
-            WorkoutList({allWorkouts, css: classes})
         ]
         return Page({
             css: classes,
@@ -64,18 +56,6 @@ let componentList = {
                         })
                     }
                 },
-                {
-                    text: '+ New Workout',
-                    action: () => {
-                        db.promiseSaveableRecord<Workout>({
-                            name: '',
-                            prescriptions: [],
-                            tag: 'workout',
-                        }).then((workout) => {
-                            window.location.href = `#!/workouts/${workout._id}`
-                        })
-                    }
-                },
             ],
             contents: contents
         })
@@ -86,7 +66,6 @@ const element = document.getElementById('main')
 if (element != null) {
     m.route(element, '/', {
         '/': App,
-        '/workouts/:id': ViewWorkout,
         '/logs/:id': ViewLog,
         '/programs/:id': ViewProgram,
         '/programs/:id/workouts/:day': ViewWorkout,

@@ -7,6 +7,7 @@ import ProgramContents from './programContents'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
+import EditTitleOverlay from './overlays/editTitle'
 
 jss.setup(preset())
 const {classes} = jss.createStyleSheet(style).attach()
@@ -25,33 +26,59 @@ export default (vnode: ViewProgramVnode) => {
         settings = record
         m.redraw()
     })
-    let program: (Program & Puttable) | null = null
+    let program: (Program & Puttable) = {
+        _id: 'fake',
+        name: '',
+        schedule: [],
+        tag: 'program',
+    }
     db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
         program = returnedProgram
         m.redraw()
     })
+    let overlayShowing = false
+    const showOverlayContent = (show: boolean) => {
+        overlayShowing = show
+    }
     return {
         view: (vnode: ViewProgramVnode) => {
-            return Page({
-                css: classes,
-                topBarButtons: [
-                    {
-                        text: 'Set as Current Program',
-                        action: () => {settings.currentProgram = program}
-                    },
-                    {
-                        text: 'Edit Program',
-                        action: () => { pageEditable = true },
-                        secondState: {
-                            text: 'Done Editing',
-                            action: () => { pageEditable = false },
-                            color: 'none',
-                        }
-                    },
-                ],
-                topBarColor: 'none',
-                contents: program === null ? null : ProgramContents({program, pageEditable, css: classes})
-            })
+            return m('div', [
+                overlayShowing ?
+                    EditTitleOverlay({
+                        title: program.name ? program.name : '',
+                        css: classes,
+                        showOverlayContent: showOverlayContent,
+                        updateTitle: (newName: string) => {
+                            program.name = newName
+                        },
+                    })
+                    : null,
+                Page({
+                    css: classes,
+                    topBarButtons: [
+                        {
+                            text: 'Set as Current Program',
+                            action: () => {settings.currentProgram = program}
+                        },
+                        {
+                            text: 'Edit Program',
+                            action: () => { pageEditable = true },
+                            secondState: {
+                                text: 'Done Editing',
+                                action: () => { pageEditable = false },
+                                color: 'none',
+                            }
+                        },
+                    ],
+                    topBarColor: 'none',
+                    contents: program === null ? null : ProgramContents({
+                        program,
+                        pageEditable,
+                        css: classes,
+                        showOverlayContent: showOverlayContent,
+                    })
+                })
+            ])
         }
     };
 };

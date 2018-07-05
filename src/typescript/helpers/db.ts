@@ -23,8 +23,6 @@ const init = function() {
         index: {
             fields: ['workout.name', 'date']
         }
-    }).then((result) => {
-    }).catch((error) => {
     })
     db.createIndex({
         index: {
@@ -72,7 +70,7 @@ function fetchSaveableCollection<T> (tag: ModelName): Promise<Array<Puttable & T
                     db.put(savedObject).then((response) => {
                         rev = response.rev
                     })
-                })
+                }, {delay: 300})
                 return observableRecord
             })
             resolve(observableRecords)
@@ -103,17 +101,52 @@ const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
         })
     })}
 
-const findWorkoutsByName = (name: string): Promise<Array<Workout>> => {
+const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise<Array<Workout>> => {
     return new Promise((resolve, reject) => {
-        db.find({
-            selector: {
-                'name': {$regex: new RegExp(name)},
-                'tag': {$eq: 'workout'}
-            }
-        }).then((results) => {
-            resolve(results.docs)
+        db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
+            let programs = docs.rows
+            let mappedPrograms = programs.flatMap((program) => {
+                return program.doc.schedule.map((workout) => {
+                    return {
+                        program: program.doc,
+                        workout: workout
+                    }
+                })
+            })
+            const avoidMe = JSON.stringify(toJS(avoid))
+            let filteredPrograms = mappedPrograms.filter((mappedProgram) => {
+                if (JSON.stringify(mappedProgram.workout) == avoidMe) {
+                    return false
+                }
+                else {
+                    return mappedProgram.workout.name.startsWith(name)
+                }
+            })
+            let stringifiedObjects = filteredPrograms.map((program) => {
+                return JSON.stringify(program)
+            })
+            let groupedByWorkout:Array<any> = []
+            let removeDuplicates = filteredPrograms.filter((elem, index) => {
+                return index === stringifiedObjects.indexOf(JSON.stringify(elem))
+            })
+            removeDuplicates.forEach((workout) => {
+                const elemIndex = groupedByWorkout.findIndex((group) => {
+                    return JSON.stringify(group.workout) == JSON.stringify(workout.workout)
+                })
+                if (elemIndex >= 0) {
+                    groupedByWorkout[elemIndex].programs.push(workout.program)
+                }
+                else {
+                    groupedByWorkout.push({
+                        workout: workout.workout,
+                        programs: [workout.program]
+                    })
+                }
+            })
+            resolve(groupedByWorkout)
         })
-    })}
+    })
+}
 
 function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservableObject> {
     return new Promise<Puttable & T & IObservableObject>((resolve, reject) => {
@@ -133,7 +166,7 @@ function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservable
                 }).catch((error) => {
                     console.log(error)
                 })
-            })
+            }, {delay: 300})
             resolve(observableRecord)
         }).catch((error) => {
             reject(error)
@@ -155,7 +188,7 @@ function promiseSaveableRecord<T> (object: T & Saveable): Promise<Puttable & T &
                 db.put(savedObject).then((response) => {
                     rev = response.rev
                 })
-            })
+            }, {delay: 300})
             resolve(observeMe)
         })
     })

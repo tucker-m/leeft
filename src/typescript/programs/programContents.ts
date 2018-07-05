@@ -8,6 +8,7 @@ interface ContentAttrs {
     program: Program & Puttable,
     pageEditable: boolean,
     css: any,
+    showOverlayContent: (show: boolean) => void,
 }
 
 interface ContentVnode {
@@ -28,6 +29,7 @@ const ProgramContent = (vnode: ContentVnode) => {
                     updateFunc: (newName) => {program.name = newName},
                     showEditButton: pageEditable,
                     css: css,
+                    showOverlayContent: vnode.attrs.showOverlayContent,
                 }),
                 m('table', {
                     class: css.table,

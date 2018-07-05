@@ -1,6 +1,6 @@
 import * as m from 'mithril';
 import db from '../helpers/db';
-import {Saveable, Saved, Puttable, Workout, Program, Exercise} from '../types/exercise';
+import {Saveable, Saved, Puttable, Workout, Program, Exercise, ExercisePrescription} from '../types/exercise';
 import WorkoutContent from './workoutContents'
 import {observable, IObservableObject} from 'mobx';
 import Page from '../ui/page'
@@ -15,7 +15,7 @@ const {classes} = jss.createStyleSheet(style).attach()
 
 interface ViewWorkoutAttrs {
     id: string,
-    day?: string,
+    day: string,
 };
 interface ViewWorkoutVnode {
     attrs: ViewWorkoutAttrs,
@@ -29,19 +29,18 @@ export default (vnode: ViewWorkoutVnode) => {
     }
     const day = vnode.attrs.day
     let program: (Program & Puttable) | null = null
-    if (day) {
-        db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
-            program = returnedProgram
-            const temp = <Workout>returnedProgram.schedule[parseInt(day)]
-            workout = temp
-            m.redraw()
-        })
-    }
-    else {
-        db.fetchSaveableRecord<Workout>(vnode.attrs.id).then((returnedWorkout) => {
-            workout = returnedWorkout;
-            m.redraw();
-        })
+    db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
+        program = returnedProgram
+        const temp = <Workout>returnedProgram.schedule[parseInt(day)]
+        workout = temp
+        m.redraw()
+    })
+
+    let updateWorkout = (newWorkout: Workout) => {
+        if (program) {
+            program.schedule[parseInt(day)] = newWorkout
+            workout = newWorkout
+        }
     }
 
     let pageEditable = false
@@ -64,12 +63,17 @@ export default (vnode: ViewWorkoutVnode) => {
             return m('div', [
                 overlayShowing ?
                     EditTitleOverlay({
-                        name: workout.name,
+                        title: workout.name,
+                        workout: workout,
                         css: classes,
                         showOverlayContent: showOverlayContent,
+                        updateWorkout: updateWorkout,
                         updateTitle: (newName: string) => {
                             workout.name = newName
                         },
+                        updatePrescriptions: (prescriptions: Array<ExercisePrescription>) => {
+                            workout.prescriptions = prescriptions
+                        }
                     })
                     : null,
                 Page({
@@ -84,13 +88,6 @@ export default (vnode: ViewWorkoutVnode) => {
                                 color: colors.editable,
                             }
                         },
-                        {
-                            text: 'Delete Workout',
-                            action: () => {
-                                //db.deleteSaveableRecord(workout) TODO: make this work again
-                                window.location.href = '#!'
-                            },
-                        }
                     ],
                     topBarColor: 'none',
                     contents: workout == null ? null : WorkoutContent(contentAttrs),

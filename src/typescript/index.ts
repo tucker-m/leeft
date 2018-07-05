@@ -69,5 +69,6 @@ if (element != null) {
         '/logs/:id': ViewLog,
         '/programs/:id': ViewProgram,
         '/programs/:id/workouts/:day': ViewWorkout,
+        '/programs/:id/workouts/:day/:edit': ViewWorkout,
     })
 }

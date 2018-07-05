@@ -16,6 +16,7 @@ const {classes} = jss.createStyleSheet(style).attach()
 interface ViewWorkoutAttrs {
     id: string,
     day: string,
+    edit?: string,
 };
 interface ViewWorkoutVnode {
     attrs: ViewWorkoutAttrs,
@@ -43,7 +44,7 @@ export default (vnode: ViewWorkoutVnode) => {
         }
     }
 
-    let pageEditable = false
+    let pageEditable = (!!vnode.attrs.edit && (vnode.attrs.edit == 'edit'))
     let overlayShowing = false
     let overlayResults: Array<Workout> = []
     const showOverlayContent = (show: boolean) => {

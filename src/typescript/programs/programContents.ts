@@ -85,7 +85,7 @@ const ProgramContent = (vnode: ContentVnode) => {
                                 prescriptions: [],
                                 name: ''
                             })
-                            window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}`
+                            window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
                         }
                     }, '+ Add a new workout'),
                     m('button', {

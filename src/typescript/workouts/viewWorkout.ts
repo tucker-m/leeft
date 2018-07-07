@@ -81,11 +81,11 @@ export default (vnode: ViewWorkoutVnode) => {
                     css: classes,
                     topBarButtons: [
                         {
-                            text: 'Edit Workout',
-                            action: () => { pageEditable = true },
+                            text: !pageEditable ? 'Edit Workout' : 'Done Editing',
+                            action: () => { pageEditable = !pageEditable },
                             secondState: {
-                                text: 'Done Editing',
-                                action: () => { pageEditable = false },
+                                text: pageEditable ? 'Edit Workout' : 'Done Editing',
+                                action: () => { pageEditable = !pageEditable },
                                 color: colors.editable,
                             }
                         },

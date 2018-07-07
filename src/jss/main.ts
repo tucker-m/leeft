@@ -35,6 +35,9 @@ export default {
     editable: {
         border: `.15rem dashed ${colors.editable}`,
     },
+    editableH1: {
+        display: 'inline',
+    },
     fullScreenOverlay: {
         backgroundColor: 'rgba(0, 0, 0, .9)',
         color: 'white',

@@ -3,6 +3,7 @@ import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
 import WorkoutLogs from './workoutLogs'
 import {Workout, Program, Puttable} from '../types/exercise'
+import H1 from '../ui/h1'
 
 interface ContentAttrs {
     workout: Workout,
@@ -23,10 +24,15 @@ const WorkoutContent = (vnode: ContentVnode) => {
             const classes = vnode.attrs.css
             return [
                 vnode.attrs.program
-                    ? m('a', {
+                    ? [m('a', {
                         href: `/programs/${vnode.attrs.program._id}`,
                         oncreate: m.route.link,
-                    }, `Back to ${vnode.attrs.program.name}`)
+                    }, H1({
+                        text: vnode.attrs.program.name,
+                        css: classes,
+                    })),
+                       m('span', {class: classes.arrow}, '>')
+                      ]
                 : null,
                 EditableH1({
                     name: workout.name,

@@ -1,7 +1,7 @@
 export default {
     h1: {
         display: 'inline-block',
-        fontSize: '3.5rem',
+        fontSize: '2.5rem',
         marginTop: '1rem',
         marginBottom: '1rem',
     },
@@ -10,6 +10,10 @@ export default {
     },
     editableH1: {
         extend: 'h1',
+    },
+    arrow: {
+        fontSize: '2.5rem',
+        margin: '0 1rem',
     },
     placeholderEditableH1: {
         extend: 'editableH1',

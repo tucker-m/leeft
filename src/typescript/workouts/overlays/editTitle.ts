@@ -19,13 +19,14 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
     let matchingWorkouts: Array<any> = []
     let title = vnode.attrs.title
     let workout = vnode.attrs.workout
+    let css = vnode.attrs.css
 
     return {
         view: (vnode: ComponentVnode) => {
             return m('div', {
-                class: vnode.attrs.css.fullScreenOverlay,
+                class: css.fullScreenOverlay,
             }, m('div', {
-                class: vnode.attrs.css.fullScreenOverlayContent,
+                class: css.fullScreenOverlayContent,
             }, [
                 m('h4', 'Change Workout Title'),
                 m('input[type=text]', {
@@ -39,19 +40,20 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                     }),
                 }),
                 m('div', matchingWorkouts.map((result) => {
-                    return m('div', {
-                        onclick: () => {
-                            //vnode.attrs.updatePrescriptions(result.workout.prescriptions)
-                            vnode.attrs.updateWorkout(result.workout)
-                            vnode.attrs.showOverlayContent(false)
-                        }
-                    }, [
-                        m('p', result.workout.name),
-                        m('ul', result.programs.map((program) => {
-                            return m('li', program.name)
-                        })),
-                        m('ul', result.workout.prescriptions.map((prescription) => {
-                            return m('li', prescription.exercise.name)
+                    return m('div', {class: css.card}, [
+                        m('h3', {class: css.h3}, result.workout.name),
+                        m('button', {
+                            class: css.button,
+                            onclick: () => {
+                                vnode.attrs.updateWorkout(result.workout)
+                                vnode.attrs.showOverlayContent(false)
+                            }
+                        }, 'Copy this workout'),
+                        m('p', {class: css.subTitle}, 'from ' + result.programs.map((program) => {
+                            return program.name
+                        }).join(', ')),
+                        m('ul', {class: css.list}, result.workout.prescriptions.map((prescription) => {
+                            return m('li', {class: css.item}, prescription.exercise.name)
                         }))
                     ])
                 })),

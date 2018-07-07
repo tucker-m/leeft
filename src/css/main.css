@@ -34,17 +34,3 @@ button {
     margin-top: -.65rem;
     margin-left: -.65rem;
 }
-.editable-h1 > div {
-    position: relative;
-}
-.editable-h1 button {
-    position: absolute;
-    right: -1rem;
-    top: 0;
-}
-.editable-h1.being-edited button {
-    position: relative;
-}
-.being-edited input[type=text] {
-    font-size: 2.5rem;
-}

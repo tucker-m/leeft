@@ -4,13 +4,14 @@ import WorkoutTable from '../ui/workoutTable'
 import WorkoutLogs from './workoutLogs'
 import {Workout, Program, Puttable} from '../types/exercise'
 import H1 from '../ui/h1'
+import EditTitleOverlay from './overlays/editTitle'
 
 interface ContentAttrs {
     workout: Workout,
     program?: Program & Puttable,
     pageEditable: boolean,
     css: any,
-    setOverlay: (content: any) => void,
+    setOverlay: (content: any, attrs: any) => void,
 }
 interface ContentVnode {
     attrs: ContentAttrs
@@ -46,10 +47,10 @@ const WorkoutContent = (vnode: ContentVnode) => {
                     showEditButton: pageEditable,
                     css: classes,
                     setOverlay: () => {
-                        vnode.attrs.setOverlay({
-                            view: () => {
-                                return m('div', 'asdf')
-                            }
+                        vnode.attrs.setOverlay(EditTitleOverlay, {
+                            title: workout.name,
+                            workout: workout,
+                            css: classes,
                         })
                     },
                 }),

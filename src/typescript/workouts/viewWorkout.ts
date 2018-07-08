@@ -46,9 +46,11 @@ export default (vnode: ViewWorkoutVnode) => {
 
     let pageEditable = (!!vnode.attrs.edit && (vnode.attrs.edit == 'edit'))
     let overlay = null
+    let overlayAttrs = {}
 
-    const setOverlay = (overlayToShow) => {
+    const setOverlay = (overlayToShow, attrs) => {
         overlay = overlayToShow
+        overlayAttrs = attrs
     }
 
     return {
@@ -65,7 +67,7 @@ export default (vnode: ViewWorkoutVnode) => {
             const a = overlay
             return m('div', [
                 a ?
-                    m(a, {})
+                    m(a, overlayAttrs)
                     : null,
                 Page({
                     css: classes,

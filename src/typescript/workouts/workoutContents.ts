@@ -61,6 +61,7 @@ const WorkoutContent = (vnode: ContentVnode) => {
                     prescriptions: workout.prescriptions,
                     showEditButtons: pageEditable,
                     css: classes,
+                    setOverlay: vnode.attrs.setOverlay,
                 }),
                 WorkoutLogs({
                     workout: workout

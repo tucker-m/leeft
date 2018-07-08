@@ -1,12 +1,14 @@
 import * as m from 'mithril';
 import {Exercise, ExercisePrescription} from '../types/exercise';
 import db from '../helpers/db'
+import ExerciseOverlay from '../workouts/overlays/exercise'
 
 interface RowAttrs {
     prescription: ExercisePrescription,
     showEditButtons: boolean,
     deleteFunction: () => void,
     css: any,
+    setOverlay: (overlay: any, attrs: any) => void,
 };
 interface RowVnode {
     attrs: RowAttrs
@@ -92,7 +94,15 @@ export default (vnode: RowVnode) => {
                     m('td', {class: css.td}, [
                         m('a', {
                             onclick: () => {
-                                beingEdited = !beingEdited
+                                vnode.attrs.setOverlay(ExerciseOverlay, {
+                                    prescription,
+                                    updatePrescription: (newPrescription: ExercisePrescription) => {
+                                        prescription = newPrescription
+                                    },
+                                    closeOverlay: () => {
+                                        vnode.attrs.setOverlay(null, {})
+                                    },
+                                })
                             },
                         }, beingEdited ? 'Done' : 'Edit'),
                         m('span', ' | '),

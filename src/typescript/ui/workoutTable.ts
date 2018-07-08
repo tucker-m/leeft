@@ -7,6 +7,7 @@ interface TableAttributes {
     prescriptions: Array<ExercisePrescription>,
     showEditButtons: boolean,
     css: any,
+    setOverlay: (overlay: any, attrs: any) => void,
 }
 
 interface TableVnode {
@@ -39,6 +40,7 @@ const TableComponent = (vnode: TableVnode) => {
                                     vnode.attrs.prescriptions.splice(index, 1);
                                 },
                                 css: css,
+                                setOverlay: vnode.attrs.setOverlay,
                             });
                         })
                     ])

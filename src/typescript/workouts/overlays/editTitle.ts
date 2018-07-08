@@ -21,11 +21,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
 
     return {
         view: (vnode: ComponentVnode) => {
-            return m('div', {
-                class: css.fullScreenOverlay,
-            }, m('div', {
-                class: css.fullScreenOverlayContent,
-            }, [
+            return m('div', [
                 m('h4', 'Change Workout Title'),
                 m('input[type=text]', {
                     value: title,
@@ -67,7 +63,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                         }
                     }, 'Save'),
                 ])
-            ]))
+            ])
         }
     }
 }

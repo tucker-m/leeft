@@ -8,7 +8,7 @@ import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
 import colors from '../../jss/variables/colors'
-import EditTitleOverlay from './overlays/editTitle'
+import Overlay from '../ui/overlay'
 
 jss.setup(preset())
 const {classes} = jss.createStyleSheet(style).attach()
@@ -65,10 +65,14 @@ export default (vnode: ViewWorkoutVnode) => {
             if (program) {
                 contentAttrs['program'] = program
             }
-            const a = overlay
+            const overlayComponent = overlay // you get a compiler error
+                                           // if this isn't a constant.
             return m('div', [
-                a ?
-                    m(a, overlayAttrs)
+                overlayComponent ?
+                    Overlay({
+                        content: m(overlayComponent, overlayAttrs),
+                        css: classes,
+                    })
                     : null,
                 Page({
                     css: classes,

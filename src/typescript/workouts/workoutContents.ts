@@ -10,18 +10,23 @@ interface ContentAttrs {
     program?: Program & Puttable,
     pageEditable: boolean,
     css: any,
-    showOverlayContent: (show: boolean) => void,
+    setOverlay: (content: any) => void,
 }
 interface ContentVnode {
     attrs: ContentAttrs
 }
 
 const WorkoutContent = (vnode: ContentVnode) => {
+    let matchingWorkouts: Array<any> = []
+
+    
+
     return {
         view: (vnode: ContentVnode) => {
             const workout = vnode.attrs.workout
             const pageEditable = vnode.attrs.pageEditable
             const classes = vnode.attrs.css
+            
             return [
                 vnode.attrs.program
                     ? [m('a', {
@@ -40,7 +45,13 @@ const WorkoutContent = (vnode: ContentVnode) => {
                     updateFunc: (newName: string) => { workout.name = newName },
                     showEditButton: pageEditable,
                     css: classes,
-                    showOverlayContent: vnode.attrs.showOverlayContent,
+                    setOverlay: () => {
+                        vnode.attrs.setOverlay({
+                            view: () => {
+                                return m('div', 'asdf')
+                            }
+                        })
+                    },
                 }),
                 WorkoutTable({
                     prescriptions: workout.prescriptions,

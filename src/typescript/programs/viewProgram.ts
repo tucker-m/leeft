@@ -75,7 +75,6 @@ export default (vnode: ViewProgramVnode) => {
                         program,
                         pageEditable,
                         css: classes,
-                        showOverlayContent: showOverlayContent,
                     })
                 })
             ])

@@ -72,6 +72,4 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
         }
     }
 }
-export default (attrs: EditTitleAttrs) => {
-    return m(EditTitleComponent, attrs)
-}
+export default EditTitleComponent

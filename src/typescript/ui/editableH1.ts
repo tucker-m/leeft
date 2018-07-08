@@ -9,7 +9,7 @@ interface EditableVnode {
         updateFunc: (newName: string) => void,
         showEditButton: boolean,
         css: any,
-        showOverlayContent?: (show: boolean) => void,
+        setOverlay?: () => void,
     }
 }
 
@@ -33,8 +33,8 @@ const EditableH1 = function(vnode: EditableVnode) {
                 vnode.attrs.showEditButton
                     ? m('button', {
                         onclick: () => {
-                            if (vnode.attrs.showOverlayContent) {
-                                vnode.attrs.showOverlayContent(true)
+                            if (vnode.attrs.setOverlay) {
+                                vnode.attrs.setOverlay()
                             }
                         }
                     }, 'Edit')

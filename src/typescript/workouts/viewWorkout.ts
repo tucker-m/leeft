@@ -45,37 +45,27 @@ export default (vnode: ViewWorkoutVnode) => {
     }
 
     let pageEditable = (!!vnode.attrs.edit && (vnode.attrs.edit == 'edit'))
-    let overlayShowing = false
-    let overlayResults: Array<Workout> = []
-    const showOverlayContent = (show: boolean) => {
-        overlayShowing = show
+    let overlay = null
+
+    const setOverlay = (overlayToShow) => {
+        overlay = overlayToShow
     }
+
     return {
         view: (vnode: ViewWorkoutVnode) => {
             let contentAttrs = {
                 workout,
                 pageEditable,
                 css: classes,
-                showOverlayContent: showOverlayContent,
+                setOverlay: setOverlay,
             }
             if (program) {
                 contentAttrs['program'] = program
             }
+            const a = overlay
             return m('div', [
-                overlayShowing ?
-                    EditTitleOverlay({
-                        title: workout.name,
-                        workout: workout,
-                        css: classes,
-                        showOverlayContent: showOverlayContent,
-                        updateWorkout: updateWorkout,
-                        updateTitle: (newName: string) => {
-                            workout.name = newName
-                        },
-                        updatePrescriptions: (prescriptions: Array<ExercisePrescription>) => {
-                            workout.prescriptions = prescriptions
-                        }
-                    })
+                a ?
+                    m(a, {})
                     : null,
                 Page({
                     css: classes,

@@ -6,9 +6,7 @@ interface EditTitleAttrs {
     title: string,
     workout: Workout,
     css: any,
-    showOverlayContent: (boolean) => void,
-    updateTitle: (string) => void,
-    updatePrescriptions: ([]) => void,
+    hideOverlay: () => void,
     updateWorkout: (Workout) => void,
 }
 interface ComponentVnode {
@@ -46,7 +44,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                             class: css.button,
                             onclick: () => {
                                 vnode.attrs.updateWorkout(result.workout)
-                                vnode.attrs.showOverlayContent(false)
+                                vnode.attrs.hideOverlay()
                             }
                         }, 'Copy this workout'),
                         m('p', {class: css.subTitle}, 'from ' + result.programs.map((program) => {
@@ -59,12 +57,13 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                 })),
                 m('div', [
                     m('button', {
-                        onclick: () => {vnode.attrs.showOverlayContent(false)}
+                        onclick: () => {vnode.attrs.hideOverlay()}
                     }, 'Cancel'),
                     m('button', {
                         onclick: () => {
-                            vnode.attrs.updateTitle(title)
-                            vnode.attrs.showOverlayContent(false)
+                            workout.name = title
+                            vnode.attrs.updateWorkout(workout)
+                            vnode.attrs.hideOverlay()
                         }
                     }, 'Save'),
                 ])

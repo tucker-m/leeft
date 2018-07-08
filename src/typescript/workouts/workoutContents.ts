@@ -11,6 +11,7 @@ interface ContentAttrs {
     program?: Program & Puttable,
     pageEditable: boolean,
     css: any,
+    updateWorkout: (newWorkout: Workout) => void,
     setOverlay: (content: any, attrs: any) => void,
 }
 interface ContentVnode {
@@ -20,14 +21,12 @@ interface ContentVnode {
 const WorkoutContent = (vnode: ContentVnode) => {
     let matchingWorkouts: Array<any> = []
 
-    
-
     return {
         view: (vnode: ContentVnode) => {
             const workout = vnode.attrs.workout
             const pageEditable = vnode.attrs.pageEditable
             const classes = vnode.attrs.css
-            
+
             return [
                 vnode.attrs.program
                     ? [m('a', {
@@ -51,6 +50,10 @@ const WorkoutContent = (vnode: ContentVnode) => {
                             title: workout.name,
                             workout: workout,
                             css: classes,
+                            hideOverlay: () => {
+                                vnode.attrs.setOverlay(null, {})
+                            },
+                            updateWorkout: vnode.attrs.updateWorkout,
                         })
                     },
                 }),

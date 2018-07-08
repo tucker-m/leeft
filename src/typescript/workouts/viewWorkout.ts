@@ -59,6 +59,7 @@ export default (vnode: ViewWorkoutVnode) => {
                 workout,
                 pageEditable,
                 css: classes,
+                updateWorkout: updateWorkout,
                 setOverlay: setOverlay,
             }
             if (program) {

@@ -91,15 +91,25 @@ const findLogsByWorkoutName = (name: string) => {
 
 const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
     return new Promise((resolve, reject) => {
-        db.find({
-            selector: {
-                'name': {$regex: new RegExp(name)},
-                'tag': {$eq: 'exercise'}
-            }
-        }).then((results) => {
-            resolve(results.docs)
+        db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
+            let programs = docs.rows
+            // loop through programs, picking out all exercises in them
+            let exercises = programs.flatMap((program) => {
+                let workoutsOnly = program.doc.schedule.filter((exercise) => {
+                    return exercise.tag == 'workout'
+                })
+                return workoutsOnly.flatMap((workout) => {
+                    return workout.prescriptions.map((prescription) => {
+                        return prescription.exercise
+                    }).filter((exercise) => {
+                        return exercise.name.startsWith(name)
+                    })
+                })
+            })
+            resolve(exercises)
         })
-    })}
+    })
+}
 
 const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise<Array<Workout>> => {
     return new Promise((resolve, reject) => {

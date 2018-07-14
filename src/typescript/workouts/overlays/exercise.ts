@@ -1,20 +1,24 @@
 import * as m from 'mithril'
 import {Exercise, ExercisePrescription} from '../../types/exercise'
 import {toJS} from 'mobx'
+import db from '../../helpers/db'
 
 interface ExerciseAttrs {
     prescription: ExercisePrescription,
     updatePrescription: (newPrescription: ExercisePrescription) => void,
     closeOverlay: () => void,
+    css: any,
 }
 interface ExerciseVnode {
     attrs: ExerciseAttrs
 }
 
 const ExerciseOverlay = (vnode: ExerciseVnode) => {
+    const css = vnode.attrs.css
+    let matchingExercises: Array<Exercise> = []
+
     const prescription = toJS(vnode.attrs.prescription)
     let exercise = prescription.exercise
-    let exerciseName = exercise.name
     let sets = prescription.sets
     let units = exercise.setUnits
     let amount = prescription.amount
@@ -23,10 +27,30 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
         view: (vnode: ExerciseVnode) => {
             return m('div', [
                 m('input[type=text]', {
-                    value: exerciseName,
+                    value: exercise.name,
                     oninput: m.withAttr('value', (value) => {
-                        exerciseName = value
+                        exercise.name = value
+                        db.findExercisesByName(exercise.name).then((results) => {
+                            matchingExercises = results
+                            m.redraw()
+                        })
                     })
+                }),
+                matchingExercises.map((matchingExercise) => {
+                    return m('div', {
+                        class: css.card,
+                    }, [
+                        m('h3', {class: css.h3}, matchingExercise.name),
+                        m('button', {
+                            class: css.button,
+                            onclick: () => {
+                                exercise = matchingExercise
+                                // TODO: Re-run the search (as though there was
+                                // user input) at this point.
+                            }
+                        }, 'Use this exercise'),
+                        m('p', {class: css.subTitle}, `Measured in ${matchingExercise.setUnits}`),
+                    ])
                 }),
                 m('div', [
                     m('input[type=number]', {
@@ -71,7 +95,6 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                             exercise,
                             sets,
                         })
-                        newPrescription.exercise.name = exerciseName
                         newPrescription.exercise.setUnits = units
                         vnode.attrs.updatePrescription(newPrescription)
                         vnode.attrs.closeOverlay()

@@ -42,6 +42,7 @@ export default (vnode: RowVnode) => {
                                     closeOverlay: () => {
                                         vnode.attrs.setOverlay(null, {})
                                     },
+                                    css: css,
                                 })
                             },
                         }, 'Edit'),

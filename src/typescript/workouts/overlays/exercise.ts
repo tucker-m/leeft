@@ -72,24 +72,26 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                         m('label', 'seconds'),
                     ]),
                 ]),
-                m('div', {
-                    class: css.overlayResultsContainer
-                }, matchingExercises.map((matchingExercise) => {
-                    return m('div', {
-                        class: css.card,
-                    }, [
-                        m('h3', {class: css.h3}, matchingExercise.name),
-                        m('button', {
-                            class: css.button,
-                            onclick: () => {
-                                exercise = matchingExercise
-                                // TODO: Re-run the search (as though there was
-                                // user input) at this point.
-                            }
-                        }, 'Use this exercise'),
-                        m('p', {class: css.subTitle}, `Measured in ${matchingExercise.setUnits}`),
-                    ])
-                })),
+                matchingExercises.length > 0 ?
+                    m('div', {
+                        class: css.overlayResultsContainer
+                    }, matchingExercises.map((matchingExercise) => {
+                        return m('div', {
+                            class: css.card,
+                        }, [
+                            m('h3', {class: css.h3}, matchingExercise.name),
+                            m('button', {
+                                class: css.button,
+                                onclick: () => {
+                                    exercise = matchingExercise
+                                    // TODO: Re-run the search (as though there was
+                                    // user input) at this point.
+                                }
+                            }, 'Use this exercise'),
+                            m('p', {class: css.subTitle}, `Measured in ${matchingExercise.setUnits}`),
+                        ])
+                    }))
+                    : null,
                 m('div', {class: css.horizontalWrapper}, [
                     m('button', {
                         onclick: vnode.attrs.closeOverlay

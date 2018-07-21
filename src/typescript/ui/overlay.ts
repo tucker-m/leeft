@@ -2,6 +2,7 @@ import * as m from 'mithril'
 
 interface OverlayAttrs {
     content: any,
+    title: string,
     css: any,
 }
 interface OverlayComponentVnode {
@@ -21,10 +22,16 @@ const OverlayComponent = (vnode: OverlayComponentVnode) => {
                     class: css.overlayTitleBar,
                 }, m('h3', {
                     class: css.h3
-                }, "Title")),
+                }, vnode.attrs.title)),
                 m('div', {
                     class: css.overlayContentContainer,
                 }, vnode.attrs.content),
+                m('div', {
+                    class: css.overlayBottomBar,
+                }, [
+                    m('button', 'Cancel'),
+                    m('button', 'Save')
+                ])
             ]))
         }
     }

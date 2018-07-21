@@ -45,6 +45,8 @@ export default {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'stretch',
+        boxSizing: 'border-box',
+        padding: '1rem',
     },
     fullScreenOverlayContent: {
         display: 'flex',
@@ -52,12 +54,13 @@ export default {
         background: 'white',
         borderRadius: '2rem',
         flex: '1',
-        margin: '1rem',
         border: `2px solid ${colors.editBorder}`,
         boxShadow: '0 2px 6px 2px rgba(0, 0, 0, .3)',
+        backgroundColor: colors.editBorder,
         overflow: 'hidden',
     },
     overlayContentContainer: {
+        backgroundColor: 'white',
         padding: '1rem',
         display: 'flex',
         flex: '1',
@@ -65,6 +68,7 @@ export default {
         overflow: 'hidden',
     },
     overlayTitleBar: {
+        backgroundColor: 'white',
         borderBottom: `2px solid ${colors.editBorder}`,
         height: '2.5rem',
         display: 'flex',
@@ -74,6 +78,10 @@ export default {
     overlayResultsContainer: {
         flex: '1',
         overflowY: 'scroll',
+    },
+    overlayBottomBar: {
+        padding: '.5rem 1.5rem',
+        flexDirection: 'row',
     },
     horizontalWrapper: {
         flexDirection: 'row',

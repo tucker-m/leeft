@@ -16,7 +16,16 @@ const OverlayComponent = (vnode: OverlayComponentVnode) => {
                 class: css.fullScreenOverlay,
             }, m('div', {
                 class: css.fullScreenOverlayContent,
-            }, vnode.attrs.content))
+            }, [
+                m('div', {
+                    class: css.overlayTitleBar,
+                }, m('h3', {
+                    class: css.h3
+                }, "Title")),
+                m('div', {
+                    class: css.overlayContentContainer,
+                }, vnode.attrs.content),
+            ]))
         }
     }
 }

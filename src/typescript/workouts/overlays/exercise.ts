@@ -25,18 +25,56 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
 
     return {
         view: (vnode: ExerciseVnode) => {
-            return m('div', [
-                m('input[type=text]', {
-                    value: exercise.name,
-                    oninput: m.withAttr('value', (value) => {
-                        exercise.name = value
-                        db.findExercisesByName(exercise.name).then((results) => {
-                            matchingExercises = results
-                            m.redraw()
+            return [
+                m('div', {class: css.horizontalWrapper}, [
+                    m('input[type=text]', {
+                        value: exercise.name,
+                        oninput: m.withAttr('value', (value) => {
+                            exercise.name = value
+                            db.findExercisesByName(exercise.name).then((results) => {
+                                matchingExercises = results
+                                m.redraw()
+                            })
                         })
-                    })
-                }),
-                matchingExercises.map((matchingExercise) => {
+                    }),
+                    m('div', [
+                        m('input[type=number]', {
+                            value: sets,
+                            onchange: m.withAttr('value', (value: string) => {
+                                sets = parseInt(value)
+                            })
+                        }),
+                        m('span', 'sets'),
+                    ]),
+                    m('input[type=number]', {
+                        value: amount,
+                        onchange: m.withAttr('value', (value) => {
+                            amount = parseInt(value)
+                        }),
+                    }),
+                    m('span', units),
+                    m('div', [
+                        m('input[type=radio][name=setUnits]', {
+                            value: 'reps',
+                            checked: units == 'reps',
+                            onclick: m.withAttr('value', (value) => {
+                                units = value
+                            })
+                        }),
+                        m('label', 'reps'),
+                        m('input[type=radio][name=setUnits]', {
+                            value: 'seconds',
+                            checked: units == 'seconds',
+                            onclick: m.withAttr('value', (value) => {
+                                units = value
+                            })
+                        }),
+                        m('label', 'seconds'),
+                    ]),
+                ]),
+                m('div', {
+                    class: css.overlayResultsContainer
+                }, matchingExercises.map((matchingExercise) => {
                     return m('div', {
                         class: css.card,
                     }, [
@@ -51,56 +89,24 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                         }, 'Use this exercise'),
                         m('p', {class: css.subTitle}, `Measured in ${matchingExercise.setUnits}`),
                     ])
-                }),
-                m('div', [
-                    m('input[type=number]', {
-                        value: sets,
-                        onchange: m.withAttr('value', (value: string) => {
-                            sets = parseInt(value)
-                        })
-                    }),
-                    m('span', 'sets'),
+                })),
+                m('div', {class: css.horizontalWrapper}, [
+                    m('button', {
+                        onclick: vnode.attrs.closeOverlay
+                    }, 'Cancel'),
+                    m('button', {
+                        onclick: () => {
+                            let newPrescription = Object.assign(prescription, {
+                                exercise,
+                                sets,
+                            })
+                            newPrescription.exercise.setUnits = units
+                            vnode.attrs.updatePrescription(newPrescription)
+                            vnode.attrs.closeOverlay()
+                        }
+                    }, 'Save'),
                 ]),
-                m('input[type=number]', {
-                    value: amount,
-                    onchange: m.withAttr('value', (value) => {
-                        amount = parseInt(value)
-                    }),
-                }),
-                m('span', units),
-                m('div', [
-                    m('input[type=radio][name=setUnits]', {
-                        value: 'reps',
-                        checked: units == 'reps',
-                        onclick: m.withAttr('value', (value) => {
-                            units = value
-                        })
-                    }),
-                    m('label', 'reps'),
-                    m('input[type=radio][name=setUnits]', {
-                        value: 'seconds',
-                        checked: units == 'seconds',
-                        onclick: m.withAttr('value', (value) => {
-                            units = value
-                        })
-                    }),
-                    m('label', 'seconds'),
-                ]),
-                m('button', {
-                    onclick: vnode.attrs.closeOverlay
-                }, 'Cancel'),
-                m('button', {
-                    onclick: () => {
-                        let newPrescription = Object.assign(prescription, {
-                            exercise,
-                            sets,
-                        })
-                        newPrescription.exercise.setUnits = units
-                        vnode.attrs.updatePrescription(newPrescription)
-                        vnode.attrs.closeOverlay()
-                    }
-                }, 'Save'),
-            ])
+            ]
         }
     }
 }

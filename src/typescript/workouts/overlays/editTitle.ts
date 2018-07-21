@@ -22,7 +22,6 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
     return {
         view: (vnode: ComponentVnode) => {
             return m('div', [
-                m('h4', 'Change Workout Title'),
                 m('input[type=text]', {
                     value: title,
                     oninput: m.withAttr('value', (value) => {
@@ -35,7 +34,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                 }),
                 m('div', matchingWorkouts.map((result) => {
                     return m('div', {class: css.card}, [
-                        m('h3', {class: css.h3}, result.workout.name),
+                        m('p', result.workout.name),
                         m('button', {
                             class: css.button,
                             onclick: () => {

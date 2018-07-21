@@ -106,7 +106,13 @@ const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
                     })
                 })
             })
-            resolve(exercises)
+            const stringifiedExercises = exercises.map((exercise) => {
+                return JSON.stringify(exercise)
+            })
+            let removeDuplicates = exercises.filter((exercise, index) => {
+                return stringifiedExercises.indexOf(JSON.stringify(exercise)) == index
+            })
+            resolve(removeDuplicates)
         })
     })
 }

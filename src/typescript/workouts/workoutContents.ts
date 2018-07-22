@@ -12,7 +12,7 @@ interface ContentAttrs {
     pageEditable: boolean,
     css: any,
     updateWorkout: (newWorkout: Workout) => void,
-    setOverlay: (content: any, title: string, attrs: any) => void,
+    setOverlay: (content: any, attrs: any) => void,
 }
 interface ContentVnode {
     attrs: ContentAttrs
@@ -46,12 +46,12 @@ const WorkoutContent = (vnode: ContentVnode) => {
                     showEditButton: pageEditable,
                     css: classes,
                     setOverlay: () => {
-                        vnode.attrs.setOverlay(EditTitleOverlay, 'Edit Workout Title', {
+                        vnode.attrs.setOverlay(EditTitleOverlay, {
                             title: workout.name,
                             workout: workout,
                             css: classes,
                             hideOverlay: () => {
-                                vnode.attrs.setOverlay(null, '', {})
+                                vnode.attrs.setOverlay(null, {})
                             },
                             updateWorkout: vnode.attrs.updateWorkout,
                         })

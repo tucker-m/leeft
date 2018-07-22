@@ -45,14 +45,12 @@ export default (vnode: ViewWorkoutVnode) => {
     }
 
     let pageEditable = (!!vnode.attrs.edit && (vnode.attrs.edit == 'edit'))
-    let overlay = null
-    let overlayTitle = ''
+    let overlay: {component: null | any, title: string} = {component: null, title: ''}
     let overlayBottomContent = null
     let overlayAttrs = {}
 
-    const setOverlay = (overlayToShow, title, attrs, bottomContent = null) => {
+    const setOverlay = (overlayToShow, attrs, bottomContent = null) => {
         overlay = overlayToShow
-        overlayTitle = title
         overlayAttrs = attrs
         overlayBottomContent = bottomContent
     }
@@ -72,10 +70,10 @@ export default (vnode: ViewWorkoutVnode) => {
             const overlayComponent = overlay // you get a compiler error
                                            // if this isn't a constant.
             return m('div', [
-                overlayComponent ?
+                overlayComponent.component ?
                     Overlay({
-                        content: m(overlayComponent, overlayAttrs),
-                        title: overlayTitle,
+                        content: m(overlayComponent.component, overlayAttrs),
+                        title: overlayComponent.title,
                         bottomContent: overlayBottomContent,
                         css: classes,
                     })

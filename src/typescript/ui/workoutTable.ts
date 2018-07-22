@@ -7,7 +7,7 @@ interface TableAttributes {
     prescriptions: Array<ExercisePrescription>,
     showEditButtons: boolean,
     css: any,
-    setOverlay: (overlay: any, title: string, attrs: any) => void,
+    setOverlay: (overlay: any, attrs: any) => void,
 }
 
 interface TableVnode {

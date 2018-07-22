@@ -9,7 +9,7 @@ interface RowAttrs {
     showEditButtons: boolean,
     deleteFunction: () => void,
     css: any,
-    setOverlay: (overlay: any, title: string, attrs: any) => void,
+    setOverlay: (overlay: any, attrs: any) => void,
 };
 interface RowVnode {
     attrs: RowAttrs
@@ -34,13 +34,13 @@ export default (vnode: RowVnode) => {
                     m('td', {class: css.td}, [
                         m('a', {
                             onclick: () => {
-                                vnode.attrs.setOverlay(ExerciseOverlay, 'Edit Exercise', {
+                                vnode.attrs.setOverlay(ExerciseOverlay, {
                                     prescription,
                                     updatePrescription: (newPrescription: ExercisePrescription) => {
                                         set(prescription, newPrescription)
                                     },
                                     closeOverlay: () => {
-                                        vnode.attrs.setOverlay(null, '', {})
+                                        vnode.attrs.setOverlay(null, {})
                                     },
                                     css: css,
                                 })

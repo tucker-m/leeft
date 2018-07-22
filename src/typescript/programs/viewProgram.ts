@@ -1,13 +1,12 @@
 import * as m from 'mithril'
 import db from '../helpers/db'
 import {Saveable, Program, Settings, Puttable} from '../types/exercise'
-import EditableH1 from '../ui/editableH1'
 import Page from '../ui/page'
 import ProgramContents from './programContents'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
-import EditTitleOverlay from './overlays/editTitle'
+import Overlay from '../ui/overlay'
 
 jss.setup(preset())
 const {classes} = jss.createStyleSheet(style).attach()
@@ -36,21 +35,30 @@ export default (vnode: ViewProgramVnode) => {
         program = returnedProgram
         m.redraw()
     })
-    let overlayShowing = false
-    const showOverlayContent = (show: boolean) => {
-        overlayShowing = show
+
+    let overlay = null
+    let overlayTitle = ''
+    let overlayBottomContent = null
+    let overlayAttrs = {}
+
+    const setOverlay = (overlayToShow, title, attrs, bottomContent = null) => {
+        overlay = overlayToShow
+        overlayTitle = title
+        overlayAttrs = attrs
+        overlayBottomContent = bottomContent
     }
+
     return {
         view: (vnode: ViewProgramVnode) => {
+            const overlayComponent = overlay
+
             return m('div', [
-                overlayShowing ?
-                    EditTitleOverlay({
-                        title: program.name ? program.name : '',
+                overlayComponent ?
+                    Overlay({
+                        content: m(overlayComponent, overlayAttrs),
+                        title: overlayTitle,
+                        bottomContent: overlayBottomContent,
                         css: classes,
-                        showOverlayContent: showOverlayContent,
-                        updateTitle: (newName: string) => {
-                            program.name = newName
-                        },
                     })
                     : null,
                 Page({
@@ -75,6 +83,7 @@ export default (vnode: ViewProgramVnode) => {
                         program,
                         pageEditable,
                         css: classes,
+                        setOverlay: setOverlay,
                     })
                 })
             ])

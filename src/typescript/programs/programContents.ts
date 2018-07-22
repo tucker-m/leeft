@@ -3,11 +3,13 @@ import {Program, Workout, Puttable} from '../types/exercise'
 import db from '../helpers/db'
 import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
+import EditTitleOverlay from './overlays/editTitle'
 
 interface ContentAttrs {
     program: Program & Puttable,
     pageEditable: boolean,
     css: any,
+    setOverlay: (content: any, title: string, attrs: any) => void,
 }
 
 interface ContentVnode {
@@ -28,6 +30,16 @@ const ProgramContent = (vnode: ContentVnode) => {
                     updateFunc: (newName) => {program.name = newName},
                     showEditButton: pageEditable,
                     css: css,
+                    setOverlay: () => {
+                        vnode.attrs.setOverlay(EditTitleOverlay, 'Edit Program Title', {
+                            title: program.name,
+                            css: css,
+                            hideOverlay: vnode.attrs.setOverlay(null, '', {}),
+                            updateTitle: (newTitle: string) => {
+                                program.name = newTitle
+                            },
+                        })
+                    },
                 }),
                 m('table', {
                     class: css.table,

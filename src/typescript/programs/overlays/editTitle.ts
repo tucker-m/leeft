@@ -5,7 +5,7 @@ import {Workout} from '../../types/exercise'
 interface EditTitleAttrs {
     title: string,
     css: any,
-    showOverlayContent: (boolean) => void,
+    hideOverlay: () => void,
     updateTitle: (string) => void,
 }
 interface ComponentVnode {
@@ -43,12 +43,12 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                 })),
                 m('div', [
                     m('button', {
-                        onclick: () => {vnode.attrs.showOverlayContent(false)}
+                        onclick: () => {vnode.attrs.hideOverlay()}
                     }, 'Cancel'),
                     m('button', {
                         onclick: () => {
                             vnode.attrs.updateTitle(title)
-                            vnode.attrs.showOverlayContent(false)
+                            vnode.attrs.hideOverlay()
                         }
                     }, 'Save'),
                 ])

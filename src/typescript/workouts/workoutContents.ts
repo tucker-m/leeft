@@ -51,7 +51,7 @@ const WorkoutContent = (vnode: ContentVnode) => {
                             workout: workout,
                             css: classes,
                             hideOverlay: () => {
-                                vnode.attrs.setOverlay(null, {})
+                                vnode.attrs.setOverlay({component: null, title: ''}, {})
                             },
                             updateWorkout: vnode.attrs.updateWorkout,
                         })

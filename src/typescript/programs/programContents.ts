@@ -34,7 +34,7 @@ const ProgramContent = (vnode: ContentVnode) => {
                         vnode.attrs.setOverlay(EditTitleOverlay, 'Edit Program Title', {
                             title: program.name,
                             css: css,
-                            hideOverlay: vnode.attrs.setOverlay(null, '', {}),
+                            hideOverlay: vnode.attrs.setOverlay({component: null, title: ''}, '', {}),
                             updateTitle: (newTitle: string) => {
                                 program.name = newTitle
                             },

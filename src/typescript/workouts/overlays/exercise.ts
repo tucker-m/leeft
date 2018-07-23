@@ -21,58 +21,76 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
 
     const prescription = toJS(vnode.attrs.prescription)
     let exercise = prescription.exercise
-    let sets = prescription.sets
-    let units = exercise.setUnits
-    let amount = prescription.amount
 
     return {
         view: (vnode: ExerciseVnode) => {
             return [
-                m('div', {class: css.horizontalWrapper}, [
-                    m('input[type=text]', {
-                        value: exercise.name,
-                        oninput: m.withAttr('value', (value) => {
-                            exercise.name = value
-                            db.findExercisesByName(exercise.name).then((results) => {
-                                matchingExercises = results
-                                m.redraw()
-                            })
-                        })
-                    }),
-                    m('div', [
+                m('div', [
+                    m('div', {class: css.labelOnTopGroup}, [
+                        m('label', {class: css.label}, 'Title'),
+                        m('input[type=text]', {
+                            value: exercise.name,
+                            oninput: m.withAttr('value', (value) => {
+                                exercise.name = value
+                                db.findExercisesByName(exercise.name).then((results) => {
+                                    matchingExercises = results
+                                    m.redraw()
+                                })
+                            }),
+                            class: css.textInput,
+                        }),
+                    ]),
+                    m('div', {class: css.labelOnTopGroup}, [
+                        m('label', {class: css.label}, 'Sets & Reps'),
+                        m('div', [
+                            m('input[type=number]', {
+                                value: prescription.sets,
+                                onchange: m.withAttr('value', (value: string) => {
+                                    prescription.sets = parseInt(value)
+                                })
+                            }),
+                            m('span', 'sets'),
+                        ]),
                         m('input[type=number]', {
-                            value: sets,
-                            onchange: m.withAttr('value', (value: string) => {
-                                sets = parseInt(value)
+                            value: prescription.amount,
+                            onchange: m.withAttr('value', (value) => {
+                                prescription.amount = parseInt(value)
+                            }),
+                        }),
+                        m('span', exercise.setUnits),
+                        m('div', [
+                            m('input[type=radio][name=setUnits]', {
+                                value: 'reps',
+                                checked: exercise.setUnits == 'reps',
+                                onclick: m.withAttr('value', (value) => {
+                                    exercise.setUnits = value
+                                })
+                            }),
+                            m('label', 'reps'),
+                            m('input[type=radio][name=setUnits]', {
+                                value: 'seconds',
+                                checked: exercise.setUnits == 'seconds',
+                                onclick: m.withAttr('value', (value) => {
+                                    exercise.setUnits = value
+                                })
+                            }),
+                            m('label', 'seconds'),
+                        ]),
+                    ])
+                ]),
+                m('div', [
+                    m('button', {
+                        onclick: vnode.attrs.hideOverlay
+                    }, 'Cancel'),
+                    m('button', {
+                        onclick: () => {
+                            let newPrescription = Object.assign(prescription, {
+                                exercise,
                             })
-                        }),
-                        m('span', 'sets'),
-                    ]),
-                    m('input[type=number]', {
-                        value: amount,
-                        onchange: m.withAttr('value', (value) => {
-                            amount = parseInt(value)
-                        }),
-                    }),
-                    m('span', units),
-                    m('div', [
-                        m('input[type=radio][name=setUnits]', {
-                            value: 'reps',
-                            checked: units == 'reps',
-                            onclick: m.withAttr('value', (value) => {
-                                units = value
-                            })
-                        }),
-                        m('label', 'reps'),
-                        m('input[type=radio][name=setUnits]', {
-                            value: 'seconds',
-                            checked: units == 'seconds',
-                            onclick: m.withAttr('value', (value) => {
-                                units = value
-                            })
-                        }),
-                        m('label', 'seconds'),
-                    ]),
+                            vnode.attrs.updatePrescription(newPrescription)
+                            vnode.attrs.hideOverlay()
+                        }
+                    }, 'Save'),
                 ]),
                 matchingExercises.length > 0 ?
                     m('div', {
@@ -94,22 +112,6 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                         ])
                     }))
                     : null,
-                m('div', {class: css.horizontalWrapper}, [
-                    m('button', {
-                        onclick: vnode.attrs.hideOverlay
-                    }, 'Cancel'),
-                    m('button', {
-                        onclick: () => {
-                            let newPrescription = Object.assign(prescription, {
-                                exercise,
-                                sets,
-                            })
-                            newPrescription.exercise.setUnits = units
-                            vnode.attrs.updatePrescription(newPrescription)
-                            vnode.attrs.hideOverlay()
-                        }
-                    }, 'Save'),
-                ]),
             ]
         }
     }

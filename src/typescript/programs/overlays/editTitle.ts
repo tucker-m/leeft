@@ -12,6 +12,8 @@ interface ComponentVnode {
     attrs: EditTitleAttrs
 }
 
+const title = 'Edit Program'
+
 const EditTitleComponent = (vnode: ComponentVnode) => {
     let matchingWorkouts: Array<any> = []
     let title = vnode.attrs.title
@@ -56,6 +58,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
         }
     }
 }
-export default (attrs: EditTitleAttrs) => {
-    return m(EditTitleComponent, attrs)
+export default {
+    component: EditTitleComponent,
+    title: title
 }

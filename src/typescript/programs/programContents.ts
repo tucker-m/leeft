@@ -9,7 +9,7 @@ interface ContentAttrs {
     program: Program & Puttable,
     pageEditable: boolean,
     css: any,
-    setOverlay: (content: any, title: string, attrs: any) => void,
+    setOverlay: (content: any, attrs: any) => void,
 }
 
 interface ContentVnode {
@@ -31,10 +31,12 @@ const ProgramContent = (vnode: ContentVnode) => {
                     showEditButton: pageEditable,
                     css: css,
                     setOverlay: () => {
-                        vnode.attrs.setOverlay(EditTitleOverlay, 'Edit Program Title', {
+                        vnode.attrs.setOverlay(EditTitleOverlay, {
                             title: program.name,
                             css: css,
-                            hideOverlay: vnode.attrs.setOverlay({component: null, title: ''}, '', {}),
+                            hideOverlay: () => {
+                                vnode.attrs.setOverlay({component: null, title: ''}, {})
+                            },
                             updateTitle: (newTitle: string) => {
                                 program.name = newTitle
                             },

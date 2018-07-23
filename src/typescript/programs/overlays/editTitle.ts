@@ -17,21 +17,40 @@ const title = 'Edit Program'
 const EditTitleComponent = (vnode: ComponentVnode) => {
     let matchingWorkouts: Array<any> = []
     let title = vnode.attrs.title
+    const css = vnode.attrs.css
 
     return {
         view: (vnode: ComponentVnode) => {
             return [
-                m('h4', 'Change Workout Title'),
-                m('input[type=text]', {
-                    value: title,
-                    oninput: m.withAttr('value', (value) => {
-                        db.findWorkoutsByName(value).then((results) => {
-                            matchingWorkouts = results
-                            m.redraw()
-                        })
-                        title = value
-                    }),
-                }),
+                m('div', {class: css.labelOnTopGroup}, [
+                    m('label', {class: css.label}, 'Change Workout Title'),
+                    m('div', {class: css.formRow}, [
+                        m('input[type=text]', {
+                            value: title,
+                            oninput: m.withAttr('value', (value) => {
+                                db.findWorkoutsByName(value).then((results) => {
+                                    matchingWorkouts = results
+                                    m.redraw()
+                                })
+                                title = value
+                            }),
+                            class: css.textInput,
+                        }),
+                        m('div', [
+                            m('button', {
+                                onclick: () => {vnode.attrs.hideOverlay()},
+                                class: css.button,
+                            }, 'Cancel'),
+                            m('button', {
+                                onclick: () => {
+                                    vnode.attrs.updateTitle(title)
+                                    vnode.attrs.hideOverlay()
+                                },
+                                class: css.hollowButton,
+                            }, 'Save'),
+                        ])
+                    ]),
+                ]),
                 m('ul', matchingWorkouts.map((result) => {
                     return m('li', {
                         onclick: () => {
@@ -39,17 +58,6 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                         }
                     }, `${result.program.name} > ${result.workout.name}`)
                 })),
-                m('div', [
-                    m('button', {
-                        onclick: () => {vnode.attrs.hideOverlay()}
-                    }, 'Cancel'),
-                    m('button', {
-                        onclick: () => {
-                            vnode.attrs.updateTitle(title)
-                            vnode.attrs.hideOverlay()
-                        }
-                    }, 'Save'),
-                ])
             ]
         }
     }

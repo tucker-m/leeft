@@ -39,8 +39,8 @@ export default (vnode: RowVnode) => {
                                     updatePrescription: (newPrescription: ExercisePrescription) => {
                                         set(prescription, newPrescription)
                                     },
-                                    closeOverlay: () => {
-                                        vnode.attrs.setOverlay(null, {})
+                                    hideOverlay: () => {
+                                        vnode.attrs.setOverlay({component: null, title: ''}, {})
                                     },
                                     css: css,
                                 })

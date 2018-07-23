@@ -6,12 +6,14 @@ import db from '../../helpers/db'
 interface ExerciseAttrs {
     prescription: ExercisePrescription,
     updatePrescription: (newPrescription: ExercisePrescription) => void,
-    closeOverlay: () => void,
+    hideOverlay: () => void,
     css: any,
 }
 interface ExerciseVnode {
     attrs: ExerciseAttrs
 }
+
+const title = 'Edit Exercise'
 
 const ExerciseOverlay = (vnode: ExerciseVnode) => {
     const css = vnode.attrs.css
@@ -94,7 +96,7 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                     : null,
                 m('div', {class: css.horizontalWrapper}, [
                     m('button', {
-                        onclick: vnode.attrs.closeOverlay
+                        onclick: vnode.attrs.hideOverlay
                     }, 'Cancel'),
                     m('button', {
                         onclick: () => {
@@ -104,7 +106,7 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                             })
                             newPrescription.exercise.setUnits = units
                             vnode.attrs.updatePrescription(newPrescription)
-                            vnode.attrs.closeOverlay()
+                            vnode.attrs.hideOverlay()
                         }
                     }, 'Save'),
                 ]),
@@ -113,4 +115,7 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
     }
 }
 
-export default ExerciseOverlay
+export default {
+    component: ExerciseOverlay,
+    title: title
+}

@@ -3,6 +3,9 @@ import colors from './variables/colors'
 export default {
     label: {
         margin: '.25rem',
+        color: '#666',
+        fontFamily: 'sans-serif',
+        fontSize: '.85rem',
     },
     textInput: {
         border: '1px solid #999',

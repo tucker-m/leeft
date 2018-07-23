@@ -23,7 +23,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
         view: (vnode: ComponentVnode) => {
             return [
                 m('div', {class: css.labelOnTopGroup}, [
-                    m('label', {class: css.label}, 'Change Workout Title'),
+                    m('label', {class: css.label}, 'Title'),
                     m('div', {class: css.formRow}, [
                         m('input[type=text]', {
                             value: title,

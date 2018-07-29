@@ -15,10 +15,10 @@ export default {
         margin: '.25rem .5rem',
     },
     button: {
-        border: `1px solid ${colors.editBorder}`,
+        border: `1px solid ${colors.edit}`,
         borderRadius: '3px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, .3)',
-        backgroundColor: colors.editBorder,
+        backgroundColor: colors.edit,
         color: 'white',
         padding: '.5rem .75rem',
         margin: '.25rem .5rem',
@@ -26,8 +26,19 @@ export default {
     hollowButton: {
         extend: 'button',
         backgroundColor: 'white',
-        borderColor: colors.editBorder,
-        color: colors.editBorder,
+        borderColor: colors.edit,
+        color: colors.edit,
+    },
+    neutralButton: {
+        extend: 'button',
+        backgroundColor: '#f7f7f7',
+        borderColor: '#d3d3d3',
+        color: 'black',
+    },
+    smallButton: {
+        extend: 'button',
+        padding: '.25rem .5rem',
+        fontSize: '.9rem',
     },
     formRow: {
         display: 'flex',

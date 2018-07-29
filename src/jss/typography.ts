@@ -10,6 +10,8 @@ export default {
     },
     editableH1: {
         extend: 'h1',
+        display: 'inline-flex',
+        alignItems: 'center',
     },
     arrow: {
         fontSize: '2.5rem',

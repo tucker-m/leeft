@@ -21,10 +21,7 @@ const TableComponent = (vnode: TableVnode) => {
             return m('div', [
                 vnode.attrs.prescriptions.length > 0 ?
                     m('table', {
-                        class: utils.combineStyles([
-                            css.table,
-                            vnode.attrs.showEditButtons ? css.editable : ''
-                        ]),
+                        class: css.table,
                     }, [
                         m('tr', {
                             class: css.tr,

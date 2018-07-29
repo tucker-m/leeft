@@ -7,7 +7,6 @@ import Page from '../ui/page'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import style from '../../styles'
-import colors from '../../jss/variables/colors'
 import Overlay from '../ui/overlay'
 
 jss.setup(preset())
@@ -87,11 +86,9 @@ export default (vnode: ViewWorkoutVnode) => {
                             secondState: {
                                 text: pageEditable ? 'Edit Workout' : 'Done Editing',
                                 action: () => { pageEditable = !pageEditable },
-                                color: colors.editable,
                             }
                         },
                     ],
-                    topBarColor: 'none',
                     contents: workout == null ? null : WorkoutContent(contentAttrs),
                 })
             ])

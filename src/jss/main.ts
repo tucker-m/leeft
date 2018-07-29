@@ -32,12 +32,6 @@ export default {
     workoutListExercises: {
         fontSize: '1.1rem',
     },
-    editable: {
-        border: `.15rem dashed ${colors.editable}`,
-    },
-    editableH1: {
-        display: 'inline',
-    },
     fullScreenOverlay: {
         position: 'fixed',
         width: '100vw',
@@ -55,9 +49,9 @@ export default {
         background: 'white',
         borderRadius: '3px',
         flexBasis: '35rem',
-        border: `1px solid ${colors.editBorder}`,
+        border: `1px solid ${colors.edit}`,
         boxShadow: '0 2px 8px 2px rgba(0, 0, 0, .3)',
-        backgroundColor: colors.editBorder,
+        backgroundColor: colors.edit,
         overflow: 'hidden',
     },
     overlayContentContainer: {
@@ -70,7 +64,7 @@ export default {
     },
     overlayTitleBar: {
         backgroundColor: 'white',
-        borderBottom: `1px solid ${colors.editBorder}`,
+        borderBottom: `1px solid ${colors.edit}`,
         height: '2.5rem',
         display: 'flex',
         alignItems: 'center',

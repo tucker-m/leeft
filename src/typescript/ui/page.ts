@@ -6,7 +6,6 @@ type DisplayElement = null | m.Vnode<{}, {}> | Array<m.Vnode<{}, {}>>
 interface PageAttrs {
     contents: Array<DisplayElement> | DisplayElement,
     topBarButtons: Array<TopBarButtonAttrs>,
-    topBarColor?: string,
     css: any,
 }
 
@@ -19,7 +18,7 @@ const PageComponent = (vnode: PageComponent) => {
     return {
         view: (vnode: PageComponent) => {
             return m('div', [
-                TopBar({buttons: vnode.attrs.topBarButtons, color: vnode.attrs.topBarColor, css: css}),
+                TopBar({buttons: vnode.attrs.topBarButtons, css: css}),
                 m('div', {
                     class: css.constraint
                 }, vnode.attrs.contents)

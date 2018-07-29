@@ -1,8 +1,5 @@
-import colors from './variables/colors'
-
 export default {
     main: {
-        background: colors.topBarDefault,
         padding: '.5rem',
         marginBottom: '1rem',
     },

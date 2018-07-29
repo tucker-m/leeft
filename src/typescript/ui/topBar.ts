@@ -8,13 +8,11 @@ interface TopBarButtonAttrs {
     secondState?: {
         text: string,
         action: () => void,
-        color: string,
     }
 }
 
 interface TopBarAttrs {
     buttons: Array<TopBarButtonAttrs>,
-    color?: string,
     css: any,
 }
 
@@ -23,12 +21,6 @@ interface TopBarVnode {
 }
 
 const TopBarComponent = (vnode: TopBarVnode) => {
-    let currentColor = ''
-    let defaultColor = ''
-    if (vnode.attrs.color) {
-        currentColor= vnode.attrs.color
-        defaultColor = vnode.attrs.color
-    }
     const css = vnode.attrs.css
     return {
         view: (vnode: TopBarVnode) => {
@@ -36,16 +28,12 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                 let attrs = {
                     text: buttonAttr.text,
                     action: buttonAttr.action,
-                    setColor: (color: string) => {
-                        currentColor = color ? color : defaultColor
-                    },
                     css: css,
                 }
                 if (buttonAttr.secondState) {
                     attrs['secondState'] = {
                         text: buttonAttr.secondState.text,
                         action: buttonAttr.secondState.action,
-                        color: buttonAttr.secondState.color,
                     }
                 }
                 return TopBarButton(attrs)
@@ -63,7 +51,6 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                         css.alignment,
                         css.main,
                     ]),
-                    style: currentColor ? `background-color: ${currentColor}` : '',
                 }, m('div', {
                     class: css.constraint,
                 }, buttons))

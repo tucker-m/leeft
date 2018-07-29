@@ -24,14 +24,12 @@ const EditableH1 = function(vnode: EditableVnode) {
                 className = css.placeholderEditableH1
             }
             return m('div', {
-                class: utils.combineStyles([
-                    vnode.attrs.showEditButton ? 'editable-showing' : '',
-                    css.editableH1,
-                ])
+                class: css.editableH1
             }, [
                 H1({text: name, classes: [className], css: css}),
                 vnode.attrs.showEditButton
                     ? m('button', {
+                        class: css.smallButton,
                         onclick: () => {
                             if (vnode.attrs.setOverlay) {
                                 vnode.attrs.setOverlay()

@@ -1,5 +1,3 @@
 export default {
-    editable: 'none',
-    topBarDefault: 'none',
-    editBorder: '#1d70d6',
+    edit: '#1d70d6',
 }

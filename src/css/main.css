@@ -20,10 +20,3 @@ th {
 th:not(:last-of-type) {
     padding-right: 1.5rem;
 }
-.editable-showing {
-    box-sizing: border-box;
-    border: .15rem dashed #1d70d6;
-    padding: .5rem;
-    margin-top: -.65rem;
-    margin-left: -.65rem;
-}

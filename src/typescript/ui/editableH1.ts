@@ -29,7 +29,7 @@ const EditableH1 = function(vnode: EditableVnode) {
                 H1({text: name, classes: [className], css: css}),
                 vnode.attrs.showEditButton
                     ? m('button', {
-                        class: css.smallButton,
+                        class: `${css.hollowButton} ${css.small}`,
                         onclick: () => {
                             if (vnode.attrs.setOverlay) {
                                 vnode.attrs.setOverlay()

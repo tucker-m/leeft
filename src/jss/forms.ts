@@ -8,11 +8,17 @@ export default {
         fontSize: '.85rem',
     },
     textInput: {
+        height: '35px',
+        boxSizing: 'border-box',
+        backgroundColor: 'white',
         border: '1px solid #999',
         borderRadius: '3px',
         boxShadow: '0 0 3px rgba(0, 0, 0, .3) inset',
         padding: '.5rem .75rem',
         margin: '.25rem .5rem',
+    },
+    selectInput: {
+        extend: 'textInput',
     },
     button: {
         border: `1px solid ${colors.edit}`,
@@ -35,8 +41,19 @@ export default {
         borderColor: '#d3d3d3',
         color: 'black',
     },
-    smallButton: {
+    dangerButton: {
         extend: 'button',
+        backgroundColor: colors.danger,
+        color: 'white',
+        borderColor: colors.danger,
+    },
+    hollowDangerButton: {
+        extend: 'button',
+        backgroundColor: 'white',
+        color: colors.danger,
+        borderColor: colors.danger,
+    },
+    small: {
         padding: '.25rem .5rem',
         fontSize: '.9rem',
     },
@@ -47,8 +64,15 @@ export default {
         alignContent: 'stretch',
         marginLeft: '-.5rem',
     },
+    labelGroup: {
+        marginBottom: '1rem',
+    },
     labelOnTopGroup: {
+        extend: 'labelGroup',
         display: 'flex',
         flexDirection: 'column',
+    },
+    labelOnLeftGroup: {
+        extend: 'labelGroup',
     },
 }

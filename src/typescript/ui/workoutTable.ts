@@ -44,6 +44,7 @@ const TableComponent = (vnode: TableVnode) => {
                 : m('p', 'This workout has no exercises added to it.'),
                 vnode.attrs.showEditButtons ?
                     m('button', {
+                        class: css.hollowButton,
                         onclick: () => {
                             vnode.attrs.prescriptions.push({
                                 exercise: {

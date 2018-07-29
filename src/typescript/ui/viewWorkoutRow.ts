@@ -10,10 +10,10 @@ interface RowAttrs {
     deleteFunction: () => void,
     css: any,
     setOverlay: (overlay: any, attrs: any) => void,
-};
+}
 interface RowVnode {
     attrs: RowAttrs
-};
+}
 
 export default (vnode: RowVnode) => {
     const css = vnode.attrs.css
@@ -26,13 +26,10 @@ export default (vnode: RowVnode) => {
             }, [
                 m('td', {
                     class: css.td,
-                }, prescription.exercise.name),
-                m('td', {
-                    class: css.td,
-                }, (prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits)),
-                vnode.attrs.showEditButtons ?
-                    m('td', {class: css.td}, [
-                        m('a', {
+                }, [
+                    vnode.attrs.showEditButtons ?
+                        m('span', m('button', {
+                            class: `${css.hollowButton} ${css.small}`,
                             onclick: () => {
                                 vnode.attrs.setOverlay(ExerciseOverlay, {
                                     prescription,
@@ -46,13 +43,20 @@ export default (vnode: RowVnode) => {
                                 })
                             },
                         }, 'Edit'),
-                        m('span', ' | '),
-                        m('a', {
-                            onclick: vnode.attrs.deleteFunction,
-                        }, 'Remove'),
-                    ])
-                : null,
-            ]);
+                          m('button', {
+                              class: `${css.small} ${css.hollowDangerButton}`,
+                              onclick: vnode.attrs.deleteFunction,
+                          }, 'Delete')
+                         )
+                        : null,
+                    prescription.exercise.name ?
+                        prescription.exercise.name
+                        : m('span', {class: css.empty}, 'Unnamed Exercise'),
+                ]),
+                m('td', {
+                    class: css.td,
+                }, prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits),
+            ])
         }
-    };
-};
+    }
+}

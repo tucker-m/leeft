@@ -22,7 +22,7 @@ const OverlayComponent = (vnode: OverlayComponentVnode) => {
                 m('div', {
                     class: css.overlayTitleBar,
                 }, m('h3', {
-                    class: css.h3
+                    class: css.overlayTitle
                 }, vnode.attrs.title)),
                 m('div', {
                     class: css.overlayContentContainer,

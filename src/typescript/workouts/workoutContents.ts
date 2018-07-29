@@ -25,7 +25,7 @@ const WorkoutContent = (vnode: ContentVnode) => {
         view: (vnode: ContentVnode) => {
             const workout = vnode.attrs.workout
             const pageEditable = vnode.attrs.pageEditable
-            const classes = vnode.attrs.css
+            const css = vnode.attrs.css
 
             return [
                 vnode.attrs.program
@@ -34,9 +34,9 @@ const WorkoutContent = (vnode: ContentVnode) => {
                         oncreate: m.route.link,
                     }, H1({
                         text: vnode.attrs.program.name,
-                        css: classes,
+                        css: css,
                     })),
-                       m('span', {class: classes.arrow}, '>')
+                       m('span', {class: css.arrow}, '>')
                       ]
                 : null,
                 EditableH1({
@@ -44,12 +44,12 @@ const WorkoutContent = (vnode: ContentVnode) => {
                     placeholder: 'Untitled Workout',
                     updateFunc: (newName: string) => { workout.name = newName },
                     showEditButton: pageEditable,
-                    css: classes,
+                    css: css,
                     setOverlay: () => {
                         vnode.attrs.setOverlay(EditTitleOverlay, {
                             title: workout.name,
                             workout: workout,
-                            css: classes,
+                            css: css,
                             hideOverlay: () => {
                                 vnode.attrs.setOverlay({component: null, title: ''}, {})
                             },
@@ -60,11 +60,12 @@ const WorkoutContent = (vnode: ContentVnode) => {
                 WorkoutTable({
                     prescriptions: workout.prescriptions,
                     showEditButtons: pageEditable,
-                    css: classes,
+                    css: css,
                     setOverlay: vnode.attrs.setOverlay,
                 }),
                 WorkoutLogs({
-                    workout: workout
+                    workout: workout,
+                    css: css,
                 })
             ]
         }

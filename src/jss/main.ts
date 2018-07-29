@@ -16,7 +16,7 @@ export default {
     tr: {
         '&:nth-of-type(2n)': {
             background: '#efefef',
-        }
+        },
     },
     td: {
         padding: '0.5rem',

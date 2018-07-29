@@ -5,7 +5,8 @@ import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
 
 interface WorkoutLogAttrs {
-    workout: Workout
+    workout: Workout,
+    css: any,
 }
 interface WorkoutLogVnode {
     attrs: WorkoutLogAttrs
@@ -36,7 +37,9 @@ const getEmptyLogForWorkout = (workout: Workout) => {
 }
 
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
-    let currentWorkoutName = vnode.attrs.workout.name;
+    let currentWorkoutName = vnode.attrs.workout.name
+    const css = vnode.attrs.css
+
     return {
         onbeforeupdate: (vnode: WorkoutLogVnode) => {
             if (currentWorkoutName != vnode.attrs.workout.name) {
@@ -53,6 +56,7 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                 m('div', [
                     m('h2', 'Log Entries'),
                     m('button', {
+                        class: css.hollowButton,
                         onclick: preventDefault(() => {
                             const workoutLog = db.promiseSaveableRecord<WorkoutLog>(
                                 getEmptyLogForWorkout(vnode.attrs.workout)

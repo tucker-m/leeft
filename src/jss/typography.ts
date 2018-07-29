@@ -32,7 +32,7 @@ export default {
         paddingLeft: '1rem',
     },
     empty: {
-        opacity: '0.6',
+        color: 'rgba(34, 34, 26, .6)',
         fontStyle: 'italic',
     },
 }

@@ -6,10 +6,6 @@ export default {
         padding: '.5rem',
         overflow: 'hidden',
     },
-    overlayTitle: {
-        fontSize: '1.2rem',
-        color: colors.edit,
-    },
     subTitle: {
         fontStyle: 'italic',
         paddingLeft: '1rem',

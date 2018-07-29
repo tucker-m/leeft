@@ -45,6 +45,7 @@ export default {
     },
     fullScreenOverlayContent: {
         display: 'flex',
+        maxHeight: '100%',
         flexDirection: 'column',
         background: 'white',
         borderRadius: '3px',
@@ -69,6 +70,11 @@ export default {
         display: 'flex',
         alignItems: 'center',
         paddingLeft: '1rem',
+    },
+    overlayTitle: {
+        fontSize: '1.2rem',
+        margin: '.5rem 0',
+        color: colors.edit,
     },
     overlayResultsContainer: {
         flex: '1',

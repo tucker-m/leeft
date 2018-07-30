@@ -40,6 +40,14 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                             }),
                             class: css.textInput,
                         }),
+                        m('div', {class: css.searchResults}, [
+                            m('div', {class: css.topResult}, [
+                                m('span', 'use'),
+                                m('button', {class: `${css.small} ${css.button}`}, 'bench press'),
+                                m('span', 'from Chest Day'),
+                            ]),
+                            m('button', {class: `${css.small} ${css.hollowButton}`}, 'show 6 others'),
+                        ]),
                     ]),
                     m('div', {class: css.labelOnTopGroup}, [
                         m('label', {class: css.label}, 'Sets & Reps'),

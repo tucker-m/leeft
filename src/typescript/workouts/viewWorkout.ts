@@ -10,7 +10,7 @@ import style from '../../styles'
 import Overlay from '../ui/overlay'
 
 jss.setup(preset())
-const {classes} = jss.createStyleSheet(style).attach()
+const {classes: css} = jss.createStyleSheet(style).attach()
 
 interface ViewWorkoutAttrs {
     id: string,
@@ -62,11 +62,11 @@ export default (vnode: ViewWorkoutVnode) => {
                         content: m(overlayComponent.component, overlayAttrs),
                         title: overlayComponent.title,
                         bottomContent: overlayBottomContent,
-                        css: classes,
+                        css,
                     })
                     : null,
                 Page({
-                    css: classes,
+                    css,
                     topBarButtons: [
                         {
                             text: !pageEditable ? 'Edit Workout' : 'Done Editing',
@@ -80,10 +80,10 @@ export default (vnode: ViewWorkoutVnode) => {
                     contents: (workout == null || program == null) ? null : WorkoutContent({
                         workout,
                         pageEditable,
-                        css: classes,
-                        updateWorkout: updateWorkout,
-                        setOverlay: setOverlay,
-                        program: program,
+                        css,
+                        updateWorkout,
+                        setOverlay,
+                        program,
                     }),
                 })
             ])

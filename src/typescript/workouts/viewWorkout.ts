@@ -2,7 +2,7 @@ import * as m from 'mithril';
 import db from '../helpers/db';
 import {Saveable, Saved, Puttable, Workout, Program, Exercise, ExercisePrescription} from '../types/exercise';
 import WorkoutContent from './workoutContents'
-import {observable, IObservableObject} from 'mobx';
+import {observable, IObservableObject, set} from 'mobx';
 import Page from '../ui/page'
 import jss from 'jss'
 import preset from 'jss-preset-default'
@@ -22,16 +22,12 @@ interface ViewWorkoutVnode {
 };
 
 export default (vnode: ViewWorkoutVnode) => {
-    let workout: (Workout) = {
-        name: '',
-        prescriptions: [],
-        tag: 'workout',
-    }
+    let workout: (Workout & Puttable) | null = null
     const day = vnode.attrs.day
     let program: (Program & Puttable) | null = null
     db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
         program = returnedProgram
-        const temp = <Workout>returnedProgram.schedule[parseInt(day)]
+        const temp = <Workout & Puttable>returnedProgram.schedule[parseInt(day)]
         workout = temp
         m.redraw()
     })
@@ -39,7 +35,9 @@ export default (vnode: ViewWorkoutVnode) => {
     let updateWorkout = (newWorkout: Workout) => {
         if (program) {
             program.schedule[parseInt(day)] = newWorkout
-            workout = newWorkout
+            if (workout) {
+                set(workout, newWorkout)
+            }
         }
     }
 
@@ -56,16 +54,6 @@ export default (vnode: ViewWorkoutVnode) => {
 
     return {
         view: (vnode: ViewWorkoutVnode) => {
-            let contentAttrs = {
-                workout,
-                pageEditable,
-                css: classes,
-                updateWorkout: updateWorkout,
-                setOverlay: setOverlay,
-            }
-            if (program) {
-                contentAttrs['program'] = program
-            }
             const overlayComponent = overlay // you get a compiler error
                                            // if this isn't a constant.
             return m('div', [
@@ -89,7 +77,14 @@ export default (vnode: ViewWorkoutVnode) => {
                             }
                         },
                     ],
-                    contents: workout == null ? null : WorkoutContent(contentAttrs),
+                    contents: (workout == null || program == null) ? null : WorkoutContent({
+                        workout,
+                        pageEditable,
+                        css: classes,
+                        updateWorkout: updateWorkout,
+                        setOverlay: setOverlay,
+                        program: program,
+                    }),
                 })
             ])
         }

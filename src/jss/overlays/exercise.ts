@@ -1,10 +1,11 @@
 export default {
     searchResults: {
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
     },
     topResult: {
+        flex: '1',
         marginLeft: '.5rem',
-    }
+    },
 }

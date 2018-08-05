@@ -1,7 +1,7 @@
 import * as m from 'mithril';
 import {Exercise, ExercisePrescription} from '../types/exercise';
 import db from '../helpers/db'
-import ExerciseOverlay from '../workouts/overlays/exercise'
+import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
 import {set} from 'mobx'
 
 interface RowAttrs {

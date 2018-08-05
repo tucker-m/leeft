@@ -89,7 +89,7 @@ const findLogsByWorkoutName = (name: string) => {
     })
 }
 
-const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
+const findExercisesByName = (name: string): Promise<Array<{exercise: Exercise, workout: Workout}>> => {
     return new Promise((resolve, reject) => {
         db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
             let programs = docs.rows
@@ -100,17 +100,26 @@ const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
                 })
                 return workoutsOnly.flatMap((workout) => {
                     return workout.prescriptions.map((prescription) => {
-                        return prescription.exercise
+                        return {
+                            exercise: prescription.exercise,
+                            workout: workout,
+                        }
                     }).filter((exercise) => {
-                        return exercise.name.startsWith(name)
+                        return exercise.exercise.name.startsWith(name)
                     })
                 })
             })
             const stringifiedExercises = exercises.map((exercise) => {
-                return JSON.stringify(exercise)
+                return JSON.stringify({
+                    exercise: exercise.exercise,
+                    workout: exercise.workout.name
+                })
             })
             let removeDuplicates = exercises.filter((exercise, index) => {
-                return stringifiedExercises.indexOf(JSON.stringify(exercise)) == index
+                return stringifiedExercises.indexOf(JSON.stringify({
+                    exercise: exercise.exercise,
+                    workout: exercise.workout.name
+                })) == index
             })
             resolve(removeDuplicates)
         })

@@ -6,7 +6,6 @@ export default {
     },
     subTitle: {
         fontStyle: 'italic',
-        paddingLeft: '1rem',
     },
     list: {
         listStyle: 'disc',

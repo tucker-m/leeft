@@ -38,16 +38,16 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                         }),
                         m('div', [
                             m('button', {
-                                onclick: () => {vnode.attrs.hideOverlay()},
-                                class: css.button,
-                            }, 'Cancel'),
-                            m('button', {
                                 onclick: () => {
                                     vnode.attrs.updateTitle(title)
                                     vnode.attrs.hideOverlay()
                                 },
-                                class: css.hollowButton,
+                                class: css.button,
                             }, 'Save'),
+                            m('button', {
+                                onclick: () => {vnode.attrs.hideOverlay()},
+                                class: css.hollowButton,
+                            }, 'Cancel'),
                         ])
                     ]),
                 ]),

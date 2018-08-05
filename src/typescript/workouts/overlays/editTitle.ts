@@ -54,17 +54,19 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                         ]),
                     ]),
                 ]),
+                matchingWorkouts.length > 1 ?
+                    m('p', 'Click an existing workout to copy it')
+                    : null,
                 m('div', matchingWorkouts.map((result) => {
                     return m('div', {class: css.card}, [
-                        m('p', result.workout.name),
                         m('button', {
-                            class: css.button,
+                            class: `${css.small} ${css.hollowButton}`,
                             onclick: () => {
+                                title = result.workout.name
                                 vnode.attrs.updateWorkout(result.workout)
-                                vnode.attrs.hideOverlay()
                             }
-                        }, 'Copy this workout'),
-                        m('p', {class: css.subTitle}, 'from ' + result.programs.map((program) => {
+                        }, result.workout.name),
+                        m('span', {class: css.subTitle}, 'from ' + result.programs.map((program) => {
                             return program.name
                         }).join(', ')),
                         m('ul', {class: css.list}, result.workout.prescriptions.map((prescription) => {

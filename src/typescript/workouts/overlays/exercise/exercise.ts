@@ -99,7 +99,7 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                         ]),
                     ]),
                 ]),
-                m('div', [
+                m('div', {class: css.bottomButtons}, [
                     m('button', {
                         class: css.hollowDangerButton,
                         onclick: vnode.attrs.hideOverlay

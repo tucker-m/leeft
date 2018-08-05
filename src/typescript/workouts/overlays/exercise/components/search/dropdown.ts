@@ -24,7 +24,12 @@ const DropDownComponent = (vnode: DropDownVnode) => {
                         !resultsShowing ?
                             [
                                 m('span', 'use'),
-                                m('button', {class: `${css.small} ${css.hollowButton}`}, matchingExercises[0].exercise.name),
+                                m('button', {
+                                    class: `${css.small} ${css.hollowButton}`,
+                                    onclick: () => {
+                                        vnode.attrs.updateExercise(matchingExercises[0].exercise)
+                                    }
+                                }, matchingExercises[0].exercise.name),
                                 m('span', `from ${matchingExercises[0].workout.name}`)
                             ]
                             : m('p', 'Matching exercises:'),

@@ -1,11 +1,11 @@
 import colors from '../variables/colors'
+import shared from '../shared'
 
 export default {
     card: {
         overflow: 'hidden',
     },
     subTitle: {
-        fontStyle: 'italic',
     },
     list: {
         listStyle: 'disc',
@@ -14,4 +14,8 @@ export default {
         float: 'left',
         marginLeft: '2rem',
     },
+    workoutResult: {
+        overflow: 'hidden',
+        marginBottom: '1rem',
+    }
 }

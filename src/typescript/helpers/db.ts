@@ -90,6 +90,7 @@ const findLogsByWorkoutName = (name: string) => {
 }
 
 const findExercisesByName = (name: string): Promise<Array<{exercise: Exercise, workout: Workout}>> => {
+    const regex = new RegExp(name.toLowerCase())
     return new Promise((resolve, reject) => {
         db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
             let programs = docs.rows
@@ -105,7 +106,7 @@ const findExercisesByName = (name: string): Promise<Array<{exercise: Exercise, w
                             workout: workout,
                         }
                     }).filter((exercise) => {
-                        return exercise.exercise.name.startsWith(name)
+                        return !!exercise.exercise.name.toLowerCase().match(regex)
                     })
                 })
             })

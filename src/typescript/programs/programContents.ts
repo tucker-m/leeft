@@ -59,7 +59,7 @@ const ProgramContent = (vnode: ContentVnode) => {
                                     class: css.workoutNameInProgram,
                                     href: `/programs/${program._id}/workouts/${index}`,
                                     oncreate: m.route.link,
-                                }, workout.name),
+                                }, workout.name ? workout.name : 'Untitled Workout'),
                             m('p', {class: css.exerciseNamesInProgram}, workoutDescription),
                         ]),
                         pageEditable ? m('td', {class: css.td}, [

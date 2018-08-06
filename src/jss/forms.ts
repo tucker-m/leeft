@@ -1,4 +1,5 @@
 import colors from './variables/colors'
+import shared from './shared'
 
 export default {
     label: {
@@ -20,15 +21,12 @@ export default {
     selectInput: {
         extend: 'textInput',
     },
-    button: {
-        border: `1px solid ${colors.edit}`,
-        borderRadius: '3px',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, .3)',
+    button: Object.assign({
         backgroundColor: colors.edit,
         color: 'white',
         padding: '.5rem .75rem',
         margin: '.25rem .5rem',
-    },
+    }, shared.clickable),
     hollowButton: {
         extend: 'button',
         backgroundColor: 'white',

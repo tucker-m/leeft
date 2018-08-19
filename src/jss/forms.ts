@@ -54,13 +54,13 @@ export default {
     small: {
         padding: '.25rem .5rem',
         fontSize: '.9rem',
+        boxShadow: '0 .5px 2px rgba(0, 0, 0, .3)',
     },
     formRow: {
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'flex-start',
         alignContent: 'stretch',
-        marginLeft: '-.5rem',
     },
     labelGroup: {
         marginBottom: '1rem',

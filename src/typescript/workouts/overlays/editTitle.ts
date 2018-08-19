@@ -30,11 +30,16 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                         m('input[type=text]', {
                             value: workout.name,
                             oninput: m.withAttr('value', (value) => {
-                                db.findWorkoutsByName(value, workout).then((results) => {
-                                    matchingWorkouts = results
-                                    m.redraw()
-                                })
                                 workout.name = value
+                                if (value.length == 0) {
+                                    matchingWorkouts = []
+                                }
+                                else {
+                                    db.findWorkoutsByName(value, workout).then((results) => {
+                                        matchingWorkouts = results
+                                        m.redraw()
+                                    })
+                                }
                             }),
                             class: css.textInput,
                         }),
@@ -54,7 +59,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                     ]),
                 ]),
                 matchingWorkouts.length > 1 ?
-                    m('p', 'or use an existing workout:')
+                    m('div', {class: css.resultDescription}, m('p', 'copy an existing workout:'))
                     : null,
                 m('div', matchingWorkouts.map((result) => {
                     return m('div', {
@@ -71,10 +76,12 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                                 vnode.attrs.hideOverlay()
                             }
                         }, result.workout.name),
-                        m('span', {class: css.subTitle}, 'from ' + result.programs.map((program) => {
+                        m('span', {class: css.subTitle}, result.programs.map((program) => {
                             return program.name
                         }).join(', ')),
-                        m('p', '- ' + result.workout.prescriptions.map((prescription) => {
+                        m('p', {
+                            class: css.workoutResultSubtitle,
+                        }, result.workout.prescriptions.map((prescription) => {
                             return prescription.exercise.name
 }).join(', '))
                     ])

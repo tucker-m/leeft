@@ -20,7 +20,7 @@ const DropDownComponent = (vnode: DropDownVnode) => {
 
             return [
                 m('div', {class: css.searchResults}, [
-                    m('div', {class: css.topResult}, [
+                    m('div', {class: css.resultDescription}, [
                         !resultsShowing ?
                             [
                                 m('span', 'use'),

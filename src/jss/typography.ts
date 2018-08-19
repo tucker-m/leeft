@@ -1,4 +1,9 @@
+import colors from './variables/colors'
+
 export default {
+    a: {
+        color: colors.edit,
+    },
     h1: {
         display: 'inline-block',
         fontSize: '2.5rem',

@@ -141,6 +141,9 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
             })
             const avoidMe = JSON.stringify(toJS(avoid))
             let filteredPrograms = mappedPrograms.filter((mappedProgram) => {
+                if (mappedProgram.workout.tag == 'rest') {
+                    return false
+                }
                 if (JSON.stringify(mappedProgram.workout) == avoidMe) {
                     return false
                 }

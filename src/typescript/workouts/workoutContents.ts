@@ -32,6 +32,7 @@ const WorkoutContent = (vnode: ContentVnode) => {
                     ? [m('a', {
                         href: `/programs/${vnode.attrs.program._id}`,
                         oncreate: m.route.link,
+                        class: css.a,
                     }, H1({
                         text: vnode.attrs.program.name,
                         css: css,

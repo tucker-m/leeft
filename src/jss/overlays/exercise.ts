@@ -6,7 +6,7 @@ export default {
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
     },
-    topResult: {
+    resultDescription: {
         flex: '1',
         marginLeft: '.5rem',
     },

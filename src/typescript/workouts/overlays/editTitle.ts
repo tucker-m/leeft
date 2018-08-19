@@ -69,8 +69,8 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                             vnode.attrs.hideOverlay()
                         },
                     }, [
-                        m('button', {
-                            class: `${css.hollowButton} ${css.small}`,
+                        m('a', {
+                            class: css.a,
                             onclick: () => {
                                 vnode.attrs.updateWorkout(result.workout)
                                 vnode.attrs.hideOverlay()

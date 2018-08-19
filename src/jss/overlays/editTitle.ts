@@ -6,10 +6,11 @@ export default {
         overflow: 'hidden',
     },
     subTitle: {
-        color: '#666',
-        marginLeft: '.5rem',
-        paddingLeft: '.5rem',
-        borderLeft: '1px solid #666',
+        color: '#444',
+        background: '#efefef',
+        padding: '.25rem',
+        fontSize: '.85rem',
+        float: 'right',
     },
     list: {
         listStyle: 'disc',
@@ -20,13 +21,15 @@ export default {
     },
     workoutResult: {
         overflow: 'hidden',
-        marginBottom: '1rem',
+        margin: '0 .5rem 1rem',
+        boxShadow: '0 2px 5px rgba(0, 0, 0, .5)',
+        border: '1px solid #d3d3d3',
+        padding: '.5rem',
     },
     workoutResultSubtitle: {
         color: '#666',
         fontStyle: 'italic',
         fontSize: '.9rem',
-        marginLeft: '1rem',
         fontVariant: 'small-caps',
     },
 }

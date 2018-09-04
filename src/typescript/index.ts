@@ -67,6 +67,7 @@ if (element != null) {
     m.route(element, '/', {
         '/': App,
         '/logs/:id': ViewLog,
+        '/logs/:id/:edit': ViewLog,
         '/programs/:id': ViewProgram,
         '/programs/:id/workouts/:day': ViewWorkout,
         '/programs/:id/workouts/:day/:edit': ViewWorkout,

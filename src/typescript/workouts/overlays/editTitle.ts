@@ -71,10 +71,12 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                     }, [
                         m('a', {
                             class: css.a,
-                            onclick: () => {
+                            onclick: (event) => {
+                                event.preventDefault()
                                 vnode.attrs.updateWorkout(result.workout)
                                 vnode.attrs.hideOverlay()
-                            }
+                            },
+                            href: '#',
                         }, result.workout.name),
                         m('span', {class: css.subTitle}, result.programs.map((program) => {
                             return program.name

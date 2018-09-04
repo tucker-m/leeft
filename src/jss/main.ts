@@ -41,7 +41,7 @@ export default {
         alignItems: 'flex-start',
         boxSizing: 'border-box',
         padding: '1rem',
-        backgroundColor: 'rgba(255, 255, 255, .85)',
+        backgroundColor: 'rgba(0, 0, 0, .3)',
     },
     fullScreenOverlayContent: {
         display: 'flex',

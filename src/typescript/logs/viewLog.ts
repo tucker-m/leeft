@@ -53,13 +53,14 @@ export default (vnode: ViewLogVnode) => {
         // item in the array representing one exercise
         let groupedPrescriptions:Array<any> = []
         log.workout.prescriptions.forEach((prescription) => {
-            let last = groupedPrescriptions[groupedPrescriptions.length - 1]
-            if (JSON.stringify(prescription.exercise) == JSON.stringify(last)) {
+            let lastIndex = groupedPrescriptions.length - 1
+            let last = groupedPrescriptions[lastIndex]
+            if (last && (JSON.stringify(prescription.exercise) == JSON.stringify(last.exercise))) {
                 let sets: Array<any> = []
                 for (let i = 0; i < prescription.sets; i++) {
                     sets.push({setLog: {}, prescribedAmount: prescription.amount})
                 }
-                last.sets.append(sets)
+                groupedPrescriptions[lastIndex].sets = last.sets.concat(sets)
             }
             else {
                 let sets: Array<any> = []

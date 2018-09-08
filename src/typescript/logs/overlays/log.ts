@@ -27,7 +27,7 @@ const LogOverlay = (vnode: LogVnode) => {
                         }
                     }, index + 1)
                 })),
-                m('p', sets[currentSet].prescription.amount),
+                m('p', sets[currentSet].prescribedAmount),
                 m('button', {
                     onclick: vnode.attrs.hideOverlay
                 }, 'Cancel'),

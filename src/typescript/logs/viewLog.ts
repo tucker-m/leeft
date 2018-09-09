@@ -128,8 +128,9 @@ export default (vnode: ViewLogVnode) => {
                                     setOverlay(LogOverlay, {
                                         exerciseSetLogs: prescription,
                                         hideOverlay: () => {
-                                            setOverlay({component: null, title: ''}, {})
-                                        }
+                                            setOverlay({ component: null, title: '' }, {})
+                                        },
+                                        css,
                                     })
                                 }
                             }, prescription.exercise.name)

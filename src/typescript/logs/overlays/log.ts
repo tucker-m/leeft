@@ -4,6 +4,7 @@ import {ExerciseSetLog, ExercisePrescription} from '../../types/exercise'
 interface LogAttrs {
     exerciseSetLogs: any,
     hideOverlay: () => void,
+    css: any,
 }
 interface LogVnode {
     attrs: LogAttrs
@@ -12,6 +13,7 @@ interface LogVnode {
 const title = 'Edit Set'
 
 const LogOverlay = (vnode: LogVnode) => {
+    const css = vnode.attrs.css
     let exercise = vnode.attrs.exerciseSetLogs.exercise
     let sets = vnode.attrs.exerciseSetLogs.sets
     let currentSet = 0
@@ -23,11 +25,22 @@ const LogOverlay = (vnode: LogVnode) => {
                     return m('button', {
                         onclick: () => {
                             currentSet = index
-                            debugger
-                        }
+                        },
+                        class: (currentSet == index) ?
+                            css.activeSetButton : css.setButton,
                     }, index + 1)
                 })),
-                m('p', sets[currentSet].prescribedAmount),
+                m('button', {
+                    onclick: () => {
+                        sets.splice(currentSet + 1, 0, {
+                            exercise: exercise,
+                            prescribedAmount: -1,
+                        })
+                        currentSet = currentSet + 1
+                    }
+                }, 'Insert another set'),
+                sets[currentSet].prescribedAmount > 0
+                    ? m('p', sets[currentSet].prescribedAmount) : null,
                 m('button', {
                     onclick: vnode.attrs.hideOverlay
                 }, 'Cancel'),

@@ -58,14 +58,16 @@ export default (vnode: ViewLogVnode) => {
             if (last && (JSON.stringify(prescription.exercise) == JSON.stringify(last.exercise))) {
                 let sets: Array<any> = []
                 for (let i = 0; i < prescription.sets; i++) {
-                    sets.push({setLog: {}, prescribedAmount: prescription.amount})
+		    const emptySetLog = {reps: null, amount: null}
+                    sets.push({setLog: emptySetLog, prescribedAmount: prescription.amount})
                 }
                 groupedPrescriptions[lastIndex].sets = last.sets.concat(sets)
             }
             else {
                 let sets: Array<any> = []
                 for (let i = 0; i < prescription.sets; i++) {
-                    sets.push({setLog: {}, prescribedAmount: prescription.amount})
+		    const emptySetLog = {reps: null, amount: null}
+                    sets.push({setLog: emptySetLog, prescribedAmount: prescription.amount})
                 }
                 groupedPrescriptions.push({
                     exercise: prescription.exercise,

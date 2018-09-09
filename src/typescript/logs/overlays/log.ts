@@ -21,26 +21,48 @@ const LogOverlay = (vnode: LogVnode) => {
         view: (vnode: LogVnode) => {
             return m('div', [
                 m('h3', exercise.name),
-                m('div', sets.map((set, index) => {
-                    return m('button', {
-                        onclick: () => {
-                            currentSet = index
-                        },
-                        class: (currentSet == index) ?
-                            css.activeSetButton : css.setButton,
-                    }, index + 1)
-                })),
-                m('button', {
-                    onclick: () => {
-                        sets.splice(currentSet + 1, 0, {
-                            exercise: exercise,
-                            prescribedAmount: -1,
-                        })
-                        currentSet = currentSet + 1
-                    }
-                }, 'Insert another set'),
+		m('div', {class: css.setRow}, [
+		    m('div', sets.map((set, index) => {
+			return m('button', {
+                            onclick: () => {
+				currentSet = index
+                            },
+                            class: (currentSet == index) ?
+				css.activeSetButton : css.setButton,
+			}, index + 1)
+                    })),
+                    m('div', {
+			class: css.insertNew,
+			onclick: () => {
+                            sets.splice(currentSet + 1, 0, {
+				exercise: exercise,
+				setLog: {reps: null, amount: null},
+				prescribedAmount: -1,
+                            })
+                            currentSet = currentSet + 1
+			}
+		    }, [
+			m('button', {class: css.insertButton}, '+',),
+			m('a', {class: css.a}, 'Insert another set'),
+		    ]),
+		]),
                 sets[currentSet].prescribedAmount > 0
                     ? m('p', sets[currentSet].prescribedAmount) : null,
+		m('input[type=text]', {
+		    value: sets[currentSet].setLog.reps,
+		    onchange: m.withAttr('value', (value) => {
+			sets[currentSet].setLog.reps = parseInt(value)
+		    }),
+		}),
+		m('span', 'reps'),
+		m('span', 'at'),
+		m('input[type=text]', {
+		    value: sets[currentSet].setLog.amount,
+		    onchange: m.withAttr('value', (value) => {
+			sets[currentSet].setLog.amount = parseInt(value)
+		    }),
+		}),
+		m('span', exercise.setUnits),
                 m('button', {
                     onclick: vnode.attrs.hideOverlay
                 }, 'Cancel'),

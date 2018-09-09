@@ -1,15 +1,36 @@
+let roundButton = {
+    padding: 0,
+    boxSizing: 'border-box',
+    borderRadius: '50%',
+    borderStyle: 'solid',
+    borderWidth: '2px',
+    '&:not(last-of-type)': {
+	marginRight: '.5rem',
+    },
+}
+
 export default {
-    setButton: {
-        width: '3rem',
-        height: '3rem',
-        padding: 0,
-        borderRadius: '1.5rem',
-        borderWidth: '2px',
+    setRow: {
+	display: 'flex',
+	flexDirection: 'row',
+    },
+    insertNew: {
+	display: 'flex',
+	alignItems: 'center',
+	marginLeft: '.5rem',
+    },
+    insertButton: Object.assign({
+	borderColor: 'aqua',
+	width: '2.2rem',
+	height: '2.2rem',
+    }, roundButton),
+    setButton: Object.assign({
         backgroundColor: 'white',
         borderColor: 'blue',
-        borderStyle: 'solid',
         color: 'black',
-    },
+	width: '3rem',
+	height: '3rem',
+    }, roundButton),
     activeSetButton: {
         extend: 'setButton',
         borderWidth: '6px',

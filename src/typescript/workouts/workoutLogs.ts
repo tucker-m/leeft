@@ -14,42 +14,31 @@ interface WorkoutLogVnode {
 
 let logs: Array<WorkoutLog & Saveable> = []
 
-const getEmptyLogForWorkout = (workout: Workout) => {
+/* Create an array of set logs from an array of prescriptions */
+const createEmptySetLogsFromPrescriptions = (prescriptions: Array<ExercisePrescription>) => {
     let setLogs: Array<ExerciseSetLog> = []
-    workout.prescriptions.forEach((prescription: ExercisePrescription) => {
-        const emptySet: ExerciseSetLog = {
-            exercise: prescription.exercise,
-            amount: 0,
-            reps: 0,
-        }
-        const filledSetLogs: Array<ExerciseSetLog> = new Array(prescription.sets).fill(emptySet)
-        setLogs = setLogs.concat(filledSetLogs)
+    prescriptions.forEach((prescription) => {
+	for (let i = 0; i < prescription.sets; i++) {
+	    setLogs.push({
+		exercise: prescription.exercise,
+		amount: -1,
+		reps: -1,
+		prescribedAmount: prescription.amount,
+	    })
+	}
     })
-
-    let log: WorkoutLog & Saveable = {
-        workout: workout,
-        sets: setLogs,
-        date: Date.now(),
-        comments: '',
-        tag: 'workoutlog',
-    }
-    return log
+    return setLogs
 }
 
+
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
-    let currentWorkoutName = vnode.attrs.workout.name
     const css = vnode.attrs.css
+    db.findLogsByWorkoutName(vnode.attrs.workout.name).then((results) => {
+        logs = results.docs
+        m.redraw()
+    })
 
     return {
-        onbeforeupdate: (vnode: WorkoutLogVnode) => {
-            if (currentWorkoutName != vnode.attrs.workout.name) {
-                db.findLogsByWorkoutName(vnode.attrs.workout.name).then((results) => {
-                    logs = results.docs
-                    m.redraw()
-                })
-                currentWorkoutName = vnode.attrs.workout.name
-            }
-        },
         view: (vnode: WorkoutLogVnode) => {
             let reverseMe = JSON.parse(JSON.stringify(logs))
             return m('div', [
@@ -59,7 +48,13 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                         class: css.hollowButton,
                         onclick: preventDefault(() => {
                             const workoutLog = db.promiseSaveableRecord<WorkoutLog>(
-                                getEmptyLogForWorkout(vnode.attrs.workout)
+                                {
+				    workout: vnode.attrs.workout,
+				    sets: createEmptySetLogsFromPrescriptions(vnode.attrs.workout.prescriptions),
+				    date: Date.now(),
+				    comments: '',
+				    tag: 'workoutlog',
+				}
                             ).then((workoutLog: WorkoutLog & Puttable) => {
                                 window.location.href = `#!/logs/${workoutLog._id}`
                             })

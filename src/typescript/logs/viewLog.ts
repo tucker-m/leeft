@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {WorkoutLog, Puttable} from '../types/exercise'
+import {WorkoutLog, Puttable, ExerciseSetLog} from '../types/exercise'
 import db from '../helpers/db'
 import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
@@ -48,40 +48,48 @@ export default (vnode: ViewLogVnode) => {
         _id: '',
     }
 
-    const createViewModel = (log: WorkoutLog) => {
+    const createSetLogsFromViewModel = (viewModel: any) => {
+	// take in the view model. Loop through the setLogs,
+	// create an ExerciseSetLog from each.
+	return viewModel.sets.map((exerciseViewModelLog) => {
+	    return {
+		exercise: viewModel.exercise,
+		amount: exerciseViewModelLog.amount,
+		reps: exerciseViewModelLog.reps,
+	    }
+	})
+    }
+
+    const flattenViewModelsIntoWorkoutLog = (viewModels: any) => {
+	return viewModels.flatMap((viewModel) => {
+	    return createSetLogsFromViewModel(viewModel)
+	})
+    }
+
+    const createViewModelsFromSetLogs = (log: WorkoutLog) => {
         // this should produce an array, with each
         // item in the array representing one exercise
-        let groupedPrescriptions:Array<any> = []
-        log.workout.prescriptions.forEach((prescription) => {
-            let lastIndex = groupedPrescriptions.length - 1
-            let last = groupedPrescriptions[lastIndex]
-            if (last && (JSON.stringify(prescription.exercise) == JSON.stringify(last.exercise))) {
-                let sets: Array<any> = []
-                for (let i = 0; i < prescription.sets; i++) {
-		    const emptySetLog = {reps: null, amount: null}
-                    sets.push({setLog: emptySetLog, prescribedAmount: prescription.amount})
-                }
-                groupedPrescriptions[lastIndex].sets = last.sets.concat(sets)
+	let groupedLogViewModels:Array<any> = []
+        log.sets.forEach((setLog) => {
+            let lastIndex = groupedLogViewModels.length - 1
+            let last = groupedLogViewModels[lastIndex]
+	    if (last && (JSON.stringify(setLog.exercise) == JSON.stringify(last.exercise))) {
+		groupedLogViewModels[lastIndex].sets.push(setLog)
             }
             else {
-                let sets: Array<any> = []
-                for (let i = 0; i < prescription.sets; i++) {
-		    const emptySetLog = {reps: null, amount: null}
-                    sets.push({setLog: emptySetLog, prescribedAmount: prescription.amount})
-                }
-                groupedPrescriptions.push({
-                    exercise: prescription.exercise,
-                    sets: sets
-                })
-            }
+		groupedLogViewModels.push({
+		    exercise: setLog.exercise,
+		    sets: [setLog]
+		})
+	    }
         })
-        return groupedPrescriptions
+        return groupedLogViewModels
     }
 
     let pageEditable = (!!vnode.attrs.edit && vnode.attrs.edit == 'edit')
 
     db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then((logResult) => {
-        log = logResult
+	log = logResult
         m.redraw()
     })
     return {
@@ -91,7 +99,7 @@ export default (vnode: ViewLogVnode) => {
                 return m('p', 'Loading')
             }
 
-            const groupedPrescriptions = createViewModel(log)
+            let logViewModels = createViewModelsFromSetLogs(log)
             const overlayComponent = overlay
 
             return m('div', [
@@ -124,18 +132,31 @@ export default (vnode: ViewLogVnode) => {
                     contents: [
                         m('h3', log.workout.name == '' ? 'Untitled' : log.workout.name),
                         H1({text: utils.formatDate(log.date), css: css}),
-                        groupedPrescriptions.map((prescription) => {
-                            return m('button', {
-                                onclick: () => {
-                                    setOverlay(LogOverlay, {
-                                        exerciseSetLogs: prescription,
-                                        hideOverlay: () => {
-                                            setOverlay({ component: null, title: '' }, {})
-                                        },
-                                        css,
-                                    })
-                                }
-                            }, prescription.exercise.name)
+                        logViewModels.map((logViewModel, index) => {
+                            return m('div', [
+				m('button', {
+                                    onclick: () => {
+					setOverlay(LogOverlay, {
+                                            logViewModel,
+                                            hideOverlay: () => {
+						setOverlay({
+						    component: null,
+						    title: ''
+						}, {})
+                                            },
+					    updateSetLogs: (viewModel: any) => {
+						logViewModel = viewModel
+						logViewModels[index] = logViewModel
+						log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
+					    },
+                                            css,
+					})
+                                    }
+				}, logViewModel.exercise.name),
+				logViewModel.sets.map((set) => {
+				    return m('p', set.reps + ' at ' + set.amount)
+				}),
+			    ])
                         }),
                         m('p', log.comments),
                     ]

@@ -213,10 +213,12 @@ function promiseSaveableRecord<T> (object: T & Saveable): Promise<Puttable & T &
             rev = response.rev
             autorun(() => {
                 let plainObject: Puttable & T = toJS(observeMe)
-                let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
-                db.put(savedObject).then((response) => {
-                    rev = response.rev
-                })
+		if (JSON.stringify(plainObject) != JSON.stringify(object)) {
+		    let savedObject: Saved & T = Object.assign(plainObject, {_rev: rev})
+                    db.put(savedObject).then((response) => {
+			rev = response.rev
+                    })
+		}
             }, {delay: 300})
             resolve(observeMe)
         })

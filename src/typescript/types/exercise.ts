@@ -25,6 +25,7 @@ interface ExerciseSetLog {
     exercise: Exercise,
     amount: number,
     reps: number,
+    prescribedAmount?: number,
 };
 
 interface WorkoutLog {

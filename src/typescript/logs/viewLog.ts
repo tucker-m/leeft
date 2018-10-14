@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {WorkoutLog, Puttable, ExerciseSetLog} from '../types/exercise'
+import { Exercise, WorkoutLog, Puttable, SetLogViewModel, GroupedSetLogVm } from '../types/exercise'
 import db from '../helpers/db'
 import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
@@ -48,28 +48,20 @@ export default (vnode: ViewLogVnode) => {
         _id: '',
     }
 
-    const createSetLogsFromViewModel = (viewModel: any) => {
-	// take in the view model. Loop through the setLogs,
-	// create an ExerciseSetLog from each.
-	return viewModel.sets.map((exerciseViewModelLog) => {
-	    return {
-		exercise: viewModel.exercise,
-		amount: exerciseViewModelLog.amount,
-		reps: exerciseViewModelLog.reps,
-	    }
+    const flattenViewModelsIntoWorkoutLog = (viewModels: Array<GroupedSetLogVm>) => {
+	let flattenedViewModels: Array<SetLogViewModel> = []
+	viewModels.forEach((groupedVm) => {
+	    groupedVm.sets.forEach((set) => {
+		flattenedViewModels = flattenedViewModels.concat(set)
+	    })
 	})
+	return flattenedViewModels
     }
 
-    const flattenViewModelsIntoWorkoutLog = (viewModels: any) => {
-	return viewModels.flatMap((viewModel) => {
-	    return createSetLogsFromViewModel(viewModel)
-	})
-    }
-
-    const createViewModelsFromSetLogs = (log: WorkoutLog) => {
+    const createGroupedViewModelsFromSetLogs = (log: WorkoutLog) => {
         // this should produce an array, with each
         // item in the array representing one exercise
-	let groupedLogViewModels:Array<any> = []
+	let groupedLogViewModels:Array<GroupedSetLogVm> = []
         log.sets.forEach((setLog) => {
             let lastIndex = groupedLogViewModels.length - 1
             let last = groupedLogViewModels[lastIndex]
@@ -98,8 +90,7 @@ export default (vnode: ViewLogVnode) => {
             if (log == null) {
                 return m('p', 'Loading')
             }
-
-            let logViewModels = createViewModelsFromSetLogs(log)
+            let logViewModels = createGroupedViewModelsFromSetLogs(log)
             const overlayComponent = overlay
 
             return m('div', [
@@ -136,17 +127,18 @@ export default (vnode: ViewLogVnode) => {
                             return m('div', [
 				m('button', {
                                     onclick: () => {
+					let logVmString = JSON.stringify(logViewModel)
+					let logVmClone = JSON.parse(logVmString)
 					setOverlay(LogOverlay, {
-                                            logViewModel,
+                                            logViewModel: logVmClone,
                                             hideOverlay: () => {
 						setOverlay({
 						    component: null,
 						    title: ''
 						}, {})
                                             },
-					    updateSetLogs: (viewModel: any) => {
-						logViewModel = viewModel
-						logViewModels[index] = logViewModel
+					    updateSetLogs: (viewModel: GroupedSetLogVm) => {
+						logViewModels[index] = viewModel
 						log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
 					    },
                                             css,
@@ -154,7 +146,12 @@ export default (vnode: ViewLogVnode) => {
                                     }
 				}, logViewModel.exercise.name),
 				logViewModel.sets.map((set) => {
-				    return m('p', set.reps + ' at ' + set.amount)
+				    if (set.log) {
+					return m('p', set.log.reps + ' at ' + set.log.amount)
+				    }
+				    else {
+					return null
+				    }
 				}),
 			    ])
                         }),

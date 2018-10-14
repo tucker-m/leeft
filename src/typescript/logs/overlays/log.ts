@@ -1,8 +1,8 @@
 import * as m from 'mithril'
-import {ExerciseSetLog, ExercisePrescription} from '../../types/exercise'
+import {GroupedSetLogVm, ExercisePrescription} from '../../types/exercise'
 
 interface LogAttrs {
-    logViewModel: any,
+    logViewModel: GroupedSetLogVm,
     hideOverlay: () => void,
     updateSetLogs: (viewModel: any) => void,
     css: any,
@@ -15,12 +15,14 @@ const title = 'Edit Set'
 
 const LogOverlay = (vnode: LogVnode) => {
     const css = vnode.attrs.css
-    let exercise = vnode.attrs.logViewModel.exercise
-    let sets = vnode.attrs.logViewModel.sets
+    let logViewModel = vnode.attrs.logViewModel
+    let exercise = logViewModel.exercise
+    let sets = logViewModel.sets
     let currentSet = 0
     return {
         view: (vnode: LogVnode) => {
-            return m('div', [
+            let set = sets[currentSet]
+	    return m('div', [
                 m('h3', exercise.name),
 		m('div', {class: css.setRow}, [
 		    m('div', sets.map((set, index) => {
@@ -37,38 +39,41 @@ const LogOverlay = (vnode: LogVnode) => {
 			onclick: () => {
                             sets.splice(currentSet + 1, 0, {
 				exercise: exercise,
-				reps: null,
-				amount: null,
-				prescribedAmount: -1,
                             })
                             currentSet = currentSet + 1
-			    vnode.attrs.updateSetLogs(vnode.attrs.logViewModel)
+			    vnode.attrs.updateSetLogs(logViewModel)
 			}
 		    }, [
 			m('button', {class: css.insertButton}, '+',),
 			m('a', {class: css.a}, 'Insert another set'),
 		    ]),
 		]),
-                sets[currentSet].prescribedAmount > 0
-                    ? m('p', sets[currentSet].prescribedAmount) : null,
+                sets[currentSet].prescribedReps
+                    ? m('p', sets[currentSet].prescribedReps) : null,
 		m('input[type=text]', {
-		    value: sets[currentSet].reps,
+		    value: set.log ? set.log.reps : '',
 		    onchange: m.withAttr('value', (value) => {
-			sets[currentSet].reps = parseInt(value)
+			if (!set.log) {
+			    set.log = {reps: 0, amount: 0}
+			}
+			set.log.reps = parseInt(value)
 		    }),
 		}),
 		m('span', 'reps'),
 		m('span', 'at'),
 		m('input[type=text]', {
-		    value: sets[currentSet].amount,
+		    value: set.log ? set.log.amount : '',
 		    onchange: m.withAttr('value', (value) => {
-			sets[currentSet].amount = parseInt(value)
-		    }),
+			if (!set.log) {
+			    set.log = {reps: 0, amount: 0}
+			}
+			set.log.amount = parseInt(value)
+		    })
 		}),
 		m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds'),
 		m('button', {
 		    onclick: () => {
-			vnode.attrs.updateSetLogs(vnode.attrs.logViewModel)
+			vnode.attrs.updateSetLogs(logViewModel)
 			if (currentSet == sets.length - 1) {
 			    vnode.attrs.hideOverlay()
 			}
@@ -86,7 +91,7 @@ const LogOverlay = (vnode: LogVnode) => {
 			if (currentSet >= sets.length) {
 			    currentSet--
 			}
-			vnode.attrs.updateSetLogs(vnode.attrs.logViewModel)
+			vnode.attrs.updateSetLogs(logViewModel)
 		    }
 		}, 'Skip this set'),
             ])

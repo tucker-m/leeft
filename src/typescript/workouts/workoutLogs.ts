@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {Saveable, Saved, Puttable, Workout, WorkoutLog, ExerciseSetLog, ExercisePrescription} from '../types/exercise'
+import {Saveable, Saved, Puttable, Workout, WorkoutLog, SetLogViewModel, ExercisePrescription} from '../types/exercise'
 import db from '../helpers/db'
 import utils from '../helpers/utils'
 import preventDefault from '../helpers/preventDefaultFunction'
@@ -14,22 +14,18 @@ interface WorkoutLogVnode {
 
 let logs: Array<WorkoutLog & Saveable> = []
 
-/* Create an array of set logs from an array of prescriptions */
-const createEmptySetLogsFromPrescriptions = (prescriptions: Array<ExercisePrescription>) => {
-    let setLogs: Array<ExerciseSetLog> = []
+const createSetLogViewModelsFromPrescriptions = (prescriptions: Array<ExercisePrescription>) => {
+    let setLogVms: Array<SetLogViewModel> = []
     prescriptions.forEach((prescription) => {
 	for (let i = 0; i < prescription.sets; i++) {
-	    setLogs.push({
+	    setLogVms.push({
 		exercise: prescription.exercise,
-		amount: -1,
-		reps: -1,
-		prescribedAmount: prescription.amount,
+		prescribedReps: prescription.amount,
 	    })
 	}
     })
-    return setLogs
+    return setLogVms
 }
-
 
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
     const css = vnode.attrs.css
@@ -50,7 +46,7 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
                             const workoutLog = db.promiseSaveableRecord<WorkoutLog>(
                                 {
 				    workout: vnode.attrs.workout,
-				    sets: createEmptySetLogsFromPrescriptions(vnode.attrs.workout.prescriptions),
+				    sets: createSetLogViewModelsFromPrescriptions(vnode.attrs.workout.prescriptions),
 				    date: Date.now(),
 				    comments: '',
 				    tag: 'workoutlog',

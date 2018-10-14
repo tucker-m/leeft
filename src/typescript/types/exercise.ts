@@ -21,21 +21,33 @@ interface Exercise {
     tag: 'exercise',
 };
 
-interface ExerciseSetLog {
-    exercise: Exercise,
-    amount: number,
-    reps: number,
-    prescribedAmount?: number,
-};
-
 interface WorkoutLog {
     workout: Workout,
-    sets: Array<ExerciseSetLog>, // TODO: Group by exercise? Allows for supersets
+    sets: Array<SetLogViewModel>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,
     _deleted?: boolean,
     tag: 'workoutlog',
 };
+
+// A logviewmodel is a set that you either
+// did or were supposed to do. It can have
+// a prescribed amount and/or a performed
+// amount.
+interface SetLogViewModel {
+    exercise: Exercise,
+    prescribedReps?: number,
+    log?: {
+	reps: number,
+	amount: number,
+    },
+}
+
+interface GroupedSetLogVm {
+    exercise: Exercise,
+    sets: Array<SetLogViewModel>
+}
+
 
 interface ExercisePrescription {
     exercise: Exercise,
@@ -75,7 +87,8 @@ export {
     ExercisePrescription,
     Workout,
     WorkoutLog,
-    ExerciseSetLog,
+    SetLogViewModel,
+    GroupedSetLogVm,
     Program,
     Settings,
 };

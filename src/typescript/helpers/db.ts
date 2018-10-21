@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, Puttable, ModelName, Workout, Exercise, Settings} from '../types/exercise';
+import {Saveable, Saved, Puttable, ModelName, Workout, Exercise, Settings, SetLogViewModel, WorkoutLog} from '../types/exercise';
 import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -177,6 +177,31 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
     })
 }
 
+function findSetsContainingExercise(exerciseName: string): Promise<Array<SetLogViewModel>> {
+    return new Promise<Array<SetLogViewModel>>((resolve, reject) => {
+	db.allDocs({include_docs: true, startkey: 'workoutlog_', endkey: 'workoutlog_\ufff0'}).then((docs) => {
+	    const withExercise = docs.rows.find((doc) => {
+		const matchingSet = doc.doc.sets.find((set) => {
+		    return set.exercise.name === exerciseName
+		})
+		return !!matchingSet
+	    })
+	    let setsWithExercise: Array<SetLogViewModel> = []
+	    if (!withExercise) {
+		reject()
+	    }
+	    else {
+		withExercise.doc.sets.forEach((set) => {
+		    if (set.exercise.name === exerciseName && set.log) {
+			setsWithExercise.push(set)
+		    }
+		})
+		resolve(setsWithExercise)
+	    }
+	})
+    })
+}
+
 function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservableObject> {
     return new Promise<Puttable & T & IObservableObject>((resolve, reject) => {
         let rev = ''
@@ -235,6 +260,7 @@ export default {
     findLogsByWorkoutName,
     findExercisesByName,
     findWorkoutsByName,
+    findSetsContainingExercise,
     fetchSaveableCollection,
     fetchSaveableRecord,
     promiseSaveableRecord,

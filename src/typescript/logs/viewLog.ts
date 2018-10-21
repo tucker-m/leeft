@@ -63,7 +63,7 @@ export default (vnode: ViewLogVnode) => {
         // item in the array representing one exercise
 	let groupedLogViewModels:Array<GroupedSetLogVm> = []
         log.sets.forEach((setLog) => {
-            let lastIndex = groupedLogViewModels.length - 1
+	    let lastIndex = groupedLogViewModels.length - 1
             let last = groupedLogViewModels[lastIndex]
 	    if (last && (JSON.stringify(setLog.exercise) == JSON.stringify(last.exercise))) {
 		groupedLogViewModels[lastIndex].sets.push(setLog)

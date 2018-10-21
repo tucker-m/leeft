@@ -1,5 +1,6 @@
 import * as m from 'mithril'
-import {GroupedSetLogVm, ExercisePrescription} from '../../types/exercise'
+import {SetLogViewModel, GroupedSetLogVm, ExercisePrescription} from '../../types/exercise'
+import db from '../../helpers/db'
 
 interface LogAttrs {
     logViewModel: GroupedSetLogVm,
@@ -19,6 +20,12 @@ const LogOverlay = (vnode: LogVnode) => {
     let exercise = logViewModel.exercise
     let sets = logViewModel.sets
     let currentSet = 0
+    let previousSets: Array<SetLogViewModel> = []
+    db.findSetsContainingExercise(logViewModel.exercise.name).then((setLogs) => {
+	previousSets = setLogs
+	m.redraw()
+    })
+
     return {
         view: (vnode: LogVnode) => {
             let set = sets[currentSet]
@@ -94,6 +101,12 @@ const LogOverlay = (vnode: LogVnode) => {
 			vnode.attrs.updateSetLogs(logViewModel)
 		    }
 		}, 'Skip this set'),
+		m('p', 'Last time:'),
+		previousSets.map((previousSet) => {
+		    return previousSet.log
+			? m('p', `${previousSet.log.reps} at ${previousSet.log.amount} pounds`)
+			: null
+		}),
             ])
         }
     }

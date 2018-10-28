@@ -4,6 +4,7 @@ import db from '../../helpers/db'
 
 interface LogAttrs {
     logViewModel: GroupedSetLogVm,
+    priorTo: string,
     hideOverlay: () => void,
     updateSetLogs: (viewModel: any) => void,
     css: any,
@@ -21,7 +22,7 @@ const LogOverlay = (vnode: LogVnode) => {
     let sets = logViewModel.sets
     let currentSet = 0
     let previousSets: Array<SetLogViewModel> = []
-    db.findSetsContainingExercise(logViewModel.exercise.name).then((setLogs) => {
+    db.findSetsContainingExercise(logViewModel.exercise.name, vnode.attrs.priorTo).then((setLogs) => {
 	previousSets = setLogs
 	m.redraw()
     })
@@ -101,7 +102,7 @@ const LogOverlay = (vnode: LogVnode) => {
 			vnode.attrs.updateSetLogs(logViewModel)
 		    }
 		}, 'Skip this set'),
-		m('p', 'Last time:'),
+		previousSets.length ? m('p', 'Last time:') : null,
 		previousSets.map((previousSet) => {
 		    return previousSet.log
 			? m('p', `${previousSet.log.reps} at ${previousSet.log.amount} pounds`)

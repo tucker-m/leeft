@@ -177,9 +177,14 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
     })
 }
 
-function findSetsContainingExercise(exerciseName: string): Promise<Array<SetLogViewModel>> {
+function findSetsContainingExercise(exerciseName: string, priorTo: string): Promise<Array<SetLogViewModel>> {
     return new Promise<Array<SetLogViewModel>>((resolve, reject) => {
-	db.allDocs({include_docs: true, startkey: 'workoutlog_', endkey: 'workoutlog_\ufff0'}).then((docs) => {
+	db.allDocs({
+	    include_docs: true,
+	    startkey: 'workoutlog_',
+	    endkey: priorTo,
+	    inclusive_end: false,
+	}).then((docs) => {
 	    const withExercise = docs.rows.find((doc) => {
 		const matchingSet = doc.doc.sets.find((set) => {
 		    return set.exercise.name === exerciseName

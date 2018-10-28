@@ -131,6 +131,7 @@ export default (vnode: ViewLogVnode) => {
 					let logVmClone = JSON.parse(logVmString)
 					setOverlay(LogOverlay, {
                                             logViewModel: logVmClone,
+					    priorTo: log._id,
                                             hideOverlay: () => {
 						setOverlay({
 						    component: null,

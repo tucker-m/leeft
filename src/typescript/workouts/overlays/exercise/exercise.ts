@@ -8,6 +8,7 @@ interface ExerciseAttrs {
     prescription: ExercisePrescription,
     updatePrescription: (newPrescription: ExercisePrescription) => void,
     hideOverlay: () => void,
+    deleteOnCancel?: () => void,
     css: any,
 }
 interface ExerciseVnode {
@@ -102,7 +103,12 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                 m('div', {class: css.bottomButtons}, [
                     m('button', {
                         class: css.hollowButton,
-                        onclick: vnode.attrs.hideOverlay
+                        onclick: () => {
+			    if (vnode.attrs.deleteOnCancel) {
+				vnode.attrs.deleteOnCancel()
+			    }
+			    vnode.attrs.hideOverlay()
+			}
                     }, 'Cancel'),
                     m('button', {
                         class: css.button,

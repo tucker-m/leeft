@@ -20,6 +20,10 @@ const TableComponent = (vnode: TableVnode) => {
     const css = vnode.attrs.css
     return {
         view: (vnode: TableVnode) => {
+	    const deleteFunction = (index: number) => {
+                vnode.attrs.prescriptions.splice(index, 1)
+	    }
+
             return m('div', [
                 vnode.attrs.prescriptions.length > 0 ?
                     m('table', {
@@ -35,9 +39,7 @@ const TableComponent = (vnode: TableVnode) => {
                             return m(ViewWorkoutRow, {
                                 prescription,
                                 showEditButtons: vnode.attrs.showEditButtons,
-                                deleteFunction: () => {
-                                    vnode.attrs.prescriptions.splice(index, 1);
-                                },
+                                deleteFunction: () => {deleteFunction(index)},
                                 css: css,
                                 setOverlay: vnode.attrs.setOverlay,
                             });
@@ -57,7 +59,8 @@ const TableComponent = (vnode: TableVnode) => {
                                 sets: 0,
                                 amount: 0,
                             })
-			    const prescription = vnode.attrs.prescriptions[newLength - 1]
+			    const index = newLength - 1
+			    const prescription = vnode.attrs.prescriptions[index]
 			    vnode.attrs.setOverlay(ExerciseOverlay, {
 				prescription,
 				updatePrescription: (newPrescription: ExercisePrescription) => {
@@ -66,6 +69,7 @@ const TableComponent = (vnode: TableVnode) => {
 				hideOverlay: () => {
 				    vnode.attrs.setOverlay({component: null, title: ''}, {})
 				},
+				deleteOnCancel: () => {deleteFunction(index)},
 				css: css,
 			    })
                         }

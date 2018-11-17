@@ -97,7 +97,9 @@ const ProgramContent = (vnode: ContentVnode) => {
                                 prescriptions: [],
                                 name: ''
                             })
-                            window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
+			    setTimeout(() => {
+				window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
+			    }, 400)
                         }
                     }, '+ Add a new workout'),
                     m('button', {

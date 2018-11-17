@@ -58,11 +58,22 @@ const WorkoutContent = (vnode: ContentVnode) => {
                         })
                     },
                 }),
+		m('a', {
+		    onclick: () => {
+			// NOTE: none of this works
+			const noEdit = window.location.href.substring(0, window.location.href.length - 5)
+			history.replaceState({}, '', noEdit)
+			m.redraw()
+		    },
+		}, 'Stop Edit'),
                 WorkoutTable({
                     prescriptions: workout.prescriptions,
                     showEditButtons: pageEditable,
                     css: css,
                     setOverlay: vnode.attrs.setOverlay,
+		    updatePrescriptions: (newPrescriptions) => {
+			workout.prescriptions = newPrescriptions
+		    },
                 }),
                 WorkoutLogs({
                     workout: workout,

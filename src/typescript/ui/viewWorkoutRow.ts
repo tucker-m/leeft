@@ -10,6 +10,8 @@ interface RowAttrs {
     deleteFunction: () => void,
     css: any,
     setOverlay: (overlay: any, attrs: any) => void,
+    moveUp: () => void,
+    moveDown: () => void,
 }
 interface RowVnode {
     attrs: RowAttrs
@@ -46,7 +48,15 @@ export default (vnode: RowVnode) => {
                           m('button', {
                               class: `${css.small} ${css.hollowDangerButton}`,
                               onclick: vnode.attrs.deleteFunction,
-                          }, 'Delete')
+                          }, 'Delete'),
+			  m('button', {
+			      class: `${css.small} ${css.hollowButton}`,
+			      onclick: vnode.attrs.moveUp,
+			  }, 'Move Up'),
+			  m('button', {
+			      class: `${css.small} ${css.hollowButton}`,
+			      onclick: vnode.attrs.moveDown,
+			  }, 'Move Down'),
                          )
                         : null,
                     prescription.exercise.name ?

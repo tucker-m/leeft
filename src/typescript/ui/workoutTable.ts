@@ -10,6 +10,7 @@ interface TableAttributes {
     showEditButtons: boolean,
     css: any,
     setOverlay: (overlay: any, attrs: any) => void,
+    updatePrescriptions: (newPrescriptions: Array<ExercisePrescription>) => void,
 }
 
 interface TableVnode {
@@ -42,6 +43,18 @@ const TableComponent = (vnode: TableVnode) => {
                                 deleteFunction: () => {deleteFunction(index)},
                                 css: css,
                                 setOverlay: vnode.attrs.setOverlay,
+				moveUp: () => {
+				    const p = vnode.attrs.prescriptions
+				    let newArray = p.slice(0, index).concat(p.slice(index + 1, p.length))
+				    newArray.splice(index - 1, 0, prescription)
+				    vnode.attrs.updatePrescriptions(newArray)
+				},
+				moveDown: () => {
+				    const p = vnode.attrs.prescriptions
+				    let newArray = p.slice(0, index).concat(p.slice(index + 1, p.length))
+				    newArray.splice(index + 1, 0, prescription)
+				    vnode.attrs.updatePrescriptions(newArray)
+				},
                             });
                         })
                     ])

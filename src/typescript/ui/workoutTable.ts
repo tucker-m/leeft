@@ -37,25 +37,30 @@ const TableComponent = (vnode: TableVnode) => {
                             m('th', 'Amount'),
                         ]),
                         vnode.attrs.prescriptions.map((prescription, index) => {
-                            return m(ViewWorkoutRow, {
+			    let attributes: any = {
                                 prescription,
                                 showEditButtons: vnode.attrs.showEditButtons,
                                 deleteFunction: () => {deleteFunction(index)},
                                 css: css,
                                 setOverlay: vnode.attrs.setOverlay,
-				moveUp: () => {
+			    }
+			    if (index > 0) {
+				attributes.moveUp = () => {
 				    const p = vnode.attrs.prescriptions
 				    let newArray = p.slice(0, index).concat(p.slice(index + 1, p.length))
 				    newArray.splice(index - 1, 0, prescription)
 				    vnode.attrs.updatePrescriptions(newArray)
-				},
-				moveDown: () => {
+				}
+			    }
+			    if (index < vnode.attrs.prescriptions.length - 1) {
+				attributes.moveDown = () => {
 				    const p = vnode.attrs.prescriptions
 				    let newArray = p.slice(0, index).concat(p.slice(index + 1, p.length))
 				    newArray.splice(index + 1, 0, prescription)
 				    vnode.attrs.updatePrescriptions(newArray)
-				},
-                            });
+				}
+			    }
+                            return m(ViewWorkoutRow, attributes)
                         })
                     ])
                 : m('p', 'This workout has no exercises added to it.'),

@@ -5,29 +5,49 @@ import WorkoutLogs from './workoutLogs'
 import {Workout, Program, Puttable} from '../types/exercise'
 import H1 from '../ui/h1'
 import EditTitleOverlay from './overlays/editTitle'
+import {TopBar, TopBarButtonAttrs} from '../ui/topBar'
+import {PageDefaultAttrs} from '../ui/page'
 
 interface ContentAttrs {
     workout: Workout,
     program?: Program & Puttable,
-    pageEditable: boolean,
-    css: any,
     updateWorkout: (newWorkout: Workout) => void,
-    setOverlay: (content: any, attrs: any) => void,
 }
 interface ContentVnode {
-    attrs: ContentAttrs
+    attrs: ContentAttrs & PageDefaultAttrs
 }
 
-const WorkoutContent = (vnode: ContentVnode) => {
+const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
+    let pageEditable = vnode.attrs.editButtonShowing
     let matchingWorkouts: Array<any> = []
+    const topBarButtons = [
+	{
+            text: !pageEditable ? 'Edit Workout' : 'Done Editing',
+            action: () => { pageEditable = !pageEditable },
+            secondState: {
+                text: pageEditable ? 'Edit Workout' : 'Done Editing',
+                action: () => { pageEditable = !pageEditable },
+            }
+        },
+    ]
 
     return {
         view: (vnode: ContentVnode) => {
             const workout = vnode.attrs.workout
-            const pageEditable = vnode.attrs.pageEditable
             const css = vnode.attrs.css
 
             return [
+		TopBar({
+		    buttons: topBarButtons,
+		    css: css,
+		    title: workout.name,
+		    editOptions: {
+			editButtonShowing: pageEditable,
+			openModal: () => {
+			}
+		    }
+		}),
+		m('div', {class: css.infoBox}, 'Some div'),
                 vnode.attrs.program
                     ? [m('a', {
                         href: `/programs/${vnode.attrs.program._id}`,
@@ -35,7 +55,6 @@ const WorkoutContent = (vnode: ContentVnode) => {
                         class: css.a,
                     }, H1({
                         text: vnode.attrs.program.name,
-                        css: css,
                     })),
                        m('span', {class: css.arrow}, '>')
                       ]
@@ -58,14 +77,6 @@ const WorkoutContent = (vnode: ContentVnode) => {
                         })
                     },
                 }),
-		m('a', {
-		    onclick: () => {
-			// NOTE: none of this works
-			const noEdit = window.location.href.substring(0, window.location.href.length - 5)
-			history.replaceState({}, '', noEdit)
-			m.redraw()
-		    },
-		}, 'Stop Edit'),
                 WorkoutTable({
                     prescriptions: workout.prescriptions,
                     showEditButtons: pageEditable,
@@ -84,4 +95,7 @@ const WorkoutContent = (vnode: ContentVnode) => {
     }
 }
 
-export default (attrs: ContentAttrs) => m(WorkoutContent, attrs)
+export {
+    component,
+    ContentAttrs,
+}

@@ -1,12 +1,21 @@
 import * as m from 'mithril'
-import {TopBar, TopBarButtonAttrs} from './topBar'
+import Overlay from '../ui/overlay'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+import style from '../../styles'
 
-
-type DisplayElement = null | m.Vnode<{}, {}> | Array<m.Vnode<{}, {}>>
-interface PageAttrs {
-    contents: Array<DisplayElement> | DisplayElement,
-    topBarButtons: Array<TopBarButtonAttrs>,
+interface PageDefaultAttrs {
     css: any,
+    editButtonShowing: boolean,
+    setOverlay: (content: any, attrs: any) => void,
+}
+
+interface PageAttrs {
+    contents: {
+	component: m.FactoryComponent<any>,
+	attrs: any,
+    },
+    pageEditable: boolean,
 }
 
 interface PageComponent {
@@ -14,19 +23,51 @@ interface PageComponent {
 }
 
 const PageComponent = (vnode: PageComponent) => {
-    const css = vnode.attrs.css
+    jss.setup(preset())
+    const {classes: css} = jss.createStyleSheet(style).attach()
+
+    let editButtonShowing = !!vnode.attrs.pageEditable || false 
+
+    const showEditButton = show => {
+	editButtonShowing = show
+    }
+
+    let overlay: {component: null | any, title: string} = {component: null, title: ''}
+    let overlayAttrs = {}
+
+    const setOverlay = (overlayToShow, attrs) => {
+        overlay = overlayToShow
+        overlayAttrs = attrs
+    }
+
     return {
         view: (vnode: PageComponent) => {
+	    const overlayComponent = overlay
+	    let combinedContents = vnode.attrs.contents.attrs
+	    combinedContents['css'] = css
+	    combinedContents['editButtonShowing'] = editButtonShowing
+
             return m('div', [
-                TopBar({buttons: vnode.attrs.topBarButtons, css: css}),
+		overlayComponent.component ?
+                    Overlay({
+                        content: m(overlayComponent.component, overlayAttrs),
+                        title: overlayComponent.title,
+                        css,
+                    })
+                    : null,
                 m('div', {
-                    class: css.constraint
-                }, vnode.attrs.contents)
+                    class: `${css.constraint}`
+                }, m(vnode.attrs.contents.component, combinedContents))
             ])
         }
     }
 }
 
-export default (attrs: PageAttrs) => {
+const RenderPage = (attrs: PageAttrs) => {
     return m(PageComponent, attrs)
+}
+
+export {
+    RenderPage,
+    PageDefaultAttrs
 }

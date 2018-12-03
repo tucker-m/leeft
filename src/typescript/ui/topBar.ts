@@ -13,7 +13,12 @@ interface TopBarButtonAttrs {
 
 interface TopBarAttrs {
     buttons: Array<TopBarButtonAttrs>,
+    title: string,
     css: any,
+    editOptions?: {
+	editButtonShowing: boolean,
+	openModal: () => void,
+    }
 }
 
 interface TopBarVnode {
@@ -41,19 +46,28 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 
             return m('div', [
                 m('div', {
-                    class: css.headerSection,
-                }, m('a', {
-                    href: '/',
-                    oncreate: m.route.link,
-                }, 'Home')),
-                m('div', {
                     class: utils.combineStyles([
                         css.alignment,
                         css.main,
+			css.topBar,
                     ]),
-                }, m('div', {
-                    class: css.constraint,
-                }, buttons))
+                }, [
+		    m('div', {
+			class: css.topBarHeadingContainer
+		    }, [
+			m('h1', {
+			    class: css.topBarH1,
+			}, vnode.attrs.title),
+			vnode.attrs.editOptions
+			    ? m('button', {
+				onclick: () => {
+				    'Edit Title'
+				}
+			    })
+			    : null,
+		    ]),
+		    m('div', buttons)
+		])
             ])
         }
     }

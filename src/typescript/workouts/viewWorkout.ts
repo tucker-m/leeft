@@ -1,16 +1,10 @@
 import * as m from 'mithril';
 import db from '../helpers/db';
 import {Saveable, Saved, Puttable, Workout, Program, Exercise, ExercisePrescription} from '../types/exercise';
-import WorkoutContent from './workoutContents'
+import * as WorkoutContent from './workoutContents'
 import {observable, IObservableObject, set} from 'mobx';
-import Page from '../ui/page'
-import jss from 'jss'
-import preset from 'jss-preset-default'
-import style from '../../styles'
+import {RenderPage} from '../ui/page'
 import Overlay from '../ui/overlay'
-
-jss.setup(preset())
-const {classes: css} = jss.createStyleSheet(style).attach()
 
 interface ViewWorkoutAttrs {
     id: string,
@@ -42,51 +36,27 @@ export default (vnode: ViewWorkoutVnode) => {
     }
 
     let pageEditable = (!!vnode.attrs.edit && (vnode.attrs.edit == 'edit'))
-    let overlay: {component: null | any, title: string} = {component: null, title: ''}
-    let overlayBottomContent = null
-    let overlayAttrs = {}
-
-    const setOverlay = (overlayToShow, attrs, bottomContent = null) => {
-        overlay = overlayToShow
-        overlayAttrs = attrs
-        overlayBottomContent = bottomContent
-    }
 
     return {
         view: (vnode: ViewWorkoutVnode) => {
-            const overlayComponent = overlay // you get a compiler error
-                                           // if this isn't a constant.
-            return m('div', [
-                overlayComponent.component ?
-                    Overlay({
-                        content: m(overlayComponent.component, overlayAttrs),
-                        title: overlayComponent.title,
-                        bottomContent: overlayBottomContent,
-                        css,
+	    if (!workout) {
+		return m('p', 'Loading')
+	    }
+	    else {
+		return m('div', [
+                    RenderPage({
+			pageEditable,
+			contents: {
+			    component: WorkoutContent.component,
+			    attrs: {
+				workout,
+				program,
+				updateWorkout
+			    }
+			}
                     })
-                    : null,
-                Page({
-                    css,
-                    topBarButtons: [
-                        {
-                            text: !pageEditable ? 'Edit Workout' : 'Done Editing',
-                            action: () => { pageEditable = !pageEditable },
-                            secondState: {
-                                text: pageEditable ? 'Edit Workout' : 'Done Editing',
-                                action: () => { pageEditable = !pageEditable },
-                            }
-                        },
-                    ],
-                    contents: (workout == null || program == null) ? null : WorkoutContent({
-                        workout,
-                        pageEditable,
-                        css,
-                        updateWorkout,
-                        setOverlay,
-                        program,
-                    }),
-                })
-            ])
+		])
+	    }
         }
-    };
-};
+    }
+}

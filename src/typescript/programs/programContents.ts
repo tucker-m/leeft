@@ -4,25 +4,23 @@ import db from '../helpers/db'
 import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
 import EditTitleOverlay from './overlays/editTitle'
+import {PageDefaultAttrs} from '../ui/page'
 
-interface ContentAttrs {
+interface attrs {
     program: Program & Puttable,
-    pageEditable: boolean,
-    css: any,
-    setOverlay: (content: any, attrs: any) => void,
 }
 
 interface ContentVnode {
-    attrs: ContentAttrs
+    attrs: attrs & PageDefaultAttrs
 }
 
-const ProgramContent = (vnode: ContentVnode) => {
+const component = (vnode: ContentVnode) => {
     let selectedIndex = 0
     const css = vnode.attrs.css
     return {
         view: (vnode: ContentVnode) => {
             const program = vnode.attrs.program
-            const pageEditable = vnode.attrs.pageEditable
+            const pageEditable = vnode.attrs.editButtonShowing
             return m('div', [
                 EditableH1({
                     name: program.name,
@@ -111,6 +109,7 @@ const ProgramContent = (vnode: ContentVnode) => {
     }
 }
 
-export default (attrs: ContentAttrs) => {
-    return m(ProgramContent, attrs)
+export {
+    component,
+    attrs
 }

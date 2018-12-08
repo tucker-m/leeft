@@ -58,6 +58,14 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 		    editOptions: {
 			editButtonShowing: pageEditable,
 			openModal: () => {
+			    vnode.attrs.setOverlay(EditTitleOverlay, {
+				workout: workout,
+				css: css,
+				hideOverlay: () => {
+				    vnode.attrs.setOverlay({component: null, title: ''}, {})
+				},
+				updateWorkout: vnode.attrs.updateWorkout,
+			    })
 			}
 		    }
 		}),

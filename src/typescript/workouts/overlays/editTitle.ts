@@ -4,7 +4,6 @@ import {Workout, ExercisePrescription} from '../../types/exercise'
 import {toJS} from 'mobx'
 
 interface EditTitleAttrs {
-    title: string,
     workout: Workout,
     css: any,
     hideOverlay: () => void,
@@ -14,7 +13,7 @@ interface ComponentVnode {
     attrs: EditTitleAttrs
 }
 
-const title = 'Edit Workout'
+const title = 'Edit Workout Name'
 
 const EditTitleComponent = (vnode: ComponentVnode) => {
     let matchingWorkouts: Array<any> = []

@@ -37,6 +37,7 @@ export default {
     },
     fullScreenOverlay: {
         position: 'fixed',
+	zIndex: 3,
         width: '100vw',
         height: '100vh',
         display: 'flex',

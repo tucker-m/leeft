@@ -46,6 +46,7 @@ const PageComponent = (vnode: PageComponent) => {
 	    let combinedContents = vnode.attrs.contents.attrs
 	    combinedContents['css'] = css
 	    combinedContents['editButtonShowing'] = editButtonShowing
+	    combinedContents['setOverlay'] = setOverlay
 
             return m('div', [
 		overlayComponent.component ?

@@ -4,6 +4,9 @@ export default {
     a: {
         color: colors.edit,
     },
+    aSecondary: {
+	color: colors.secondary,
+    },
     h1: {
         display: 'inline-block',
         fontSize: '2.5rem',
@@ -17,10 +20,6 @@ export default {
         extend: 'h1',
         display: 'inline-flex',
         alignItems: 'center',
-    },
-    arrow: {
-        fontSize: '2.5rem',
-        margin: '0 1rem',
     },
     placeholderEditableH1: {
         extend: 'editableH1',

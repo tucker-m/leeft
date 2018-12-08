@@ -1,3 +1,5 @@
+import measurements from './variables/measurements'
+
 export default {
     main: {
         padding: '.5rem',
@@ -5,8 +7,9 @@ export default {
     },
     topBar: {
 	position: 'fixed',
-	height: '3.5rem',
+	height: measurements.topBarHeight,
 	width: '100%',
+	maxWidth: '1000px',
 	padding: '1rem',
 	zIndex: '2',
 	backgroundColor: 'white',
@@ -19,17 +22,11 @@ export default {
 	fontWeight: 'normal',
 	fontFamily: 'Fira Sans Extra Condensed, sans-serif',
     },
-    infoBox: {
-	marginLeft: '-1.5rem',
-	marginRight: '-1.5rem',
-	padding: '1rem',
-	backgroundColor: '#6040a8',
-	color: 'white',
-    },
     topBarHeadingContainer: {
 	display: 'flex',
 	flex: '1',
 	flexDirection: 'column',
+	alignItems: 'flex-start',
     },
     alignment: {
         display: 'flex',

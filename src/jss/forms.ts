@@ -33,6 +33,12 @@ export default {
         borderColor: colors.edit,
         color: colors.edit,
     },
+    whiteHollowButton: {
+	extend: 'button',
+	backgroundColor: 'unset',
+	borderColor: 'white',
+	color: 'white',
+    },
     neutralButton: {
         extend: 'button',
         backgroundColor: '#f7f7f7',

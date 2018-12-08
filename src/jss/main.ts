@@ -1,4 +1,5 @@
 import colors from './variables/colors'
+import measurements from './variables/measurements'
 
 export default {
     constraint: {
@@ -6,7 +7,9 @@ export default {
         flexBasis: '1000px',
         marginLeft: 'auto',
         marginRight: 'auto',
-        padding: '0 1.5rem',
+    },
+    content: {
+	paddingTop: measurements.topBarHeight,
     },
     table: {
         marginTop: '1rem',

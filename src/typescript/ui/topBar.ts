@@ -59,11 +59,9 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 			    class: css.topBarH1,
 			}, vnode.attrs.title),
 			vnode.attrs.editOptions
-			    ? m('button', {
-				onclick: () => {
-				    'Edit Title'
-				}
-			    })
+			    ? vnode.attrs.editOptions.editButtonShowing
+			    ? m('button', 'Edit Title')
+			    : null
 			    : null,
 		    ]),
 		    m('div', buttons)

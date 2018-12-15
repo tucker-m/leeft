@@ -1,4 +1,5 @@
 import measurements from './variables/measurements'
+import forms from './forms'
 
 export default {
     main: {
@@ -25,9 +26,12 @@ export default {
     topBarHeadingContainer: {
 	display: 'flex',
 	flex: '1',
-	flexDirection: 'column',
-	alignItems: 'flex-start',
+	alignItems: 'center',
     },
+    topBarButton: Object.assign({
+	marginTop: 0,
+	marginBottom: 0,
+    }, forms.small, forms.hollowButton),
     alignment: {
         display: 'flex',
         alignItems: 'center',

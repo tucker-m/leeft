@@ -4,9 +4,8 @@ import shared from './shared'
 export default {
     label: {
         margin: '.25rem',
-        color: '#666',
-        fontFamily: 'sans-serif',
-        fontSize: '.85rem',
+        color: '#7c7b7b',
+        fontSize: '1rem',
     },
     textInput: {
         height: '35px',
@@ -30,8 +29,8 @@ export default {
     hollowButton: {
         extend: 'button',
         backgroundColor: 'white',
-        borderColor: colors.edit,
-        color: colors.edit,
+        borderColor: colors.primary,
+        color: colors.primary,
     },
     whiteHollowButton: {
 	extend: 'button',
@@ -50,6 +49,12 @@ export default {
         backgroundColor: colors.danger,
         color: 'white',
         borderColor: colors.danger,
+    },
+    hollowSecondaryButton: {
+	extend: 'button',
+	backgroundColor: 'white',
+	color: colors.secondary,
+	borderColor: colors.secondary,
     },
     hollowDangerButton: {
         extend: 'button',

@@ -5,7 +5,7 @@ export default {
         color: colors.edit,
     },
     aSecondary: {
-	color: colors.secondary,
+	color: colors.tertiary,
     },
     h1: {
         display: 'inline-block',

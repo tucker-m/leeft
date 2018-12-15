@@ -62,7 +62,7 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 			    ? (vnode.attrs.editOptions.editButtonShowing
 			       ? m('button', {
 				   onclick: vnode.attrs.editOptions.openModal,
-				   class: `${css.hollowButton} ${css.small}`,
+				   class: `${css.topBarButton}`,
 			       }, 'Edit Name')
 			       : null)
 			    : null,

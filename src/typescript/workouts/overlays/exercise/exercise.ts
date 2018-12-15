@@ -23,9 +23,11 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
 
     const prescription = toJS(vnode.attrs.prescription)
     let exercise = prescription.exercise
+    let resultsShowing = false
 
     return {
         view: (vnode: ExerciseVnode) => {
+	    const setResultsShowing = (show: boolean) => { resultsShowing = show }
             return [
                 m('div', [
                     m('div', {class: css.labelOnTopGroup}, [
@@ -55,6 +57,8 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                                     matchingExercises = []
                                 },
                                 matchingExercises,
+				resultsShowing,
+				setResultsShowing,
                             })
                             : null,
                     ]),

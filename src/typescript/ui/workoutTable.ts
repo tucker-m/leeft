@@ -25,16 +25,51 @@ const TableComponent = (vnode: TableVnode) => {
                 vnode.attrs.prescriptions.splice(index, 1)
 	    }
 
-            return m('div', [
-                vnode.attrs.prescriptions.length > 0 ?
+            return m('div', {class: css.workoutTable}, [
+                vnode.attrs.showEditButtons ?
+                    m('button', {
+                        class: css.hollowButton,
+                        onclick: () => {
+                            const newLength = vnode.attrs.prescriptions.push({
+                                exercise: {
+                                    name: '',
+                                    setUnits: 'reps',
+                                    tag: 'exercise',
+                                },
+                                sets: 0,
+                                amount: 0,
+                            })
+			    const index = newLength - 1
+			    const prescription = vnode.attrs.prescriptions[index]
+			    vnode.attrs.setOverlay(ExerciseOverlay, {
+				prescription,
+				updatePrescription: (newPrescription: ExercisePrescription) => {
+				    set(prescription, newPrescription)
+				},
+				hideOverlay: () => {
+				    vnode.attrs.setOverlay({component: null, title: ''}, {})
+				},
+				deleteOnCancel: () => {deleteFunction(index)},
+				css: css,
+			    })
+                        }
+                    }, 'Add Exercise')
+                    : null,
+		vnode.attrs.prescriptions.length > 0 ?
                     m('table', {
                         class: css.table,
                     }, [
                         m('tr', {
                             class: css.tr,
                         }, [
-                            m('th', 'Exercise'),
+                            vnode.attrs.showEditButtons
+				? m('th', '')
+				: null,
+			    m('th', 'Exercise'),
                             m('th', 'Amount'),
+			    vnode.attrs.showEditButtons
+				? m('th', '')
+				: null,
                         ]),
                         vnode.attrs.prescriptions.map((prescription, index) => {
 			    let attributes: any = {
@@ -64,35 +99,6 @@ const TableComponent = (vnode: TableVnode) => {
                         })
                     ])
                 : m('p', 'This workout has no exercises added to it.'),
-                vnode.attrs.showEditButtons ?
-                    m('button', {
-                        class: css.hollowButton,
-                        onclick: () => {
-                            const newLength = vnode.attrs.prescriptions.push({
-                                exercise: {
-                                    name: '',
-                                    setUnits: 'reps',
-                                    tag: 'exercise',
-                                },
-                                sets: 0,
-                                amount: 0,
-                            })
-			    const index = newLength - 1
-			    const prescription = vnode.attrs.prescriptions[index]
-			    vnode.attrs.setOverlay(ExerciseOverlay, {
-				prescription,
-				updatePrescription: (newPrescription: ExercisePrescription) => {
-				    set(prescription, newPrescription)
-				},
-				hideOverlay: () => {
-				    vnode.attrs.setOverlay({component: null, title: ''}, {})
-				},
-				deleteOnCancel: () => {deleteFunction(index)},
-				css: css,
-			    })
-                        }
-                    }, 'Add Exercise')
-                : null,
             ])
         }
     }

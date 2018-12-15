@@ -5,6 +5,8 @@ interface DropDownAttrs {
     css: any,
     updateExercise: (exercise: Exercise) => void,
     matchingExercises: Array<{exercise: Exercise, workout: Workout}>,
+    resultsShowing: boolean
+    setResultsShowing: (show: boolean) => void,
 }
 interface DropDownVnode {
     attrs: DropDownAttrs,
@@ -12,11 +14,11 @@ interface DropDownVnode {
 
 const DropDownComponent = (vnode: DropDownVnode) => {
     const css = vnode.attrs.css
-    let resultsShowing = false
 
     return {
         view: (vnode: DropDownVnode) => {
             let matchingExercises = vnode.attrs.matchingExercises
+	    const resultsShowing = vnode.attrs.resultsShowing
 
             return [
                 m('div', {class: css.searchResults}, [
@@ -32,13 +34,13 @@ const DropDownComponent = (vnode: DropDownVnode) => {
                                 }, matchingExercises[0].exercise.name),
                                 m('span', `from ${matchingExercises[0].workout.name}`)
                             ]
-                            : m('p', 'Matching exercises:'),
+                            : m('p', {class: css.searchResultsMessage}, `Matching exercises (${matchingExercises.length})`),
                     ]),
                     matchingExercises.length > 1 ?
                         m('button', {
                             class: `${css.small} ${css.hollowButton}`,
                             onclick: () => {
-                                resultsShowing = !resultsShowing
+                                vnode.attrs.setResultsShowing(!resultsShowing)
                             }
                         }, resultsShowing ?
                           'hide'

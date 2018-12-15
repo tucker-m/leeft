@@ -4,7 +4,11 @@ export default {
     searchResults: {
         display: 'flex',
         justifyContent: 'flex-end',
-        alignItems: 'flex-start',
+        alignItems: 'center',
+    },
+    searchResultsMessage: {
+	color: '#7c7b7b',
+	fontSize: '1rem',
     },
     resultDescription: {
         flex: '1',

@@ -26,50 +26,48 @@ export default (vnode: RowVnode) => {
             return m('tr', {
                 class: css.tr,
             }, [
-                m('td', {
-                    class: css.td,
-                }, [
-                    vnode.attrs.showEditButtons ?
-                        m('span', m('button', {
-                            class: `${css.hollowButton} ${css.small}`,
+                vnode.attrs.showEditButtons
+		    ? m('td', {class: `${css.td} ${css.workoutRowActions}`}, [
+			vnode.attrs.moveUp
+			    ? m('button', {
+				onclick: vnode.attrs.moveUp,
+			    }, 'U')
+			    : null,
+			vnode.attrs.moveDown
+			    ? m('button', {
+				onclick: vnode.attrs.moveDown,
+			    }, 'D')
+			    : null,
+			m('button', {
+                            class: `${css.hollowSecondaryButton} ${css.small}`,
                             onclick: () => {
-                                vnode.attrs.setOverlay(ExerciseOverlay, {
+				vnode.attrs.setOverlay(ExerciseOverlay, {
                                     prescription,
                                     updatePrescription: (newPrescription: ExercisePrescription) => {
-                                        set(prescription, newPrescription)
+					set(prescription, newPrescription)
                                     },
                                     hideOverlay: () => {
-                                        vnode.attrs.setOverlay({component: null, title: ''}, {})
+					vnode.attrs.setOverlay({component: null, title: ''}, {})
                                     },
                                     css: css,
-                                })
+				})
                             },
-                        }, 'Edit'),
-                          m('button', {
-                              class: `${css.small} ${css.hollowDangerButton}`,
-                              onclick: vnode.attrs.deleteFunction,
-                          }, 'Delete'),
-			  vnode.attrs.moveUp
-			  ? m('button', {
-			      class: `${css.small} ${css.hollowButton}`,
-			      onclick: vnode.attrs.moveUp,
-			  }, 'Move Up')
-			  : null,
-			  vnode.attrs.moveDown
-			  ? m('button', {
-			      class: `${css.small} ${css.hollowButton}`,
-			      onclick: vnode.attrs.moveDown,
-			  }, 'Move Down')
-			  : null,
-                         )
-                        : null,
-                    prescription.exercise.name ?
-                        prescription.exercise.name
-                        : m('span', {class: css.empty}, 'Unnamed Exercise'),
-                ]),
+			}, 'Edit'),
+		    ])
+		    : null,
+		m('td', {class: css.td}, prescription.exercise.name ?
+                  prescription.exercise.name
+                  : m('span', {class: css.empty}, 'Unnamed Exercise'),
+		 ),
                 m('td', {
                     class: css.td,
                 }, prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits),
+		vnode.attrs.showEditButtons
+		    ? m('td', m('button', {
+			class: `${css.small} ${css.hollowDangerButton}`,
+			onclick: vnode.attrs.deleteFunction,
+		    }, 'X'))
+		    : null,
             ])
         }
     }

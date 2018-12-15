@@ -12,13 +12,14 @@ export default {
 	paddingTop: measurements.topBarHeight,
     },
     table: {
-        marginTop: '1rem',
-        marginBottom: '1rem',
         width: '100%',
+    },
+    workoutTable: {
+	margin: '1rem 0',
     },
     tr: {
         '&:nth-of-type(2n)': {
-            background: '#efefef',
+            background: '#F1F0E2',
         },
     },
     td: {
@@ -26,6 +27,9 @@ export default {
         '&:not(:last-of-type)': {
             paddingRight: '1.5rem',
         },
+    },
+    workoutRowActions: {
+	textAlign: 'right',
     },
     workoutList: {
         '&:not(:last-of-type)': {
@@ -65,7 +69,7 @@ export default {
         display: 'flex',
         flex: '1',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflowY: 'scroll',
     },
     overlayTitleBar: {
         backgroundColor: 'white',

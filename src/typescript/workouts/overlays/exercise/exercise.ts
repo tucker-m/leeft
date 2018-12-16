@@ -19,7 +19,7 @@ const title = 'Edit Exercise'
 
 const ExerciseOverlay = (vnode: ExerciseVnode) => {
     const css = vnode.attrs.css
-    let matchingExercises: Array<{exercise: Exercise, workout: Workout}> = []
+    let matchingExercises: Array<Exercise> = []
 
     const prescription = toJS(vnode.attrs.prescription)
     let exercise = prescription.exercise

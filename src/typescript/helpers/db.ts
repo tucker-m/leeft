@@ -89,38 +89,30 @@ const findLogsByWorkoutName = (name: string) => {
     })
 }
 
-const findExercisesByName = (name: string): Promise<Array<{exercise: Exercise, workout: Workout}>> => {
+const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
     const regex = new RegExp(name.toLowerCase())
     return new Promise((resolve, reject) => {
         db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
             let programs = docs.rows
             // loop through programs, picking out all exercises in them
             let exercises = programs.flatMap((program) => {
+		// Just get the workouts from the programs, not the rest days
                 let workoutsOnly = program.doc.schedule.filter((exercise) => {
                     return exercise.tag == 'workout'
                 })
                 return workoutsOnly.flatMap((workout) => {
                     return workout.prescriptions.map((prescription) => {
-                        return {
-                            exercise: prescription.exercise,
-                            workout: workout,
-                        }
+                        return prescription.exercise
                     }).filter((exercise) => {
-                        return !!exercise.exercise.name.toLowerCase().match(regex)
+                        return !!exercise.name.toLowerCase().match(regex)
                     })
                 })
             })
             const stringifiedExercises = exercises.map((exercise) => {
-                return JSON.stringify({
-                    exercise: exercise.exercise,
-                    workout: exercise.workout.name
-                })
+                return JSON.stringify(exercise)
             })
             let removeDuplicates = exercises.filter((exercise, index) => {
-                return stringifiedExercises.indexOf(JSON.stringify({
-                    exercise: exercise.exercise,
-                    workout: exercise.workout.name
-                })) == index
+                return stringifiedExercises.indexOf(JSON.stringify(exercise)) == index
             })
             resolve(removeDuplicates)
         })

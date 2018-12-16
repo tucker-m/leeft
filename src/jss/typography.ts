@@ -2,7 +2,7 @@ import colors from './variables/colors'
 
 export default {
     a: {
-        color: colors.edit,
+        color: colors.primary,
     },
     aSecondary: {
 	color: colors.tertiary,

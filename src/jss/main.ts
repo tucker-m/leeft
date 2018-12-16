@@ -19,7 +19,7 @@ export default {
     },
     tr: {
         '&:nth-of-type(2n)': {
-            background: '#F1F0E2',
+            background: colors.accentBackground,
         },
     },
     td: {
@@ -58,7 +58,7 @@ export default {
         background: 'white',
         borderRadius: '3px',
         flexBasis: '35rem',
-        border: `1px solid ${colors.edit}`,
+        border: `1px solid ${colors.primary}`,
         boxShadow: '0 2px 8px 2px rgba(0, 0, 0, .3)',
         backgroundColor: colors.edit,
         overflow: 'hidden',
@@ -73,7 +73,7 @@ export default {
     },
     overlayTitleBar: {
         backgroundColor: 'white',
-        borderBottom: `1px solid ${colors.edit}`,
+        borderBottom: `1px solid ${colors.primary}`,
         height: '2.5rem',
         display: 'flex',
         alignItems: 'center',
@@ -82,11 +82,7 @@ export default {
     overlayTitle: {
         fontSize: '1.2rem',
         margin: '.5rem 0',
-        color: colors.edit,
-    },
-    overlayResultsContainer: {
-        flex: '1',
-        overflowY: 'scroll',
+        color: colors.primary,
     },
     overlayBottomBar: {
         padding: '.5rem 1.5rem',

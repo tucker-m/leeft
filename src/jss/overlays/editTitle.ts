@@ -2,9 +2,6 @@ import colors from '../variables/colors'
 import shared from '../shared'
 
 export default {
-    card: {
-        overflow: 'hidden',
-    },
     subTitle: {
         color: '#444',
         background: '#efefef',

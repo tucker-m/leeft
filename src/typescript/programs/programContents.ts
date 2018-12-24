@@ -50,6 +50,7 @@ const component = (vnode: ContentVnode) => {
 			},
 		    },
 		    title: program.name,
+		    placeholder: 'Untitled Program',
 		    css: css,
 		}),
                 m('div', {class: css.content}, [

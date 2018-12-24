@@ -14,6 +14,7 @@ interface TopBarButtonAttrs {
 interface TopBarAttrs {
     buttons: Array<TopBarButtonAttrs>,
     title: string,
+    placeholder?: string,
     css: any,
     editOptions?: {
 	editButtonShowing: boolean,
@@ -44,6 +45,8 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                 return TopBarButton(attrs)
             }))
 
+	    const title = vnode.attrs.title
+	    const placeholder = vnode.attrs.placeholder
             return m('div', [
                 m('div', {
                     class: utils.combineStyles([
@@ -56,8 +59,8 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 			class: css.topBarHeadingContainer
 		    }, [
 			m('h1', {
-			    class: css.topBarH1,
-			}, vnode.attrs.title),
+			    class: css.topBarH1 + ' ' + (title ? '' : css.untitled),
+			}, title ? title : placeholder),
 			vnode.attrs.editOptions
 			    ? (vnode.attrs.editOptions.editButtonShowing
 			       ? m('button', {

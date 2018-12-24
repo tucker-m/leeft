@@ -27,6 +27,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                     m('div', {class: css.formRow}, [
                         m('input[type=text]', {
                             value: title,
+			    placeholder: 'Untitled Program',
                             oninput: m.withAttr('value', (value) => {
                                 db.findWorkoutsByName(value).then((results) => {
                                     matchingWorkouts = results

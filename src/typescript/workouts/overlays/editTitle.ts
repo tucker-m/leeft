@@ -28,6 +28,7 @@ const EditTitleComponent = (vnode: ComponentVnode) => {
                     m('div', {class: css.formRow}, [
                         m('input[type=text]', {
                             value: workout.name,
+			    placeholder: 'Untitled Workout',
                             oninput: m.withAttr('value', (value) => {
                                 workout.name = value
                                 if (value.length == 0) {

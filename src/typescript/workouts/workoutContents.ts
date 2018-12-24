@@ -55,6 +55,7 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 		    buttons: topBarButtons,
 		    css: css,
 		    title: workout.name,
+		    placeholder: 'Untitled Workout',
 		    editOptions: {
 			editButtonShowing: pageEditable,
 			openModal: () => {

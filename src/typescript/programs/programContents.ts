@@ -54,6 +54,23 @@ const component = (vnode: ContentVnode) => {
 		    css: css,
 		}),
                 m('div', {class: css.content}, [
+		    pageEditable ? m('div', [
+			m('button', {
+                            onclick: () => {
+				const dayNum = program.schedule.push({
+                                    tag: 'workout',
+                                    prescriptions: [],
+                                    name: ''
+				})
+				setTimeout(() => {
+				    window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
+				}, 400)
+                            }
+			}, '+ Add a new workout'),
+			m('button', {
+                            onclick: () => {program.schedule.push({tag: 'rest'})}
+			}, '+ Add a rest day'),
+                    ]) : null,
 		    m('table', {
 			class: css.table,
                     }, program.schedule.map((workout, index) => {
@@ -100,23 +117,6 @@ const component = (vnode: ContentVnode) => {
                             ]) : null,
 			])
                     })),
-                    pageEditable ? m('div', [
-			m('button', {
-                            onclick: () => {
-				const dayNum = program.schedule.push({
-                                    tag: 'workout',
-                                    prescriptions: [],
-                                    name: ''
-				})
-				setTimeout(() => {
-				    window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
-				}, 400)
-                            }
-			}, '+ Add a new workout'),
-			m('button', {
-                            onclick: () => {program.schedule.push({tag: 'rest'})}
-			}, '+ Add a rest day'),
-                    ]) : null
 		])
 	    ]
 	}

@@ -30,20 +30,6 @@ export default (vnode: ViewProgramVnode) => {
             return m('div', [
                 RenderPage({
                     pageEditable,
-		    // topBarButtons: [
-                    //     {
-                    //         text: 'Set as Current Program',
-                    //         action: () => {settings.currentProgram = program}
-                    //     },
-                    //     {
-                    //         text: 'Edit Program',
-                    //         action: () => { pageEditable = true },
-                    //         secondState: {
-                    //             text: 'Done Editing',
-                    //             action: () => { pageEditable = false },
-                    //         }
-                    //     },
-                    // ],
                     contents: {
 			component: ProgramContents.component,
 			attrs: {

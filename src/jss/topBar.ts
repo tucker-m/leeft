@@ -23,10 +23,6 @@ export default {
 	fontWeight: 'normal',
 	fontFamily: 'Fira Sans Extra Condensed, sans-serif',
     },
-    untitled: {
-	fontStyle: 'italic',
-	color: '#999',
-    },
     topBarHeadingContainer: {
 	display: 'flex',
 	flex: '1',

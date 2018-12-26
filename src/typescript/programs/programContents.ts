@@ -84,7 +84,7 @@ const component = (vnode: ContentVnode) => {
 				workout.tag == 'rest'
                                     ? m('p', 'Rest')
                                     : m('a', {
-					class: css.workoutNameInProgram,
+					class: css.workoutNameInProgram + ' ' + (workout.name ? '' : css.untitled),
 					href: `/programs/${program._id}/workouts/${index}`,
 					oncreate: m.route.link,
                                     }, workout.name ? workout.name : 'Untitled Workout'),

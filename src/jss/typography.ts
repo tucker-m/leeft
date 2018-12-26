@@ -29,6 +29,10 @@ export default {
     itemTitle: {
         fontSize: '1.5rem',
     },
+    untitled: {
+	fontStyle: 'italic',
+	opacity: 0.6,
+    },
     workoutNameInProgram: {
         fontSize: '1.3rem',
     },

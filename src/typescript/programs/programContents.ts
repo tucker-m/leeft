@@ -6,6 +6,7 @@ import WorkoutTable from '../ui/workoutTable'
 import EditTitleOverlay from './overlays/editTitle'
 import {PageDefaultAttrs} from '../ui/page'
 import {TopBar} from '../ui/topBar'
+import Calendar from './calendar/calendar'
 
 interface attrs {
     program: Program & Puttable,
@@ -54,6 +55,10 @@ const component = (vnode: ContentVnode) => {
 		    css: css,
 		}),
                 m('div', {class: css.content}, [
+		    Calendar({
+			workouts: program.schedule,
+			css,
+		    }),
 		    pageEditable ? m('div', [
 			m('button', {
                             onclick: () => {

@@ -7,6 +7,7 @@ import logs from './jss/overlays/log'
 import forms from './jss/forms'
 import infoBox from './jss/infoBox/infoBox'
 import workoutLogs from './jss/infoBox/workoutLogs'
+import calendar from './jss/calendar'
 
 export default {
     ...main,
@@ -18,4 +19,5 @@ export default {
     ...forms,
     ...exercise,
     ...logs,
+    ...calendar,
 }

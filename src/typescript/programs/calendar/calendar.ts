@@ -25,12 +25,17 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 		return m('div', {class: css.calendarSquare}, [
 		    m('div', {class: css.numberColumn}, (index+1).toString()),
 		    m('div', {class: css.descriptionColumn}, [
-			m('div', {class: css.workoutTitle}, workout.tag == 'workout'
-			  ? (workout.name ? workout.name : 'Untitled Workout')
-			  : 'Rest Day'),
+			m('div',
+			  m('a', {href: '#', class: css.workoutTitle},
+			    workout.tag == 'workout'
+			    ? (workout.name ? workout.name : 'Untitled Workout')
+			    : 'Rest Day')),
 			m('div', {class: css.workoutDescription}, m('div', [
 			    m('p', workoutDescription),
-			    m('button', {class: css.hollowButton}, 'View Workout'),
+			    m('p', {class: css.lastWorkout}, [
+				'Last Workout: ',
+				m('a', {class: css.dateLink, href: '#'}, 'Dec. 10, 2018'),
+			    ]),
 			]))
 		    ]),
 		])

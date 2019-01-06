@@ -9,15 +9,9 @@ export default {
 	display: 'flex',
 	flex: '1 1 100%',
 	boxSizing: 'border-box',
-	padding: '2rem',
-	backgroundColor: colors.four,
-	color: colors.accentBackground,
+	padding: '1rem',
 	'&:nth-of-type(2n)': {
 	    backgroundColor: colors.accentBackground,
-	    color: colors.four,
-	    '& $numberColumn': {
-		borderColor: colors.four,
-	    },
 	},
     },
     numberColumn: {
@@ -25,23 +19,31 @@ export default {
 	boxSizing: 'border-box',
 	justifyContent: 'center',
 	alignItems: 'center',
-	fontSize: '2rem',
-	width: '3rem',
-	height: '3rem',
-	border: `3px solid ${colors.accentBackground}`,
-	borderRadius: '1.5rem',
-	marginRight: '2rem',
+	fontSize: '1rem',
+	fontWeight: 'bold',
+	width: '2.5rem',
+	height: '2.5rem',
+	border: `3px solid ${colors.four}`,
+	color: colors.four,
+	borderRadius: '1.75rem',
+	marginRight: '1rem',
     },
     descriptionColumn: {
 	display: 'flex',
 	flexDirection: 'column',
     },
     workoutTitle: {
-	fontSize: '2.5rem',
+	fontSize: '1.4rem',
     },
     workoutDescription: {
 	display: 'flex',
 	flex: 1,
 	alignItems: 'center',
+    },
+    lastWorkout: {
+	fontSize: '1rem',
+    },
+    dateLink: {
+	color: colors.secondary,
     },
 }

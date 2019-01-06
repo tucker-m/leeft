@@ -86,6 +86,7 @@ export {
     SetUnits,
     ExercisePrescription,
     Workout,
+    Rest,
     WorkoutLog,
     SetLogViewModel,
     GroupedSetLogVm,

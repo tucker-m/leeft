@@ -33,12 +33,6 @@ export default {
 	fontStyle: 'italic',
 	opacity: 0.6,
     },
-    workoutNameInProgram: {
-        fontSize: '1.3rem',
-    },
-    exerciseNamesInProgram: {
-        paddingLeft: '1rem',
-    },
     empty: {
         color: 'rgba(34, 34, 26, .6)',
         fontStyle: 'italic',

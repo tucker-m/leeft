@@ -1,8 +1,13 @@
 import * as m from 'mithril'
 import {Workout, Rest} from '../../types/exercise'
+import EditButtons from './editButtons'
 
 interface CalendarAttrs {
     workouts: Array<Workout | Rest>,
+    beingEdited: boolean,
+    moveUp: (index: number) => void,
+    moveDown: (index: number) => void,
+    remove: (index: number) => void,
     css: any,
 }
 interface CalendarVnode {
@@ -22,6 +27,10 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 			return prescription.exercise.name
                     }).join(', ')
 
+		const moveUp = vnode.attrs.moveUp.bind(this, index)
+		const moveDown = vnode.attrs.moveDown.bind(this, index)
+		const remove = vnode.attrs.remove.bind(this, index)
+
 		return m('div', {class: css.calendarSquare}, [
 		    m('div', {class: css.numberColumn}, (index+1).toString()),
 		    m('div', {class: css.descriptionColumn}, [
@@ -32,10 +41,18 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 			    : 'Rest Day')),
 			m('div', {class: css.workoutDescription}, m('div', [
 			    m('p', workoutDescription),
-			    m('p', {class: css.lastWorkout}, [
-				'Last Workout: ',
-				m('a', {class: css.dateLink, href: '#'}, 'Dec. 10, 2018'),
-			    ]),
+
+			    m('p', {class: css.lastWorkout},
+				vnode.attrs.beingEdited
+			      ? EditButtons({
+				  moveUp: (index > 0) ? moveUp : null,
+				  moveDown: (index < workouts.length - 1) ? moveDown : null,
+				  remove,
+				  css,
+			      })
+			      : ['Last Workout: ',
+				 m('a', {class: css.dateLink, href: '#'}, 'Dec. 10, 2018')],
+			     ),
 			]))
 		    ]),
 		])

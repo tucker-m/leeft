@@ -4,6 +4,10 @@ export default {
     calendar: {
 	display: 'flex',
 	flexWrap: 'wrap',
+	marginTop: '.5rem',
+    },
+    addWorkoutContainer: {
+	margin: '.5rem 0 1rem',
     },
     calendarSquare: {
 	display: 'flex',

@@ -49,7 +49,19 @@ const component = (vnode: ContentVnode) => {
 	    const remove = (index: number) => {
 		    program.schedule.splice(index, 1)
 	    }
-
+	    const addWorkout = () => {
+		const dayNum = program.schedule.push({
+                    tag: 'workout',
+                    prescriptions: [],
+                    name: ''
+		})
+		setTimeout(() => {
+		    window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
+		}, 400)
+	    }
+	    const addRestDay = () => {
+		program.schedule.push({tag: 'rest'})
+	    }
 
             return [
 		TopBar({
@@ -83,29 +95,15 @@ const component = (vnode: ContentVnode) => {
                 m('div', {class: css.content}, [
 		    Calendar({
 			workouts: program.schedule,
+			programUrl: `/programs/${program._id}`,
 			beingEdited: pageEditable,
 			moveUp,
 			moveDown,
 			remove,
+			addWorkout,
+			addRestDay,
 			css,
 		    }),
-		    pageEditable ? m('div', [
-			m('button', {
-                            onclick: () => {
-				const dayNum = program.schedule.push({
-                                    tag: 'workout',
-                                    prescriptions: [],
-                                    name: ''
-				})
-				setTimeout(() => {
-				    window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
-				}, 400)
-                            }
-			}, '+ Add a new workout'),
-			m('button', {
-                            onclick: () => {program.schedule.push({tag: 'rest'})}
-			}, '+ Add a rest day'),
-                    ]) : null,
 		])
 	    ]
 	}

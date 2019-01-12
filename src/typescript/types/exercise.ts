@@ -22,7 +22,7 @@ interface Exercise {
 };
 
 interface WorkoutLog {
-    workout: Workout,
+    workout: Workout & Puttable,
     sets: Array<SetLogViewModel>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,
@@ -57,6 +57,7 @@ interface ExercisePrescription {
 
 interface Workout {
     name: string,
+    identifier?: string,
     prescriptions: Array<ExercisePrescription>,
     tag: 'workout',
 };
@@ -64,6 +65,11 @@ interface Workout {
 interface Rest {
     tag: 'rest',
 }
+
+type WorkoutAndLog = (Workout | Rest) & {lastLog: {
+    date: number,
+    id: string,
+}}
 
 interface Program {
     schedule: Array<Workout | Rest>,
@@ -87,6 +93,7 @@ export {
     ExercisePrescription,
     Workout,
     Rest,
+    WorkoutAndLog,
     WorkoutLog,
     SetLogViewModel,
     GroupedSetLogVm,

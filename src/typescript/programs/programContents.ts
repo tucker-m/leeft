@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {Program, Workout, Puttable} from '../types/exercise'
+import {Program, Workout, Puttable, WorkoutAndLog} from '../types/exercise'
 import db from '../helpers/db'
 import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
@@ -10,6 +10,7 @@ import Calendar from './calendar/calendar'
 
 interface attrs {
     program: Program & Puttable,
+    workoutsWithLogs: Array<WorkoutAndLog>,
 }
 
 interface ContentVnode {
@@ -52,6 +53,7 @@ const component = (vnode: ContentVnode) => {
 	    const addWorkout = () => {
 		const dayNum = program.schedule.push({
                     tag: 'workout',
+		    identifier: Date.now().toString(),
                     prescriptions: [],
                     name: ''
 		})
@@ -94,7 +96,7 @@ const component = (vnode: ContentVnode) => {
 		}),
                 m('div', {class: css.content}, [
 		    Calendar({
-			workouts: program.schedule,
+			workouts: vnode.attrs.workoutsWithLogs,
 			programUrl: `/programs/${program._id}`,
 			beingEdited: pageEditable,
 			moveUp,

@@ -25,6 +25,11 @@ const init = function() {
         }
     })
     db.createIndex({
+	index: {
+	    fields: ['workout.identifier']
+	}
+    })
+    db.createIndex({
         index: {
             fields: ['name', 'tag']
         }
@@ -86,6 +91,16 @@ const findLogsByWorkoutName = (name: string) => {
                 {'date': {$gt: null}}
             ]
         },
+    })
+}
+
+const findLogsByWorkoutIdentifier = (id: string) => {
+    return new Promise<Array<WorkoutLog>>((resolve, reject) => {
+	db.find({
+	    selector: {'workout.identifier': id}
+	}).then(result => {
+	    resolve(result.docs)
+	})
     })
 }
 
@@ -255,6 +270,7 @@ export default {
     init,
     getSettings,
     findLogsByWorkoutName,
+    findLogsByWorkoutIdentifier,
     findExercisesByName,
     findWorkoutsByName,
     findSetsContainingExercise,

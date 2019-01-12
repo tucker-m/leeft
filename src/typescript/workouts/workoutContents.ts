@@ -9,7 +9,7 @@ import preventDefault from '../helpers/preventDefaultFunction'
 import db from '../helpers/db'
 
 interface ContentAttrs {
-    workout: Workout,
+    workout: Workout & Puttable,
     program: Program & Puttable,
     updateWorkout: (newWorkout: Workout) => void,
 }

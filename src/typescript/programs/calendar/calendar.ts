@@ -1,9 +1,10 @@
 import * as m from 'mithril'
-import {Workout, Rest} from '../../types/exercise'
+import {Workout, Rest, WorkoutAndLog} from '../../types/exercise'
 import EditButtons from './editButtons'
+import utils from '../../helpers/utils'
 
 interface CalendarAttrs {
-    workouts: Array<Workout | Rest>,
+    workouts: Array<WorkoutAndLog>,
     programUrl: string,
     beingEdited: boolean,
     moveUp: (index: number) => void,
@@ -70,7 +71,11 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 				      css,
 				  })
 				  : ['Last Workout: ',
-				     m('a', {class: css.dateLink, href: '#'}, 'Dec. 10, 2018')],
+				     m('a', {
+					 class: css.dateLink,
+					 href: `/logs/${workout.lastLog.id}`,
+					 oncreate: m.route.link,
+				     }, utils.formatDate(workout.lastLog.date))],
 				 ),
 			    ]))
 			]),

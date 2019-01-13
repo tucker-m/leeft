@@ -20,6 +20,7 @@ export default (vnode: ViewLogVnode) => {
         workout: {
             _id: '',
             name: '',
+	    identifier: Date.now().toString(),
             prescriptions: [],
             tag: 'workout',
         },

@@ -57,7 +57,7 @@ interface ExercisePrescription {
 
 interface Workout {
     name: string,
-    identifier?: string,
+    identifier: string,
     prescriptions: Array<ExercisePrescription>,
     tag: 'workout',
 };

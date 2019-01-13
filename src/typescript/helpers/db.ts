@@ -83,17 +83,6 @@ function fetchSaveableCollection<T> (tag: ModelName): Promise<Array<Puttable & T
     })
 }
 
-const findLogsByWorkoutName = (name: string) => {
-    return db.find({
-        selector: {
-            $and: [
-                {'workout.name': name},
-                {'date': {$gt: null}}
-            ]
-        },
-    })
-}
-
 const findLogsByWorkoutIdentifier = (id: string) => {
     return new Promise<Array<WorkoutLog>>((resolve, reject) => {
 	db.find({
@@ -269,7 +258,6 @@ function deleteSaveableRecord (object: Puttable): void {
 export default {
     init,
     getSettings,
-    findLogsByWorkoutName,
     findLogsByWorkoutIdentifier,
     findExercisesByName,
     findWorkoutsByName,

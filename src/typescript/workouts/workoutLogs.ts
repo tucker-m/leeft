@@ -15,8 +15,8 @@ let logs: Array<WorkoutLog & Saveable> = []
 
 const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
     const css = vnode.attrs.css
-    db.findLogsByWorkoutName(vnode.attrs.workout.name).then((results) => {
-        logs = results.docs
+    db.findLogsByWorkoutIdentifier(vnode.attrs.workout.identifier).then((results) => {
+        logs = results
         m.redraw()
     })
 

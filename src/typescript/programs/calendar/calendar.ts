@@ -38,11 +38,6 @@ const CalendarComponent = (vnode: CalendarVnode) => {
                 ]) : null,
 
 		workouts.map((workout, index) => {
-		    const workoutDescription = workout.tag === 'rest' ? ''
-			: workout.prescriptions.map((prescription) => {
-			    return prescription.exercise.name
-			}).join(', ')
-
 		    const moveUp = vnode.attrs.moveUp.bind(this, index)
 		    const moveDown = vnode.attrs.moveDown.bind(this, index)
 		    const remove = vnode.attrs.remove.bind(this, index)
@@ -57,10 +52,10 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 				  class: css.workoutTitle
 			      },
 				workout.tag == 'workout'
-				? (workout.name ? workout.name : 'Untitled Workout')
+				? utils.getWorkoutNameElement(workout, css)
 				: 'Rest Day')),
 			    m('div', {class: css.workoutDescription}, m('div', [
-				m('p', workoutDescription),
+				m('p', workout.tag == 'workout' ? utils.getWorkoutExercisesElement(workout, css) : ''),
 
 				m('p', {class: css.lastWorkout},
 				  vnode.attrs.beingEdited

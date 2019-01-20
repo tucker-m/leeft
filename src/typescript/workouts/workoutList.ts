@@ -3,7 +3,7 @@ import {Saveable, Saved, Puttable, Workout, SetUnits} from '../types/exercise';
 import preventDefault from '../helpers/preventDefaultFunction';
 import {IObservableObject} from 'mobx'
 import db from '../helpers/db'
-import utils from '../helpers/utils'
+import u from '../helpers/utils'
 
 interface WorkoutListAttrs {
     allWorkouts: Array<Workout & Puttable>,
@@ -33,13 +33,13 @@ let WorkoutListComponent = function(vnode: WorkoutListVnode) {
                         m('a', {
                             href: '/workouts/' + workout._id,
                             oncreate: m.route.link,
-                            class: utils.combineStyles([
+                            class: u.c([
                                 css.itemTitle,
                                 !workout.name ? css.empty : ''
                             ]),
                         }, workout.name ? workout.name : 'Untitled Workout'),
                         m('p', {
-                            class: utils.combineStyles([
+                            class: u.c([
                                 css.workoutListExercises,
                                 workoutExerciseNames.length == 0
                                     ? css.empty: '',

@@ -1,7 +1,7 @@
 import * as m from 'mithril'
 import {Workout, Rest, WorkoutAndLog} from '../../types/exercise'
 import EditButtons from './editButtons'
-import utils from '../../helpers/utils'
+import u from '../../helpers/utils'
 
 interface CalendarAttrs {
     workouts: Array<WorkoutAndLog>,
@@ -41,7 +41,7 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 		    const moveUp = vnode.attrs.moveUp.bind(this, index)
 		    const moveDown = vnode.attrs.moveDown.bind(this, index)
 		    const remove = vnode.attrs.remove.bind(this, index)
-		    const workoutInfo = utils.getNameAndClasses(workout, css)
+		    const workoutInfo = u.getNameAndClasses(workout, css)
 
 		    return m('div', {class: css.calendarSquare}, [
 			m('div', {class: css.numberColumn}, (index+1).toString()),
@@ -50,13 +50,13 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 			      m('a', {
 				  href: `${vnode.attrs.programUrl}/workouts/${index}`,
 				  oncreate: m.route.link,
-				  class: css.workoutTitle + ' ' + workoutInfo.classes
+				  class: u.c([css.workoutTitle, workoutInfo.classes])
 			      },
 				workout.tag == 'workout'
 				? workoutInfo.name
 				: 'Rest Day')),
 			    m('div', {class: css.workoutDescription}, m('div', [
-				m('p', workout.tag == 'workout' ? utils.getWorkoutExercisesElement(workout, css) : ''),
+				m('p', workout.tag == 'workout' ? u.getWorkoutExercisesElement(workout, css) : ''),
 
 				m('p', {class: css.lastWorkout},
 				  vnode.attrs.beingEdited
@@ -71,7 +71,7 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 					 class: css.dateLink,
 					 href: `/logs/${workout.lastLog.id}`,
 					 oncreate: m.route.link,
-				     }, utils.formatDate(workout.lastLog.date))],
+				     }, u.formatDate(workout.lastLog.date))],
 				 ),
 			    ]))
 			]),

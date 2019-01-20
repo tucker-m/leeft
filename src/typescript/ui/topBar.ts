@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import utils from '../helpers/utils'
+import u from '../helpers/utils'
 import {TopBarButton} from '../types/components'
 import {NamedObject, Saveable} from '../types/exercise'
 
@@ -45,11 +45,11 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                 return TopBarButton(attrs)
             }))
 
-	    const titleInfo = utils.getNameAndClasses(vnode.attrs.obj, css)
+	    const titleInfo = u.getNameAndClasses(vnode.attrs.obj, css)
 
             return m('div', [
                 m('div', {
-                    class: utils.combineStyles([
+                    class: u.c([
                         css.alignment,
                         css.main,
 			css.topBar,
@@ -58,7 +58,7 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 		    m('div', {
 			class: css.topBarHeadingContainer
 		    }, [
-			m('h1', {class: titleInfo.classes + ' ' + css.topBarH1}, titleInfo.name),
+			m('h1', {class: u.c([titleInfo.classes, css.topBarH1])}, titleInfo.name),
 			vnode.attrs.editOptions
 			    ? (vnode.attrs.editOptions.editButtonShowing
 			       ? m('button', {

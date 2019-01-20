@@ -14,7 +14,7 @@ const formatDate = (timestamp: number) => {
     return month + ' ' + day + ', ' + year + ' at ' + hour + ':' + minutes.toString().padStart(2, '0') + meridian
 }
 
-const combineStyles = (styles: Array<string>) => {
+const c = (styles: Array<string>) => {
     return styles.join(' ')
 }
 
@@ -55,13 +55,13 @@ const getWorkoutExercises = (workout: Workout) => {
 const getWorkoutExercisesElement = (workout: Workout, css: any, classes: Array<string> = []) => {
     const untitledClass = workout.prescriptions.length == 0 ? css.untitled : ''
     return m('span', {
-	class: combineStyles([...classes, untitledClass])
+	class: c([...classes, untitledClass])
     }, getWorkoutExercises(workout))
 }
 
 export default {
     formatDate,
-    combineStyles,
+    c,
     getNameAndClasses,
     getWorkoutExercisesElement,
 };

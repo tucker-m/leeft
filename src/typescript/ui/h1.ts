@@ -1,5 +1,5 @@
 import * as m from 'mithril';
-import utils from '../helpers/utils'
+import u from '../helpers/utils'
 
 interface H1Attrs {
     text: string,
@@ -16,7 +16,7 @@ const H1 = (vnode: H1Vnode) => {
             //allClasses.push(vnode.attrs.css.h1)
 
             return m('h1', {
-                class: utils.combineStyles(allClasses)
+                class: u.c(allClasses)
             }, vnode.attrs.text)
         }
     }

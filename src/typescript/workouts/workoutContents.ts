@@ -7,6 +7,7 @@ import {TopBar} from '../ui/topBar'
 import {PageDefaultAttrs} from '../ui/page'
 import preventDefault from '../helpers/preventDefaultFunction'
 import db from '../helpers/db'
+import utils from '../helpers/utils'
 
 interface ContentAttrs {
     workout: Workout & Puttable,
@@ -54,8 +55,7 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 		TopBar({
 		    buttons: topBarButtons,
 		    css: css,
-		    title: workout.name,
-		    placeholder: 'Untitled Workout',
+		    obj: workout,
 		    editOptions: {
 			editButtonShowing: pageEditable,
 			openModal: () => {

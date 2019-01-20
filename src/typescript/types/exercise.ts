@@ -15,8 +15,11 @@ interface Saved extends Puttable {
     _rev: string,
 }
 
-interface Exercise {
+interface NamedObject {
     name: string,
+}
+
+interface Exercise extends NamedObject {
     setUnits: SetUnits,
     tag: 'exercise',
 };
@@ -55,8 +58,7 @@ interface ExercisePrescription {
     amount: number,
 };
 
-interface Workout {
-    name: string,
+interface Workout extends NamedObject {
     identifier: string,
     prescriptions: Array<ExercisePrescription>,
     tag: 'workout',
@@ -71,9 +73,8 @@ type WorkoutAndLog = (Workout | Rest) & {lastLog: {
     id: string,
 }}
 
-interface Program {
+interface Program extends NamedObject {
     schedule: Array<Workout | Rest>,
-    name: string,
     tag: 'program',
 }
 
@@ -88,6 +89,7 @@ export {
     Saved,
     Puttable,
     ModelName,
+    NamedObject,
     Exercise,
     SetUnits,
     ExercisePrescription,

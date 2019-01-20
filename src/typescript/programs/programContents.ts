@@ -90,8 +90,7 @@ const component = (vnode: ContentVnode) => {
 			    })
 			},
 		    },
-		    title: program.name,
-		    placeholder: 'Untitled Program',
+		    obj: program,
 		    css: css,
 		}),
                 m('div', {class: css.content}, [

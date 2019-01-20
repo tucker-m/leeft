@@ -41,6 +41,7 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 		    const moveUp = vnode.attrs.moveUp.bind(this, index)
 		    const moveDown = vnode.attrs.moveDown.bind(this, index)
 		    const remove = vnode.attrs.remove.bind(this, index)
+		    const workoutInfo = utils.getNameAndClasses(workout, css)
 
 		    return m('div', {class: css.calendarSquare}, [
 			m('div', {class: css.numberColumn}, (index+1).toString()),
@@ -49,10 +50,10 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 			      m('a', {
 				  href: `${vnode.attrs.programUrl}/workouts/${index}`,
 				  oncreate: m.route.link,
-				  class: css.workoutTitle
+				  class: css.workoutTitle + ' ' + workoutInfo.classes
 			      },
 				workout.tag == 'workout'
-				? utils.getWorkoutNameElement(workout, css)
+				? workoutInfo.name
 				: 'Rest Day')),
 			    m('div', {class: css.workoutDescription}, m('div', [
 				m('p', workout.tag == 'workout' ? utils.getWorkoutExercisesElement(workout, css) : ''),

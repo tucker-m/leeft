@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {Workout} from '../types/exercise'
+import {Workout, Rest, NamedObject, Saveable} from '../types/exercise'
 
 const formatDate = (timestamp: number) => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -18,13 +18,27 @@ const combineStyles = (styles: Array<string>) => {
     return styles.join(' ')
 }
 
-const getWorkoutName = (workout: Workout) => {
-    return workout.name ? workout.name : 'Untitled Workout'
-}
+const getName: (obj: (NamedObject | Rest) & Saveable) => string =
+    (obj: NamedObject & Saveable) => {
+	switch (obj.tag) {
+	    case 'exercise':
+		return obj.name ? obj.name : 'Untitled Exercise'
+	    case 'workout':
+		return obj.name ? obj.name : 'Untitled Workout'
+	    case 'rest':
+		return 'Rest Day'
+	    case 'program':
+		return obj.name ? obj.name : 'Untitled Program'
+	    default: return obj.name
+	}
+    }
 
-const getWorkoutNameElement = (workout: Workout, css: any) => {
-    const className = workout.name ? '' : css.untitled
-    return m('span', {class: className}, getWorkoutName(workout))
+const getNameAndClasses: (obj: (NamedObject | Rest) & Saveable, css: any) => {name: string, classes: string} = (obj: NamedObject & Saveable, css: any) => {
+    const classes = obj.name ? '' : css.untitled
+    return {
+	name: getName(obj),
+	classes
+    }
 }
 
 const getWorkoutExercises = (workout: Workout) => {
@@ -48,6 +62,6 @@ const getWorkoutExercisesElement = (workout: Workout, css: any, classes: Array<s
 export default {
     formatDate,
     combineStyles,
-    getWorkoutNameElement,
+    getNameAndClasses,
     getWorkoutExercisesElement,
 };

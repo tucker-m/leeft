@@ -49,16 +49,16 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 
             return m('div', [
                 m('div', {
-                    class: u.c([
+                    class: u.c(
                         css.alignment,
                         css.main,
 			css.topBar,
-                    ]),
+                    ),
                 }, [
 		    m('div', {
 			class: css.topBarHeadingContainer
 		    }, [
-			m('h1', {class: u.c([titleInfo.classes, css.topBarH1])}, titleInfo.name),
+			m('h1', {class: u.c(titleInfo.classes, css.topBarH1)}, titleInfo.name),
 			vnode.attrs.editOptions
 			    ? (vnode.attrs.editOptions.editButtonShowing
 			       ? m('button', {

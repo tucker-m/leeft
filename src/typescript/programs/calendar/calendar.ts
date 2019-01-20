@@ -50,7 +50,7 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 			      m('a', {
 				  href: `${vnode.attrs.programUrl}/workouts/${index}`,
 				  oncreate: m.route.link,
-				  class: u.c([css.workoutTitle, workoutInfo.classes])
+				  class: u.c(css.workoutTitle, workoutInfo.classes)
 			      },
 				workout.tag == 'workout'
 				? workoutInfo.name

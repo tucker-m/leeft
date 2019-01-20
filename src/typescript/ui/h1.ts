@@ -16,7 +16,7 @@ const H1 = (vnode: H1Vnode) => {
             //allClasses.push(vnode.attrs.css.h1)
 
             return m('h1', {
-                class: u.c(allClasses)
+                class: u.c(...allClasses)
             }, vnode.attrs.text)
         }
     }

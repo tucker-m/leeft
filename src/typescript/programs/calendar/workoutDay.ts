@@ -18,7 +18,7 @@ interface CalendarItemVnode {
 
 const CalendarItem = (vnode: CalendarItemVnode) => {
     const css = vnode.attrs.css
-    
+
     return {
 	view: (vnode: CalendarItemVnode) => {
 	    const workout = vnode.attrs.workout
@@ -30,10 +30,8 @@ const CalendarItem = (vnode: CalendarItemVnode) => {
 		      href: vnode.attrs.workoutUrl,
 		      oncreate: m.route.link,
 		      class: u.c(css.workoutTitle, workoutInfo.classes)
-		  },
-		    workout.tag == 'workout'
-		    ? workoutInfo.name
-		    : 'Rest Day')),
+		  }, workoutInfo.name)
+		 ),
 		m('div', {class: css.workoutDescription}, m('div', [
 		    m('p', workout.tag == 'workout' ? u.getWorkoutExercisesElement(workout, css) : ''),
 		    m('p', {class: css.lastWorkout},

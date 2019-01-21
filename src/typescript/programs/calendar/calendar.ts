@@ -1,7 +1,8 @@
 import * as m from 'mithril'
-import {Workout, Rest, WorkoutAndLog} from '../../types/exercise'
+import {WorkoutAndLog} from '../../types/exercise'
 import u from '../../helpers/utils'
-import CalendarItem from './calendarItem'
+import WorkoutDay from './workoutDay'
+import RestDay from './restDay'
 
 interface CalendarAttrs {
     workouts: Array<WorkoutAndLog>,
@@ -44,15 +45,25 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 
 		    return m('div', {class: css.calendarSquare}, [
 			m('div', {class: css.numberColumn}, (index+1).toString()),
-			m('div', {class: css.descriptionColumn}, CalendarItem({
-			    workout,
-			    beingEdited: vnode.attrs.beingEdited,
-			    workoutUrl: `${vnode.attrs.programUrl}/workouts/${index}`,
-			    moveUp: (index > 0) ? moveUp : null,
-			    moveDown: (index < workouts.length - 1) ? moveDown : null,
-			    remove,
-			    css,
-			}))
+			m('div', {class: css.descriptionColumn},
+			  workout.tag == 'workout'
+			  ? WorkoutDay({
+			      workout,
+			      beingEdited: vnode.attrs.beingEdited,
+			      workoutUrl: `${vnode.attrs.programUrl}/workouts/${index}`,
+			      moveUp: (index > 0) ? moveUp : null,
+			      moveDown: (index < workouts.length - 1) ? moveDown : null,
+			      remove,
+			      css,
+			  })
+			  : RestDay({
+			      beingEdited: vnode.attrs.beingEdited,
+			      moveUp: (index > 0) ? moveUp : null,
+			      moveDown: (index < workouts.length - 1) ? moveDown : null,
+			      remove,
+			      css,
+			  })
+			 )
 		    ])
 		})
 	    ])

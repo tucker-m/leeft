@@ -14,7 +14,8 @@ interface TopBarButtonAttrs {
 
 interface TopBarAttrs {
     buttons: Array<TopBarButtonAttrs>,
-    obj: NamedObject & Saveable,
+    obj?: (NamedObject & Saveable),
+    staticTitle?: string,
     css: any,
     editOptions?: {
 	editButtonShowing: boolean,
@@ -45,7 +46,16 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                 return TopBarButton(attrs)
             }))
 
-	    const titleInfo = u.getNameAndClasses(vnode.attrs.obj, css)
+	    let titleInfo
+	    if (vnode.attrs.obj) {
+		titleInfo = u.getNameAndClasses(vnode.attrs.obj, css)
+	    }
+	    else {
+		titleInfo = {
+		    name: vnode.attrs.staticTitle ? vnode.attrs.staticTitle : '',
+		    classes: ''
+		}
+	    }
 
             return m('div', [
                 m('div', {

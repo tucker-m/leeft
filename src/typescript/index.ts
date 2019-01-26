@@ -24,20 +24,6 @@ db.fetchSaveableCollection<Program>('program').then((collection) => {
 let componentList = {
     view: function() {
         return RenderPage({
-            // topBarButtons: [
-            //     {
-            //         text: '+ New Program',
-            //         action: () => {
-            //             db.promiseSaveableRecord<Program>({
-            //                 name: '',
-            //                 schedule: [],
-            //                 tag: 'program',
-            //             }).then((program) => {
-            //                 window.location.href = `#!/programs/${program._id}`
-            //             })
-            //         }
-            //     },
-            // ],
             contents: {
 		component: IndexContents.component,
 		attrs: {

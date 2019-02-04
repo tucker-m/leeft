@@ -54,6 +54,10 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
             return [
 		TopBar({
 		    buttons: topBarButtons,
+		    subTitle: {
+			text: `< ${vnode.attrs.program.name}`,
+			url: `/programs/${vnode.attrs.program._id}`,
+		    },
 		    css: css,
 		    obj: workout,
 		    editOptions: {
@@ -74,14 +78,6 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 		    class: css.content,
 		}, [
 		    m('div', {class: css.infoBox}, [
-			m('p', {class: css.infoBoxText}, [
-			    'Part of ',
-			    m('a', {
-				href: `/programs/${vnode.attrs.program._id}`,
-				oncreate: m.route.link,
-				class: css.aSecondary,
-			    }, vnode.attrs.program.name),
-			]),
 			m('div', {class: css.infoBoxButtons}, [
 			    m('button', {
 				class: css.hollowButton,

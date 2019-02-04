@@ -11,6 +11,11 @@ import Calendar from './calendar/calendar'
 interface attrs {
     program: Program & Puttable,
     workoutsWithLogs: Array<WorkoutAndLog>,
+    moveUp: (index: number) => void,
+    moveDown: (index: number) => void,
+    remove: (index: number) => void,
+    addWorkout: () => void,
+    addRestDay: () => void,
 }
 
 interface ContentVnode {
@@ -25,45 +30,11 @@ const component = (vnode: ContentVnode) => {
     return {
         view: (vnode: ContentVnode) => {
             const program = vnode.attrs.program
-	    const moveUp = (index: number) => {
-		let workout = program.schedule[index]
-		let newArray = program.schedule.slice(0, index).
-		    concat(
-			program.schedule.slice(
-			    index + 1, program.schedule.length
-			)
-		    )
-                newArray.splice(index - 1, 0, workout)
-                program.schedule = newArray
-	    }
-	    const moveDown = (index: number) => {
-		let workout = program.schedule[index]
-		let newArray = program.schedule.slice(0, index).
-		    concat(
-			program.schedule.slice(
-			    index + 1, program.schedule.length
-			)
-		    )
-                newArray.splice(index + 1, 0, workout)
-                program.schedule = newArray
-	    }
-	    const remove = (index: number) => {
-		    program.schedule.splice(index, 1)
-	    }
-	    const addWorkout = () => {
-		const dayNum = program.schedule.push({
-                    tag: 'workout',
-		    identifier: Date.now().toString(),
-                    prescriptions: [],
-                    name: ''
-		})
-		setTimeout(() => {
-		    window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
-		}, 400)
-	    }
-	    const addRestDay = () => {
-		program.schedule.push({tag: 'rest'})
-	    }
+	    const moveUp = vnode.attrs.moveUp
+	    const moveDown = vnode.attrs.moveDown
+	    const remove = vnode.attrs.remove
+	    const addWorkout = vnode.attrs.addWorkout
+	    const addRestDay = vnode.attrs.addRestDay
 
             return [
 		TopBar({
@@ -75,6 +46,20 @@ const component = (vnode: ContentVnode) => {
 			    action: () => { pageEditable = false },
 			}
 		    }],
+		    subTitle: {
+			text: '< All Programs',
+			url: '#!/'
+		    },
+		    bottomButtons: [
+			{
+			    text: '+ Add Workout',
+			    action: addWorkout,
+			},
+			{
+			    text: '+ Add Rest Day',
+			    action: addRestDay,
+			},
+		    ],
 		    editOptions: {
 			editButtonShowing: pageEditable,
 			openModal: () => {

@@ -24,7 +24,9 @@ export default {
         backgroundColor: colors.edit,
         color: 'white',
         padding: '.5rem .75rem',
-        margin: '.25rem .5rem',
+	'&:not(:last-of-type)': {
+	    marginRight: '0.5rem',
+	},
     }, shared.clickable),
     hollowButton: {
         extend: 'button',

@@ -1,3 +1,3 @@
 export default {
-    topBarHeight: '4rem',
+    topBarHeight: '5rem',
 }

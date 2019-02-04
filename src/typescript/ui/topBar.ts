@@ -16,6 +16,11 @@ interface TopBarAttrs {
     buttons: Array<TopBarButtonAttrs>,
     obj?: (NamedObject & Saveable),
     staticTitle?: string,
+    subTitle?: {
+	text: string,
+	url?: string,
+    },
+    bottomButtons?: Array<TopBarButtonAttrs>,
     css: any,
     editOptions?: {
 	editButtonShowing: boolean,
@@ -31,7 +36,7 @@ const TopBarComponent = (vnode: TopBarVnode) => {
     const css = vnode.attrs.css
     return {
         view: (vnode: TopBarVnode) => {
-            const buttons = m('div', vnode.attrs.buttons.map((buttonAttr) => {
+            const buttons = vnode.attrs.buttons.map((buttonAttr) => {
                 let attrs = {
                     text: buttonAttr.text,
                     action: buttonAttr.action,
@@ -44,7 +49,25 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                     }
                 }
                 return TopBarButton(attrs)
-            }))
+            })
+
+	    let bottomButtons
+	    if (vnode.attrs.bottomButtons) {
+		bottomButtons = vnode.attrs.bottomButtons.map((buttonAttr) => {
+                    let attrs = {
+			text: buttonAttr.text,
+			action: buttonAttr.action,
+			css: css,
+                    }
+                    if (buttonAttr.secondState) {
+			attrs['secondState'] = {
+                            text: buttonAttr.secondState.text,
+                            action: buttonAttr.secondState.action,
+			}
+                    }
+                    return TopBarButton(attrs)
+		})
+	    }
 
 	    let titleInfo
 	    if (vnode.attrs.obj) {
@@ -57,7 +80,22 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 		}
 	    }
 
-            return m('div', [
+	    let subTitleElement
+	    const subTitle = vnode.attrs.subTitle
+	    const beingEdited = vnode.attrs.editOptions && vnode.attrs.editOptions.editButtonShowing
+	    if (!beingEdited && subTitle) {
+		if (subTitle.url) {
+		    subTitleElement = m('a', {
+			href: subTitle.url,
+			oncreate: m.route.link,
+		    }, subTitle.text)
+		}
+		else {
+		    subTitleElement = m('span', subTitle.text)
+		}
+	    }
+
+	    return m('div', [
                 m('div', {
                     class: u.c(
                         css.alignment,
@@ -65,20 +103,26 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 			css.topBar,
                     ),
                 }, [
+		    subTitleElement ? m('div', {class: css.topBarSubTitle}, subTitleElement) : null,
 		    m('div', {
 			class: css.topBarHeadingContainer
 		    }, [
-			m('h1', {class: u.c(titleInfo.classes, css.topBarH1)}, titleInfo.name),
-			vnode.attrs.editOptions
-			    ? (vnode.attrs.editOptions.editButtonShowing
-			       ? m('button', {
-				   onclick: vnode.attrs.editOptions.openModal,
-				   class: `${css.topBarButton}`,
-			       }, 'Edit Name')
-			       : null)
-			    : null,
+			m('div', {class: css.topBarHeadingTitle}, [
+			    m('h1', {class: u.c(titleInfo.classes, css.topBarH1)}, titleInfo.name),
+			    vnode.attrs.editOptions
+				? (vnode.attrs.editOptions.editButtonShowing
+				   ? m('button', {
+				       onclick: vnode.attrs.editOptions.openModal,
+				       class: `${css.topBarButton}`,
+				   }, 'Edit Name')
+				   : null)
+				: null,
+			]),
+			m('div', buttons),
 		    ]),
-		    m('div', buttons)
+		    bottomButtons && beingEdited
+			? m('div', bottomButtons)
+			: null,
 		])
             ])
         }

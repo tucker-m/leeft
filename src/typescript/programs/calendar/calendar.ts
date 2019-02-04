@@ -27,17 +27,6 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 	    const workouts = vnode.attrs.workouts
 
 	    return m('div', {class: css.calendar}, [
-		vnode.attrs.beingEdited ? m('div', {class: css.addWorkoutContainer}, [
-		    m('button', {
-                        onclick: vnode.attrs.addWorkout,
-			class: css.button,
-		    }, '+ Add a new workout'),
-		    m('button', {
-                        onclick: vnode.attrs.addRestDay,
-			class: css.button,
-		    }, '+ Add a rest day'),
-                ]) : null,
-
 		workouts.map((workout, index) => {
 		    const moveUp = vnode.attrs.moveUp.bind(this, index)
 		    const moveDown = vnode.attrs.moveDown.bind(this, index)

@@ -28,7 +28,7 @@ const TopBarButtonComponent = (vnode: TopBarButtonVnode) => {
                     buttonStates[currentBtnIdx].action()
                     currentBtnIdx = (currentBtnIdx + 1) % buttonStates.length
                 },
-                class: vnode.attrs.css.button,
+                class: `${vnode.attrs.css.button} ${vnode.attrs.css.small}`,
             }, buttonStates[currentBtnIdx].text)
         }
     }

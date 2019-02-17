@@ -9,6 +9,7 @@ export default {
     },
     h1: {
         display: 'inline-block',
+	fontFamily: 'Fira Sans Extra Condensed',
         fontSize: '2.5rem',
     },
     h3: {
@@ -18,6 +19,9 @@ export default {
         extend: 'h1',
         display: 'inline-flex',
         alignItems: 'center',
+	'&>button': {
+	    marginLeft: '.5rem',
+	},
     },
     placeholderEditableH1: {
         extend: 'editableH1',
@@ -26,11 +30,6 @@ export default {
     },
     itemTitle: {
         fontSize: '1.5rem',
-    },
-    title: {
-	fontSize: '3rem',
-	margin: '1rem',
-	fontFamily: 'Fira Sans Extra Condensed',
     },
     untitled: {
 	fontStyle: 'italic',

@@ -39,6 +39,9 @@ export default {
     workoutListExercises: {
         fontSize: '1.1rem',
     },
+    pageTitle: {
+	margin: '.5rem 1rem',
+    },
     fullScreenOverlay: {
         position: 'fixed',
 	zIndex: 3,

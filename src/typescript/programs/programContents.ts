@@ -60,32 +60,31 @@ const component = (vnode: ContentVnode) => {
 			    action: addRestDay,
 			},
 		    ],
-		    editOptions: {
-			editButtonShowing: pageEditable,
-			openModal: () => {
-			    vnode.attrs.setOverlay(EditTitleOverlay, {
-				title: program.name,
-				css: css,
-				hideOverlay: () => {
-                                    vnode.attrs.setOverlay({component: null, title: ''}, {})
-				},
-				updateTitle: (newTitle: string) => {
-                                    program.name = newTitle
-				}
-			    })
-			},
-		    },
+		    editButtonShowing: pageEditable,
 		    css: css,
 		}),
                 m('div', {class: css.content}, [
-		    EditableH1({
-			name: program.name,
-			placeholder: 'Untitled Program',
-			updateFunc: () => {},
-			css: css,
-			//setOverlay: vnode.attrs.setOverlay,
-			showEditButton: pageEditable,
-		    }),
+		    m('div', {class: css.pageTitle},
+		      EditableH1({
+			  name: program.name,
+			  placeholder: 'Untitled Program',
+			  updateFunc: () => {},
+			  css: css,
+			  setOverlay: () => {
+			      vnode.attrs.setOverlay(EditTitleOverlay, {
+				  title: program.name,
+				  css: css,
+				  hideOverlay: () => {
+                                      vnode.attrs.setOverlay({component: null, title: ''}, {})
+				  },
+				  updateTitle: (newTitle: string) => {
+                                      program.name = newTitle
+				  }
+			      })
+			  },
+			  showEditButton: pageEditable,
+		      }),
+		     ),
 		    Calendar({
 			workouts: vnode.attrs.workoutsWithLogs,
 			programUrl: `/programs/${program._id}`,

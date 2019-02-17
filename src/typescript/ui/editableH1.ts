@@ -26,7 +26,7 @@ const EditableH1 = function(vnode: EditableVnode) {
             return m('div', {
                 class: css.editableH1
             }, [
-                H1({text: name, classes: [css.title, className]}),
+                H1({text: name, classes: [className]}),
                 vnode.attrs.showEditButton
                     ? m('button', {
                         class: `${css.hollowButton} ${css.small}`,

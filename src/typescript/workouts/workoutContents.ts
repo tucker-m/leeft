@@ -1,4 +1,5 @@
 import * as m from 'mithril'
+import EditableH1 from '../ui/editableH1'
 import WorkoutTable from '../ui/workoutTable'
 import WorkoutLogs from './workoutLogs'
 import {Workout, WorkoutLog, ExercisePrescription, SetLogViewModel, Program, Puttable} from '../types/exercise'
@@ -59,24 +60,29 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 			url: `/programs/${vnode.attrs.program._id}`,
 		    },
 		    css: css,
-		    editOptions: {
-			editButtonShowing: pageEditable,
-			openModal: () => {
-			    vnode.attrs.setOverlay(EditTitleOverlay, {
-				workout: workout,
-				css: css,
-				hideOverlay: () => {
-				    vnode.attrs.setOverlay({component: null, title: ''}, {})
-				},
-				updateWorkout: vnode.attrs.updateWorkout,
-			    })
-			}
-		    }
+		    editButtonShowing: pageEditable,
 		}),
 		m('div', {
 		    class: css.content,
 		}, [
 		    m('div', {class: css.infoBox}, [
+			EditableH1({
+			    name: workout.name,
+			    placeholder: 'Untitled Workout',
+			    updateFunc: () => {},
+			    setOverlay: () => {
+				vnode.attrs.setOverlay(EditTitleOverlay, {
+				    workout: workout,
+				    css: css,
+				    hideOverlay: () => {
+					vnode.attrs.setOverlay({component: null, title: ''}, {})
+				    },
+				    updateWorkout: vnode.attrs.updateWorkout,
+				})
+			    },
+			    css: css,
+			    showEditButton: pageEditable,
+			}),
 			m('div', {class: css.infoBoxButtons}, [
 			    m('button', {
 				class: css.hollowButton,

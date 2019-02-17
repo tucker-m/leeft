@@ -2,10 +2,6 @@ import measurements from './variables/measurements'
 import forms from './forms'
 
 export default {
-    main: {
-        padding: '.5rem',
-        marginBottom: '1rem',
-    },
     topBar: {
 	position: 'fixed',
 	height: measurements.topBarHeight,

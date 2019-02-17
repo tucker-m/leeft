@@ -20,10 +20,7 @@ interface TopBarAttrs {
     },
     bottomButtons?: Array<TopBarButtonAttrs>,
     css: any,
-    editOptions?: {
-	editButtonShowing: boolean,
-	openModal: () => void,
-    }
+    editButtonShowing?: boolean,
 }
 
 interface TopBarVnode {
@@ -72,7 +69,7 @@ const TopBarComponent = (vnode: TopBarVnode) => {
 
 	    let subTitleElement
 	    const subTitle = vnode.attrs.subTitle
-	    const beingEdited = vnode.attrs.editOptions && vnode.attrs.editOptions.editButtonShowing
+	    const beingEdited = vnode.attrs.editButtonShowing
 	    if (!beingEdited && subTitle) {
 		if (subTitle.url) {
 		    subTitleElement = m('a', {
@@ -89,7 +86,6 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                 m('div', {
                     class: u.c(
                         css.alignment,
-                        css.main,
 			css.topBar,
                     ),
                 }, [

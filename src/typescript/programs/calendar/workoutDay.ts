@@ -42,12 +42,14 @@ const CalendarItem = (vnode: CalendarItemVnode) => {
 			  remove: vnode.attrs.remove,
 			  css,
 		      })
-		      : ['Last Workout: ',
-			 m('a', {
-			     class: css.dateLink,
-			     href: `/logs/${workout.lastLog.id}`,
-			     oncreate: m.route.link,
-			 }, u.formatDate(workout.lastLog.date))],
+		      : (workout.lastLog.id
+			 ? ['Last Workout: ',
+			    m('a', {
+				class: css.dateLink,
+				href: `/logs/${workout.lastLog.id}`,
+				oncreate: m.route.link,
+			    }, u.formatDate(workout.lastLog.date))]
+			 : null),
 		     ),
 		]))
 	    ]

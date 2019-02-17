@@ -12,8 +12,6 @@ export default {
         boxSizing: 'border-box',
         backgroundColor: 'white',
         border: '1px solid #999',
-        borderRadius: '3px',
-        boxShadow: '0 0 3px rgba(0, 0, 0, .3) inset',
         padding: '.5rem .75rem',
         margin: '.25rem .5rem',
     },
@@ -67,7 +65,6 @@ export default {
     small: {
         padding: '.25rem .5rem',
         fontSize: '.9rem',
-        boxShadow: '0 .5px 2px rgba(0, 0, 0, .3)',
     },
     formRow: {
         display: 'flex',

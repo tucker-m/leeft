@@ -11,7 +11,7 @@ export default {
 	zIndex: '2',
 	backgroundColor: 'white',
 	boxSizing: 'border-box',
-	boxShadow: '0 0 5px 5px rgba(0, 0, 0, .3)',
+	boxShadow: '0 1px 3px rgba(0, 0, 0, .3)',
     },
     topBarH1: {
 	marginRight: '0.5rem',
@@ -31,8 +31,9 @@ export default {
     },
     topBarHeadingContainer: {
 	display: 'flex',
+	flex: 1,
 	flexDirection: 'row',
-	justifyContent: 'space-between',
+	justifyContent: 'flex-end',
 	alignItems: 'center',
     },
     topBarHeadingTitle: {

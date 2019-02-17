@@ -31,7 +31,6 @@ const component: m.FactoryComponent<any> = (vnode: IndexVnode) => {
 			    })
 			}
 		    }],
-		    staticTitle: 'All Programs',
 		    css: vnode.attrs.css,
 		}),
 		m('div', {class: vnode.attrs.css.content},

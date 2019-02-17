@@ -59,7 +59,6 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 			url: `/programs/${vnode.attrs.program._id}`,
 		    },
 		    css: css,
-		    obj: workout,
 		    editOptions: {
 			editButtonShowing: pageEditable,
 			openModal: () => {

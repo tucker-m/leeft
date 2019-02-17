@@ -29,6 +29,10 @@ export default {
 	alignItems: 'center',
 	fontFamily: 'Fira Sans Extra Condensed, sans-serif',
     },
+    bottomButtons: {
+	display: 'flex',
+	alignItems: 'center',
+    },
     topBarHeadingContainer: {
 	display: 'flex',
 	flexDirection: 'row',
@@ -46,8 +50,8 @@ export default {
     }, forms.small, forms.hollowButton),
     alignment: {
         display: 'flex',
-	flexDirection: 'column',
-        justifyContent: 'space-evenly',
+	flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     headerSection: {
         textAlign: 'center',

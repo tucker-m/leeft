@@ -10,8 +10,6 @@ export default {
     h1: {
         display: 'inline-block',
         fontSize: '2.5rem',
-        marginTop: '1rem',
-        marginBottom: '1rem',
     },
     h3: {
         fontSize: '1.5rem',
@@ -28,6 +26,11 @@ export default {
     },
     itemTitle: {
         fontSize: '1.5rem',
+    },
+    title: {
+	fontSize: '3rem',
+	margin: '1rem',
+	fontFamily: 'Fira Sans Extra Condensed',
     },
     untitled: {
 	fontStyle: 'italic',

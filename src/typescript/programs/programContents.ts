@@ -75,10 +75,17 @@ const component = (vnode: ContentVnode) => {
 			    })
 			},
 		    },
-		    obj: program,
 		    css: css,
 		}),
                 m('div', {class: css.content}, [
+		    EditableH1({
+			name: program.name,
+			placeholder: 'Untitled Program',
+			updateFunc: () => {},
+			css: css,
+			//setOverlay: vnode.attrs.setOverlay,
+			showEditButton: pageEditable,
+		    }),
 		    Calendar({
 			workouts: vnode.attrs.workoutsWithLogs,
 			programUrl: `/programs/${program._id}`,

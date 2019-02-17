@@ -14,8 +14,6 @@ interface TopBarButtonAttrs {
 
 interface TopBarAttrs {
     buttons: Array<TopBarButtonAttrs>,
-    obj?: (NamedObject & Saveable),
-    staticTitle?: string,
     subTitle?: {
 	text: string,
 	url?: string,
@@ -65,19 +63,11 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                             action: buttonAttr.secondState.action,
 			}
                     }
-                    return TopBarButton(attrs)
+		    return m('button', {
+			class: `${css.hollowButton} ${css.small}`,
+			onclick: attrs.action,
+		    }, attrs.text)
 		})
-	    }
-
-	    let titleInfo
-	    if (vnode.attrs.obj) {
-		titleInfo = u.getNameAndClasses(vnode.attrs.obj, css)
-	    }
-	    else {
-		titleInfo = {
-		    name: vnode.attrs.staticTitle ? vnode.attrs.staticTitle : '',
-		    classes: ''
-		}
 	    }
 
 	    let subTitleElement
@@ -104,25 +94,14 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                     ),
                 }, [
 		    subTitleElement ? m('div', {class: css.topBarSubTitle}, subTitleElement) : null,
+		    bottomButtons && beingEdited
+			? m('div', {class: css.bottomButtons}, bottomButtons)
+			: null,
 		    m('div', {
 			class: css.topBarHeadingContainer
 		    }, [
-			m('div', {class: css.topBarHeadingTitle}, [
-			    m('h1', {class: u.c(titleInfo.classes, css.topBarH1)}, titleInfo.name),
-			    vnode.attrs.editOptions
-				? (vnode.attrs.editOptions.editButtonShowing
-				   ? m('button', {
-				       onclick: vnode.attrs.editOptions.openModal,
-				       class: `${css.topBarButton}`,
-				   }, 'Edit Name')
-				   : null)
-				: null,
-			]),
 			m('div', buttons),
 		    ]),
-		    bottomButtons && beingEdited
-			? m('div', bottomButtons)
-			: null,
 		])
             ])
         }

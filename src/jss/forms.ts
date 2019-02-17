@@ -72,8 +72,8 @@ export default {
     formRow: {
         display: 'flex',
         flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        alignContent: 'stretch',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     labelGroup: {
         marginBottom: '1rem',

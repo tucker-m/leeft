@@ -6,7 +6,6 @@ interface EditableVnode {
     attrs: {
         name: string,
         placeholder: string,
-        updateFunc: (newName: string) => void,
         showEditButton: boolean,
         css: any,
         setOverlay?: () => void,

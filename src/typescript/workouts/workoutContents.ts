@@ -69,7 +69,6 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 			EditableH1({
 			    name: workout.name,
 			    placeholder: 'Untitled Workout',
-			    updateFunc: () => {},
 			    setOverlay: () => {
 				vnode.attrs.setOverlay(EditTitleOverlay, {
 				    workout: workout,

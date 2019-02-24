@@ -68,7 +68,6 @@ const component = (vnode: ContentVnode) => {
 		      EditableH1({
 			  name: program.name,
 			  placeholder: 'Untitled Program',
-			  updateFunc: () => {},
 			  css: css,
 			  setOverlay: () => {
 			      vnode.attrs.setOverlay(EditTitleOverlay, {

@@ -91,9 +91,6 @@ const LogOverlay = (vnode: LogVnode) => {
 		    },
 		}, 'Next'),
                 m('button', {
-                    onclick: vnode.attrs.hideOverlay
-                }, 'Close'),
-		m('button', {
 		    onclick: () => {
 			sets.splice(currentSet, 1)
 			if (currentSet >= sets.length) {
@@ -113,7 +110,21 @@ const LogOverlay = (vnode: LogVnode) => {
     }
 }
 
+const Bottom = (vnode: LogVnode) => {
+    return {
+	view: (vnode: LogVnode) => {
+	    return m('div', [
+		m('button', {
+                    onclick: vnode.attrs.hideOverlay,
+		    class: vnode.attrs.css.hollowButton,
+		}, 'Close'),
+	    ])
+	}
+    }
+}
+
 export default {
     component: LogOverlay,
     title: title
+    bottom: Bottom,
 }

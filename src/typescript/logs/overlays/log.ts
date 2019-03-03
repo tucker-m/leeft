@@ -3,6 +3,7 @@ import {SetLogViewModel, GroupedSetLogVm, ExercisePrescription} from '../../type
 import db from '../../helpers/db'
 
 interface LogAttrs {
+    title: string,
     logViewModel: GroupedSetLogVm,
     priorTo: string,
     hideOverlay: () => void,
@@ -12,8 +13,6 @@ interface LogAttrs {
 interface LogVnode {
     attrs: LogAttrs
 }
-
-const title = 'Edit Set'
 
 const LogOverlay = (vnode: LogVnode) => {
     const css = vnode.attrs.css
@@ -125,6 +124,5 @@ const Bottom = (vnode: LogVnode) => {
 
 export default {
     component: LogOverlay,
-    title: title
     bottom: Bottom,
 }

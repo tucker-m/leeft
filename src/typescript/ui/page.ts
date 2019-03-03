@@ -32,12 +32,15 @@ const PageComponent = (vnode: PageComponent) => {
 	editButtonShowing = show
     }
 
-    let overlayAttrs = {}
+    interface OverlayImplementationAttrs {
+	title: string,
+    }
     interface OverlayComponent {
 	component: any,
 	bottom: any,
     }
     let overlay: OverlayComponent = {component: null, bottom: null}
+    let overlayAttrs: OverlayImplementationAttrs = {title: ''}
 
     const setOverlay = (overlayToShow, attrs) => {
         overlay = overlayToShow
@@ -56,7 +59,7 @@ const PageComponent = (vnode: PageComponent) => {
 		overlayComponent.component ?
                     Overlay({
                         content: m(overlayComponent.component, overlayAttrs),
-                        title: overlayComponent.title,
+                        title: overlayAttrs.title,
 			bottom: overlayComponent.bottom
 			    ? m(overlayComponent.bottom, overlayAttrs)
 			    : null,

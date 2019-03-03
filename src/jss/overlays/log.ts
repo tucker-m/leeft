@@ -4,9 +4,6 @@ let roundButton = {
     borderRadius: '50%',
     borderStyle: 'solid',
     borderWidth: '2px',
-    '&:not(last-of-type)': {
-	marginRight: '.5rem',
-    },
 }
 
 export default {

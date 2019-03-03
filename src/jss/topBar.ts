@@ -11,7 +11,6 @@ export default {
 	zIndex: '2',
 	backgroundColor: 'white',
 	boxSizing: 'border-box',
-	boxShadow: '0 1px 3px rgba(0, 0, 0, .3)',
     },
     topBarH1: {
 	marginRight: '0.5rem',

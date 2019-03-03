@@ -42,23 +42,8 @@ export default (vnode: ViewLogVnode) => {
 
             return m('div', [
                 RenderPage({
-		    pageEditable,
-		    // topBarButtons: [
-                    //     {
-                    //         text: 'Make Changes',
-                    //         action: () => {
-                    //             pageEditable = !pageEditable
-                    //         }
-                    //     },
-                    //     {
-                    //         text: 'Delete this log',
-                    //         action: () => {
-                    //             db.deleteSaveableRecord(log)
-                    //             window.location.href = `#!/`
-                    //         }
-                    //     }
-                    // ],
-                    contents: {
+		    pageEditable: true,
+		    contents: {
 			component: LogContent.component,
 			attrs: {
 			    log: log

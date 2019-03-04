@@ -46,14 +46,13 @@ export default {
     setsAndReps: {
 	display: 'flex',
 	flexWrap: 'wrap',
+    },
+    setsAndRepsGrouper: {
+	display: 'flex',
 	alignItems: 'center',
     },
     setsAndRepsItem: {
-	display: 'flex',
-	flex: 1,
-	'&:not(:last-of-type)': {
-	    marginRight: '.5rem',
-	},
+	marginRight: '.5rem',
 	'& input[type=text]': {
 	    minWidth: '3rem',
 	    width: '3rem',

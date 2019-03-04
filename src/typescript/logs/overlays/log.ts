@@ -55,27 +55,30 @@ const LogOverlay = (vnode: LogVnode) => {
 				    m('label', {class: css.infoRowTitle}, 'This Workout:'),
 				    m('div', {class: css.infoRowInfo}, [
 					m('div', {class: css.setsAndReps}, [
-					    m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
-						value: set.log ? set.log.reps : '',
-						onchange: m.withAttr('value', (value) => {
-						    if (!set.log) {
-							set.log = {reps: 0, amount: 0}
-						    }
-						    set.log.reps = parseInt(value)
-						}),
-					    })),
-					    m('div', {class: css.setsAndRepsItem}, m('span', 'reps')),
-					    m('div', {class: css.setsAndRepsItem}, m('span', 'at')),
-					    m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
-						value: set.log ? set.log.amount : '',
-						onchange: m.withAttr('value', (value) => {
-						    if (!set.log) {
-							set.log = {reps: 0, amount: 0}
-						    }
-						    set.log.amount = parseInt(value)
-						})
-					    })),
-					    m('div', {class: css.setsAndRepsItem}, m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds')),
+					    m('div', {class: css.setsAndRepsGrouper}, [
+						m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
+						    value: set.log ? set.log.reps : '',
+						    onchange: m.withAttr('value', (value) => {
+							if (!set.log) {
+							    set.log = {reps: 0, amount: 0}
+							}
+							set.log.reps = parseInt(value)
+						    }),
+						})),
+						m('div', {class: css.setsAndRepsItem}, m('span', 'reps at')),
+					    ]),
+					    m('div', {class: css.setsAndRepsGrouper}, [
+						m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
+						    value: set.log ? set.log.amount : '',
+						    onchange: m.withAttr('value', (value) => {
+							if (!set.log) {
+							    set.log = {reps: 0, amount: 0}
+							}
+							set.log.amount = parseInt(value)
+						    })
+						})),
+						m('div', {class: css.setsAndRepsItem}, m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds')),
+					    ]),
 					])
 				    ])
 				])

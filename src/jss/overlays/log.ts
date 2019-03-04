@@ -7,14 +7,62 @@ let roundButton = {
 }
 
 export default {
-    setRow: {
+    setListContainer: {
+	display: 'flex',
+	flexDirection: 'column',
+    },
+    setBox: {
 	display: 'flex',
 	flexDirection: 'row',
+	'&:not(:last-of-type)': {
+	    marginBottom: '2rem',
+	},
+    },
+    setCircleColumn: {
+	display: 'flex',
+	flexDirection: 'column',
+	alignItems: 'center',
+	marginRight: '1rem',
+    },
+    setInfoColumn: {
+	display: 'flex',
+	flexDirection: 'column',
+    },
+    infoRow: {
+	display: 'flex',
+	flexDirection: 'column',
+	'&:not(:last-of-type)': {
+	    marginBottom: '.75rem',
+	},
+    },
+    infoRowTitle: {
+	fontSize: '.9rem',
+	fontStyle: 'italic',
+	marginBottom: '.25rem',
+    },
+    infoRowInfo: {
+	marginLeft: '.5rem',
+    },
+    setsAndReps: {
+	display: 'flex',
+	flexWrap: 'wrap',
+	alignItems: 'center',
+    },
+    setsAndRepsItem: {
+	display: 'flex',
+	flex: 1,
+	'&:not(:last-of-type)': {
+	    marginRight: '.5rem',
+	},
+	'& input[type=text]': {
+	    minWidth: '3rem',
+	    width: '3rem',
+	    textAlign: 'center',
+	},
     },
     insertNew: {
 	display: 'flex',
 	alignItems: 'center',
-	marginLeft: '.5rem',
     },
     insertButton: Object.assign({
 	borderColor: 'aqua',

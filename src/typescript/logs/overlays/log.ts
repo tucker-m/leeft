@@ -30,75 +30,60 @@ const LogOverlay = (vnode: LogVnode) => {
         view: (vnode: LogVnode) => {
             let set = sets[currentSet]
 	    return m('div', [
-                m('h3', exercise.name),
-		m('div', {class: css.setRow}, [
-		    m('div', sets.map((set, index) => {
-			return m('button', {
-                            onclick: () => {
-				currentSet = index
-                            },
-                            class: (currentSet == index) ?
-				css.activeSetButton : css.setButton,
-			}, index + 1)
-                    })),
-                    m('div', {
-			class: css.insertNew,
-			onclick: () => {
-                            sets.splice(currentSet + 1, 0, {
-				exercise: exercise,
-                            })
-                            currentSet = currentSet + 1
-			    vnode.attrs.updateSetLogs(logViewModel)
-			}
-		    }, [
-			m('button', {class: css.insertButton}, '+',),
-			m('a', {class: css.a}, 'Insert another set'),
-		    ]),
-		]),
-                sets[currentSet].prescribedReps
-                    ? m('p', sets[currentSet].prescribedReps) : null,
-		m('input[type=text]', {
-		    value: set.log ? set.log.reps : '',
-		    onchange: m.withAttr('value', (value) => {
-			if (!set.log) {
-			    set.log = {reps: 0, amount: 0}
-			}
-			set.log.reps = parseInt(value)
+		m('div', {class: css.setListContainer}, [
+		    sets.map((set, index) => {
+			return m('div', {class: css.setBox}, [
+			    m('div', {class: css.setCircleColumn}, m('button', {
+				onclick: () => {
+				    currentSet = index
+				},
+				class: (currentSet == index) ?
+				    css.activeSetButton : css.setButton,
+			    }, index + 1)),
+			    m('div', {class: css.setInfoColumn}, [
+				sets[index].prescribedReps
+				    ? m('div', {class: css.infoRow}, [
+					m('label', {class: css.infoRowTitle}, 'Goal:'),
+					m('span', {class: css.infoRowInfo}, `${sets[index].prescribedReps} reps`)
+				    ])
+				    : null,
+				m('div', {class: css.infoRow}, [
+				    m('label', {class: css.infoRowTitle}, 'Last Week:'),
+				    m('span', {class: css.infoRowInfo}, '9 reps at 135 pounds'),
+				]),
+				m('div', {class: css.infoRow}, [
+				    m('label', {class: css.infoRowTitle}, 'This Workout:'),
+				    m('div', {class: css.infoRowInfo}, [
+					m('div', {class: css.setsAndReps}, [
+					    m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
+						value: set.log ? set.log.reps : '',
+						onchange: m.withAttr('value', (value) => {
+						    if (!set.log) {
+							set.log = {reps: 0, amount: 0}
+						    }
+						    set.log.reps = parseInt(value)
+						}),
+					    })),
+					    m('div', {class: css.setsAndRepsItem}, m('span', 'reps')),
+					    m('div', {class: css.setsAndRepsItem}, m('span', 'at')),
+					    m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
+						value: set.log ? set.log.amount : '',
+						onchange: m.withAttr('value', (value) => {
+						    if (!set.log) {
+							set.log = {reps: 0, amount: 0}
+						    }
+						    set.log.amount = parseInt(value)
+						})
+					    })),
+					    m('div', {class: css.setsAndRepsItem}, m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds')),
+					])
+				    ])
+				])
+			    ]),
+			])
 		    }),
-		}),
-		m('span', 'reps'),
-		m('span', 'at'),
-		m('input[type=text]', {
-		    value: set.log ? set.log.amount : '',
-		    onchange: m.withAttr('value', (value) => {
-			if (!set.log) {
-			    set.log = {reps: 0, amount: 0}
-			}
-			set.log.amount = parseInt(value)
-		    })
-		}),
-		m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds'),
-		m('button', {
-		    onclick: () => {
-			vnode.attrs.updateSetLogs(logViewModel)
-			if (currentSet == sets.length - 1) {
-			    vnode.attrs.hideOverlay()
-			}
-			else {
-			    currentSet++
-			}
-		    },
-		}, 'Next'),
-                m('button', {
-		    onclick: () => {
-			sets.splice(currentSet, 1)
-			if (currentSet >= sets.length) {
-			    currentSet--
-			}
-			vnode.attrs.updateSetLogs(logViewModel)
-		    }
-		}, 'Skip this set'),
-		previousSets.length ? m('p', 'Last time:') : null,
+                ]),
+                previousSets.length ? m('p', 'Last time:') : null,
 		previousSets.map((previousSet) => {
 		    return previousSet.log
 			? m('p', `${previousSet.log.reps} at ${previousSet.log.amount} pounds`)

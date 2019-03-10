@@ -1,9 +1,9 @@
 import * as m from 'mithril'
-import utils from '../helpers/utils'
-import H1 from './h1'
+import Heading from './heading'
 
 interface EditableVnode {
     attrs: {
+	level: number,
         name: string,
         placeholder: string,
         showEditButton: boolean,
@@ -12,10 +12,11 @@ interface EditableVnode {
     }
 }
 
-const EditableH1 = function(vnode: EditableVnode) {
+const EditableHeading = function(vnode: EditableVnode) {
     const css = vnode.attrs.css
     return {
         view: function(vnode: EditableVnode) {
+	    const tag = 'h' + vnode.attrs.level
             let name = vnode.attrs.name
             let className = css.editableH1
             if (!name) {
@@ -23,9 +24,9 @@ const EditableH1 = function(vnode: EditableVnode) {
                 className = css.placeholderEditableH1
             }
             return m('div', {
-                class: css.editableH1
+                class: `${css.editable} ${css[tag]}`
             }, [
-                H1({text: name, classes: [className]}),
+                Heading({level: vnode.attrs.level, text: name, classes: [className]}),
                 vnode.attrs.showEditButton
                     ? m('button', {
                         class: `${css.hollowButton} ${css.small}`,
@@ -43,5 +44,5 @@ const EditableH1 = function(vnode: EditableVnode) {
 }
 
 export default function(attrs: EditableVnode['attrs']) {
-    return m(EditableH1, attrs)
+    return m(EditableHeading, attrs)
 }

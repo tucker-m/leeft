@@ -1,7 +1,7 @@
 import * as m from 'mithril'
 import {Program, Workout, Puttable, WorkoutAndLog} from '../types/exercise'
 import db from '../helpers/db'
-import EditableH1 from '../ui/editableH1'
+import EditableHeading from '../ui/editableHeading'
 import WorkoutTable from '../ui/workoutTable'
 import EditTitleOverlay from './overlays/editTitle'
 import {PageDefaultAttrs} from '../ui/page'
@@ -65,7 +65,8 @@ const component = (vnode: ContentVnode) => {
 		}),
                 m('div', {class: css.content}, [
 		    m('div', {class: css.pageTitle},
-		      EditableH1({
+		      EditableHeading({
+			  level: 1,
 			  name: program.name,
 			  placeholder: 'Untitled Program',
 			  css: css,

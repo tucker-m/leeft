@@ -3,7 +3,6 @@ import { Exercise, WorkoutLog, Puttable, SetLogViewModel, GroupedSetLogVm } from
 import db from '../helpers/db'
 import preventDefault from '../helpers/preventDefaultFunction'
 import {RenderPage} from '../ui/page'
-import H1 from '../ui/h1'
 import * as LogContent from './logContents'
 
 interface ViewLogAttrs {

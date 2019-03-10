@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import EditableH1 from '../ui/editableH1'
+import EditableHeading from '../ui/editableHeading'
 import WorkoutTable from '../ui/workoutTable'
 import WorkoutLogs from './workoutLogs'
 import {Workout, WorkoutLog, ExercisePrescription, SetLogViewModel, Program, Puttable} from '../types/exercise'
@@ -66,7 +66,8 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 		    class: css.content,
 		}, [
 		    m('div', {class: css.infoBox}, [
-			EditableH1({
+			EditableHeading({
+			    level: 1,
 			    name: workout.name,
 			    placeholder: 'Untitled Workout',
 			    setOverlay: () => {

@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import H1 from '../ui/h1'
+import EditableHeading from '../ui/editableHeading'
 import {Puttable, WorkoutLog, SetLogViewModel, GroupedSetLogVm} from '../types/exercise'
 import utils from '../helpers/utils'
 import {PageDefaultAttrs} from '../ui/page'

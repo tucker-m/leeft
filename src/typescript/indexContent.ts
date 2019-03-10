@@ -1,5 +1,4 @@
 import * as m from 'mithril'
-import H1 from './ui/h1'
 import ProgramList from './programs/programList'
 import {Program, Saved} from './types/exercise'
 import {PageDefaultAttrs} from './ui/page'

@@ -2,6 +2,7 @@ import * as m from 'mithril';
 import u from '../helpers/utils'
 
 interface H1Attrs {
+    level: number,
     text: string,
     classes?: Array<string>,
 }

@@ -63,6 +63,7 @@ const LogOverlay = (vnode: LogVnode) => {
 							    set.log = {reps: 0, amount: 0}
 							}
 							set.log.reps = parseInt(value)
+							vnode.attrs.updateSetLogs(logViewModel)
 						    }),
 						})),
 						m('div', {class: css.setsAndRepsItem}, m('span', 'reps at')),
@@ -75,6 +76,7 @@ const LogOverlay = (vnode: LogVnode) => {
 							    set.log = {reps: 0, amount: 0}
 							}
 							set.log.amount = parseInt(value)
+							vnode.attrs.updateSetLogs(logViewModel)
 						    })
 						})),
 						m('div', {class: css.setsAndRepsItem}, m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds')),

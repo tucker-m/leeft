@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import { Exercise, WorkoutLog, Puttable, SetLogViewModel, GroupedSetLogVm } from '../types/exercise'
+import { Exercise, WorkoutLog, Puttable, SetLogViewModel} from '../types/exercise'
 import db from '../helpers/db'
 import preventDefault from '../helpers/preventDefaultFunction'
 import {RenderPage} from '../ui/page'
@@ -45,7 +45,10 @@ export default (vnode: ViewLogVnode) => {
 		    contents: {
 			component: LogContent.component,
 			attrs: {
-			    log: log
+			    log: log,
+			    updateLog: (viewModels: Array<SetLogViewModel>) => {
+				log.sets = viewModels
+			    },
 			}
 		    }
                 })

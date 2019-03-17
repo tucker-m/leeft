@@ -1,5 +1,6 @@
 import * as m from 'mithril'
 import EditableHeading from '../ui/editableHeading'
+import {TopBar} from '../ui/topBar'
 import {Puttable, WorkoutLog, SetLogViewModel, GroupedSetLogVm} from '../types/exercise'
 import utils from '../helpers/utils'
 import {PageDefaultAttrs} from '../ui/page'
@@ -7,6 +8,7 @@ import LogOverlay from './overlays/log'
 
 interface attrs {
     log: WorkoutLog & Puttable,
+    updateLog: (logVms: Array<SetLogViewModel>) => void,
 }
 interface LogVnode {
     attrs: attrs & PageDefaultAttrs
@@ -52,42 +54,88 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
             let logViewModels = createGroupedViewModelsFromSetLogs(log)
 
 	    return [
-                m('h3', log.workout.name == '' ? 'Untitled' : log.workout.name),
-                H1({text: utils.formatDate(log.date)}),
-                logViewModels.map((logViewModel, index) => {
-                    return m('div', [
-			m('button', {
-                            onclick: () => {
-				let logVmString = JSON.stringify(logViewModel)
-				let logVmClone = JSON.parse(logVmString)
-				setOverlay(LogOverlay, {
-                                    logViewModel: logVmClone,
-				    priorTo: log._id,
-                                    hideOverlay: () => {
-					setOverlay({
-					    component: null,
-					    title: ''
-					}, {})
-                                    },
-				    updateSetLogs: (viewModel: GroupedSetLogVm) => {
-					logViewModels[index] = viewModel
-					log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
+                TopBar({
+		    buttons: [],
+		    subTitle: {
+			text: `< ${log.workout.name}`,
+			url: `/`,
+		    },
+		    css: css,
+		    editButtonShowing: false,
+		}),
+		m('div', {class: css.content}, [
+                    EditableHeading({
+			level: 1,
+			name: utils.formatDate(log.date),
+			placeholder: '',
+			showEditButton: false,
+			css: css,
+		    }),
+		    logViewModels.map((logViewModel, index) => {
+			return m('div', [
+			    m('div', [
+				EditableHeading({
+				    level: 2,
+				    name: logViewModel.exercise.name,
+				    placeholder: 'Untitled Exercise',
+				    setOverlay: () => {
+					let logVmString = JSON.stringify(logViewModel)
+					let logVmClone = JSON.parse(logVmString)
+					let hideOverlay = () => {
+					    setOverlay({
+						component: null,
+						title: ''
+					    }, {})
+					}
+
+					setOverlay(LogOverlay, {
+					    title: logViewModel.exercise.name,
+					    logViewModel: logVmClone,
+					    priorTo: log._id,
+					    hideOverlay,
+					    updateSetLogs: (viewModel: GroupedSetLogVm) => {
+						logViewModels[index] = viewModel
+						log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
+					    },
+					    css,
+					})
 				    },
-                                    css,
-				})
-                            }
-			}, logViewModel.exercise.name),
-			logViewModel.sets.map((set) => {
-			    if (set.log) {
-				return m('p', set.log.reps + ' at ' + set.log.amount)
-			    }
-			    else {
-				return null
-			    }
-			}),
-		    ])
-                }),
-                m('p', log.comments),
+				    showEditButton: true,
+				    css: css,
+				}),
+			    ]),
+			    logViewModel.sets.map((set) => {
+				if (set.log) {
+				    return m('p', set.log.reps + ' at ' + set.log.amount)
+				}
+				else {
+				    return null
+				}
+			    }),
+			    m('button', {
+				onclick: () => {
+				    logViewModels.splice(index + 1, 0, {
+					exercise: {
+					    name: 'New Exercise',
+					    setUnits: 'reps',
+					    tag: 'exercise',
+					},
+					sets: [
+					    {exercise: {
+						name: 'New Exercise',
+						setUnits: 'reps',
+						tag: 'exercise'},
+					     prescribedReps: 10,
+					    }
+					],
+				    })
+				    vnode.attrs.updateLog(flattenViewModelsIntoWorkoutLog(logViewModels))
+				},
+			    }, 'Insert new exercise'),
+			])
+                    }),
+                    m('p', log.comments),
+		]),
             ]
 	}
     }

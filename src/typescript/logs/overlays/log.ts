@@ -7,7 +7,7 @@ interface LogAttrs {
     logViewModel: GroupedSetLogVm,
     priorTo: string,
     hideOverlay: () => void,
-    updateSetLogs: (viewModel: any) => void,
+    updateSetLogs: (viewModel: GroupedSetLogVm) => void,
     css: any,
 }
 interface LogVnode {
@@ -28,7 +28,6 @@ const LogOverlay = (vnode: LogVnode) => {
 
     return {
         view: (vnode: LogVnode) => {
-            let set = sets[currentSet]
 	    return m('div', [
 		m('div', {class: css.setListContainer}, [
 		    sets.map((set, index) => {
@@ -47,10 +46,6 @@ const LogOverlay = (vnode: LogVnode) => {
 					m('span', {class: css.infoRowInfo}, `${sets[index].prescribedReps} reps`)
 				    ])
 				    : null,
-				m('div', {class: css.infoRow}, [
-				    m('label', {class: css.infoRowTitle}, 'Last Week:'),
-				    m('span', {class: css.infoRowInfo}, '9 reps at 135 pounds'),
-				]),
 				m('div', {class: css.infoRow}, [
 				    m('label', {class: css.infoRowTitle}, 'This Workout:'),
 				    m('div', {class: css.infoRowInfo}, [
@@ -83,7 +78,19 @@ const LogOverlay = (vnode: LogVnode) => {
 					    ]),
 					])
 				    ])
-				])
+				]),
+				m('button', {
+				    onclick: () => {
+					sets.splice(index, 1)
+					vnode.attrs.updateSetLogs(logViewModel)
+				    },
+				}, 'Delete set'),
+				m('button', {
+				    onclick: () => {
+					sets.splice(index + 1, 0, {exercise: set.exercise})
+					vnode.attrs.updateSetLogs(logViewModel)
+				    },
+				}, 'Add set'),
 			    ]),
 			])
 		    }),

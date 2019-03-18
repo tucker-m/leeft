@@ -46,51 +46,55 @@ const LogOverlay = (vnode: LogVnode) => {
 					m('span', {class: css.infoRowInfo}, `${sets[index].prescribedReps} reps`)
 				    ])
 				    : null,
-				m('div', {class: css.infoRow}, [
-				    m('label', {class: css.infoRowTitle}, 'This Workout:'),
-				    m('div', {class: css.infoRowInfo}, [
-					m('div', {class: css.setsAndReps}, [
-					    m('div', {class: css.setsAndRepsGrouper}, [
-						m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
-						    value: set.log ? set.log.reps : '',
-						    onchange: m.withAttr('value', (value) => {
-							if (!set.log) {
-							    set.log = {reps: 0, amount: 0}
-							}
-							set.log.reps = parseInt(value)
-							vnode.attrs.updateSetLogs(logViewModel)
-						    }),
-						})),
-						m('div', {class: css.setsAndRepsItem}, m('span', 'reps at')),
-					    ]),
-					    m('div', {class: css.setsAndRepsGrouper}, [
-						m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
-						    value: set.log ? set.log.amount : '',
-						    onchange: m.withAttr('value', (value) => {
-							if (!set.log) {
-							    set.log = {reps: 0, amount: 0}
-							}
-							set.log.amount = parseInt(value)
-							vnode.attrs.updateSetLogs(logViewModel)
-						    })
-						})),
-						m('div', {class: css.setsAndRepsItem}, m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds')),
-					    ]),
-					])
-				    ])
-				]),
-				m('button', {
-				    onclick: () => {
-					sets.splice(index, 1)
-					vnode.attrs.updateSetLogs(logViewModel)
-				    },
-				}, 'Delete set'),
-				m('button', {
-				    onclick: () => {
-					sets.splice(index + 1, 0, {exercise: set.exercise})
-					vnode.attrs.updateSetLogs(logViewModel)
-				    },
-				}, 'Add set'),
+				(index == currentSet)
+				    ? [
+					m('div', {class: css.infoRow}, [
+					    m('label', {class: css.infoRowTitle}, 'This Workout:'),
+					    m('div', {class: css.infoRowInfo}, [
+						m('div', {class: css.setsAndReps}, [
+						    m('div', {class: css.setsAndRepsGrouper}, [
+							m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
+							    value: set.log ? set.log.reps : '',
+							    onchange: m.withAttr('value', (value) => {
+								if (!set.log) {
+								    set.log = {reps: 0, amount: 0}
+								}
+								set.log.reps = parseInt(value)
+								vnode.attrs.updateSetLogs(logViewModel)
+							    }),
+							})),
+							m('div', {class: css.setsAndRepsItem}, m('span', 'reps at')),
+						    ]),
+						    m('div', {class: css.setsAndRepsGrouper}, [
+							m('div', {class: css.setsAndRepsItem}, m('input[type=text]', {
+							    value: set.log ? set.log.amount : '',
+							    onchange: m.withAttr('value', (value) => {
+								if (!set.log) {
+								    set.log = {reps: 0, amount: 0}
+								}
+								set.log.amount = parseInt(value)
+								vnode.attrs.updateSetLogs(logViewModel)
+							    })
+							})),
+							m('div', {class: css.setsAndRepsItem}, m('span', exercise.setUnits == 'reps' ?  'pounds' : 'seconds')),
+						    ]),
+						])
+					    ])
+					]),
+					m('button', {
+					    onclick: () => {
+						sets.splice(index, 1)
+						vnode.attrs.updateSetLogs(logViewModel)
+					    },
+					}, 'Delete set'),
+					m('button', {
+					    onclick: () => {
+						sets.splice(index + 1, 0, {exercise: set.exercise})
+						vnode.attrs.updateSetLogs(logViewModel)
+					    },
+					}, 'Add set'),
+				    ]
+				    : null,
 			    ]),
 			])
 		    }),

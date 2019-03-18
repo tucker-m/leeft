@@ -8,15 +8,18 @@ export default {
 	color: colors.tertiary,
     },
     h1: {
-        display: 'inline-block',
 	fontFamily: 'Fira Sans Extra Condensed',
         fontSize: '2.5rem',
     },
+    h2: {
+	fontSize: '2rem',
+	fontFamily: 'Fira Sans Extra Condensed',
+    },
     h3: {
         fontSize: '1.5rem',
+	fontFamily: 'Fira Sans Extra Condensed',
     },
     editableH1: {
-        extend: 'h1',
         display: 'inline-flex',
         alignItems: 'center',
 	'&>button': {

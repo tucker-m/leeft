@@ -15,8 +15,6 @@ interface ExerciseVnode {
     attrs: ExerciseAttrs
 }
 
-const title = 'Edit Exercise'
-
 const ExerciseOverlay = (vnode: ExerciseVnode) => {
     const css = vnode.attrs.css
     let matchingExercises: Array<Exercise> = []
@@ -132,5 +130,4 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
 
 export default {
     component: ExerciseOverlay,
-    title: title
 }

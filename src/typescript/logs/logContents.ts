@@ -1,10 +1,11 @@
 import * as m from 'mithril'
 import EditableHeading from '../ui/editableHeading'
 import {TopBar} from '../ui/topBar'
-import {Puttable, WorkoutLog, SetLogViewModel, GroupedSetLogVm} from '../types/exercise'
+import {Puttable, WorkoutLog, SetLogViewModel, ExercisePrescription, GroupedSetLogVm, createSetLogViewModelsFromPrescriptions} from '../types/exercise'
 import utils from '../helpers/utils'
 import {PageDefaultAttrs} from '../ui/page'
 import LogOverlay from './overlays/log'
+import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
 
 interface attrs {
     log: WorkoutLog & Puttable,
@@ -103,6 +104,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    showEditButton: true,
 				    css: css,
 				}),
+				m('span', `${logViewModel.sets.length} sets`),
 			    ]),
 			    logViewModel.sets.map((set) => {
 				if (set.log) {
@@ -114,22 +116,31 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 			    }),
 			    m('button', {
 				onclick: () => {
-				    logViewModels.splice(index + 1, 0, {
+				    const prescription = {
 					exercise: {
-					    name: 'New Exercise',
+					    name: '',
 					    setUnits: 'reps',
 					    tag: 'exercise',
 					},
-					sets: [
-					    {exercise: {
-						name: 'New Exercise',
-						setUnits: 'reps',
-						tag: 'exercise'},
-					     prescribedReps: 10,
+					sets: 0,
+					amount: 0,
+				    }
+				    vnode.attrs.setOverlay(ExerciseOverlay, {
+					prescription,
+					updatePrescription: (newPrescription: ExercisePrescription) => {
+					    const vms = createSetLogViewModelsFromPrescriptions([newPrescription])
+					    const groupedVm = {
+						exercise: newPrescription.exercise,
+						sets: vms
 					    }
-					],
+					    logViewModels.splice(index + 1, 0, groupedVm)
+					    vnode.attrs.updateLog(flattenViewModelsIntoWorkoutLog(logViewModels))
+					},
+					css,
+					hideOverlay: () => {
+					    vnode.attrs.setOverlay({component: null, title: ''}, {})
+					},
 				    })
-				    vnode.attrs.updateLog(flattenViewModelsIntoWorkoutLog(logViewModels))
 				},
 			    }, 'Insert new exercise'),
 			])

@@ -2,7 +2,7 @@ import * as m from 'mithril'
 import EditableHeading from '../ui/editableHeading'
 import WorkoutTable from '../ui/workoutTable'
 import WorkoutLogs from './workoutLogs'
-import {Workout, WorkoutLog, ExercisePrescription, SetLogViewModel, Program, Puttable} from '../types/exercise'
+import {Workout, WorkoutLog, ExercisePrescription, SetLogViewModel, Program, Puttable, createSetLogViewModelsFromPrescriptions} from '../types/exercise'
 import EditTitleOverlay from './overlays/editTitle'
 import {TopBar} from '../ui/topBar'
 import {PageDefaultAttrs} from '../ui/page'
@@ -17,19 +17,6 @@ interface ContentAttrs {
 }
 interface ContentVnode {
     attrs: ContentAttrs & PageDefaultAttrs
-}
-
-const createSetLogViewModelsFromPrescriptions = (prescriptions: Array<ExercisePrescription>) => {
-    let setLogVms: Array<SetLogViewModel> = []
-    prescriptions.forEach((prescription) => {
-	for (let i = 0; i < prescription.sets; i++) {
-	    setLogVms.push({
-		exercise: prescription.exercise,
-		prescribedReps: prescription.amount,
-	    })
-	}
-    })
-    return setLogVms
 }
 
 const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {

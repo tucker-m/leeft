@@ -84,6 +84,19 @@ interface Settings {
     nextWorkoutIndex: number,
 }
 
+const createSetLogViewModelsFromPrescriptions = (prescriptions: Array<ExercisePrescription>) => {
+    let setLogVms: Array<SetLogViewModel> = []
+    prescriptions.forEach((prescription) => {
+	for (let i = 0; i < prescription.sets; i++) {
+	    setLogVms.push({
+		exercise: prescription.exercise,
+		prescribedReps: prescription.amount,
+	    })
+	}
+    })
+    return setLogVms
+}
+
 export {
     Saveable,
     Saved,
@@ -101,4 +114,5 @@ export {
     GroupedSetLogVm,
     Program,
     Settings,
+    createSetLogViewModelsFromPrescriptions,
 };

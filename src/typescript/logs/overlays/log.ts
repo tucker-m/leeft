@@ -36,10 +36,17 @@ const LogOverlay = (vnode: LogVnode) => {
 			    }, index + 1)),
 			    m('div', {class: css.setInfoColumn}, [
 				sets[index].prescribedReps
-				    ? m('div', {class: css.infoRow}, [
-					m('label', {class: css.infoRowTitle}, 'Goal:'),
-					m('span', {class: css.infoRowInfo}, `${sets[index].prescribedReps} reps`)
-				    ])
+				    ? m('div', {class: css.infoRow},
+					set.log && currentSet != index
+					 ? [
+					     m('label', {class: css.infoRowTitle}, 'This workout:'),
+					     m('span', {class: css.infoRowInfo}, `${set.log.reps} at ${set.log.amount}`),
+					 ]
+					 : [
+					     m('label', {class: css.infoRowTitle}, 'Goal:'),
+					     m('span', {class: css.infoRowInfo}, `${set.prescribedReps} reps`)
+					 ]
+					)
 				    : null,
 				(index == currentSet)
 				    ? [

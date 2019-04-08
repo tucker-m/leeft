@@ -6,6 +6,9 @@ import utils from '../helpers/utils'
 import {PageDefaultAttrs} from '../ui/page'
 import LogOverlay from './overlays/log'
 import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
+import SetCount from './setCount'
+import ExerciseHistory from './exerciseHistory'
+import db from '../helpers/db'
 
 interface attrs {
     log: WorkoutLog & Puttable,
@@ -73,6 +76,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 			css: css,
 		    }),
 		    logViewModels.map((logViewModel, index) => {
+			let numSets = logViewModel.sets.length
 			return m('div', [
 			    m('div', [
 				EditableHeading({
@@ -92,7 +96,6 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					setOverlay(LogOverlay, {
 					    title: logViewModel.exercise.name,
 					    logViewModel: logVmClone,
-					    priorTo: log._id,
 					    hideOverlay,
 					    updateSetLogs: (viewModel: GroupedSetLogVm) => {
 						logViewModels[index] = viewModel
@@ -104,16 +107,24 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    showEditButton: true,
 				    css: css,
 				}),
-				m('span', `${logViewModel.sets.length} sets`),
+				m(SetCount, {sets: numSets, css: css}),
+				m('p', 'This workout:'),
+				logViewModel.sets.map((set) => {
+				    if (set.log) {
+					return m('p', set.log.reps + ' at ' + set.log.amount)
+				    }
+				    else {
+					return null
+				    }
+				}),
+				m('div', [
+				    m('p', 'Previous workout:'),
+				    m(ExerciseHistory, {
+					exerciseName: logViewModel.exercise.name,
+					priorTo: log._id,
+				    }),
+				]),
 			    ]),
-			    logViewModel.sets.map((set) => {
-				if (set.log) {
-				    return m('p', set.log.reps + ' at ' + set.log.amount)
-				}
-				else {
-				    return null
-				}
-			    }),
 			    m('button', {
 				onclick: () => {
 				    const prescription = {

@@ -1,11 +1,11 @@
 import * as m from 'mithril'
 import {SetLogViewModel, GroupedSetLogVm, ExercisePrescription} from '../../types/exercise'
 import db from '../../helpers/db'
+import log from '../../../jss/overlays/log';
 
 interface LogAttrs {
     title: string,
     logViewModel: GroupedSetLogVm,
-    priorTo: string,
     hideOverlay: () => void,
     updateSetLogs: (viewModel: GroupedSetLogVm) => void,
     css: any,
@@ -20,11 +20,6 @@ const LogOverlay = (vnode: LogVnode) => {
     let exercise = logViewModel.exercise
     let sets = logViewModel.sets
     let currentSet = 0
-    let previousSets: Array<SetLogViewModel> = []
-    db.findSetsContainingExercise(logViewModel.exercise.name, vnode.attrs.priorTo).then((setLogs) => {
-	previousSets = setLogs
-	m.redraw()
-    })
 
     return {
         view: (vnode: LogVnode) => {
@@ -99,12 +94,6 @@ const LogOverlay = (vnode: LogVnode) => {
 			])
 		    }),
                 ]),
-                previousSets.length ? m('p', 'Last time:') : null,
-		previousSets.map((previousSet) => {
-		    return previousSet.log
-			? m('p', `${previousSet.log.reps} at ${previousSet.log.amount} pounds`)
-			: null
-		}),
             ])
         }
     }

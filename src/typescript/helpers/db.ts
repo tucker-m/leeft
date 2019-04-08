@@ -173,32 +173,23 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
     })
 }
 
-function findSetsContainingExercise(exerciseName: string, priorTo: string): Promise<Array<SetLogViewModel>> {
-    return new Promise<Array<SetLogViewModel>>((resolve, reject) => {
+function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<WorkoutLog[]> {
+    return new Promise<WorkoutLog[]>((resolve, reject) => {
 	db.allDocs({
 	    include_docs: true,
-	    startkey: 'workoutlog_',
-	    endkey: priorTo,
+	    startkey: priorTo,
+	    endkey: 'workoutlog_',
 	    inclusive_end: false,
-	}).then((docs) => {
-	    const withExercise = docs.rows.find((doc) => {
-		const matchingSet = doc.doc.sets.find((set) => {
-		    return set.exercise.name === exerciseName
+	    descending: true,
+	    skip: 1,
+	}).then(docs => {
+	    resolve(docs.rows.filter(row => {
+		return row.doc.sets.find(set => {
+		    return set.exercise.name == exerciseName && set.log
 		})
-		return !!matchingSet
-	    })
-	    let setsWithExercise: Array<SetLogViewModel> = []
-	    if (!withExercise) {
-		reject()
-	    }
-	    else {
-		withExercise.doc.sets.forEach((set) => {
-		    if (set.exercise.name === exerciseName && set.log) {
-			setsWithExercise.push(set)
-		    }
-		})
-		resolve(setsWithExercise)
-	    }
+	    }).map(row => {
+		return row.doc
+	    }))
 	})
     })
 }
@@ -261,7 +252,7 @@ export default {
     findLogsByWorkoutIdentifier,
     findExercisesByName,
     findWorkoutsByName,
-    findSetsContainingExercise,
+    findLogsContainingExercise,
     fetchSaveableCollection,
     fetchSaveableRecord,
     promiseSaveableRecord,

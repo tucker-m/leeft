@@ -30,8 +30,6 @@ export default (vnode: ViewLogVnode) => {
         _id: '',
     }
 
-    let pageEditable = (!!vnode.attrs.edit && vnode.attrs.edit == 'edit')
-
     db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then((logResult) => {
 	log = logResult
         m.redraw()

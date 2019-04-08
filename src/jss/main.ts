@@ -71,6 +71,7 @@ export default {
         padding: '1rem',
         display: 'flex',
         flex: '1',
+	flexBasis: 'auto',
         flexDirection: 'column',
         overflowY: 'scroll',
     },

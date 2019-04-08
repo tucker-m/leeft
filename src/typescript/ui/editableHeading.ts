@@ -23,8 +23,8 @@ const EditableHeading = function(vnode: EditableVnode) {
                 name = vnode.attrs.placeholder
                 className = css.placeholderEditableH1
             }
-            return m('div', {
-                class: `${css.editable} ${css[tag]}`
+            return m('span', {
+                class: `${css[tag]}`
             }, [
                 Heading({level: vnode.attrs.level, text: name, classes: [className]}),
                 vnode.attrs.showEditButton

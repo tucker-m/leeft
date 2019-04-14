@@ -86,8 +86,8 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				}),
 				EditableHeading({
 				    level: 3,
-				    name: 'This workout:',
-				    placeholder: 'This workout:',
+				    name: 'This workout',
+				    placeholder: 'This workout',
 				    setOverlay: () => {
 					let logVmString = JSON.stringify(logViewModel)
 					let logVmClone = JSON.parse(logVmString)
@@ -120,7 +120,11 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    return m('p', setString)
 				}),
 				m('div', [
-				    m('p', 'Previous workout:'),
+				    Heading({
+					text: 'Previous workout',
+					level: 3,
+					css,
+				    }),
 				    m(ExerciseHistory, {
 					exerciseName: logViewModel.exercise.name,
 					priorTo: log._id,

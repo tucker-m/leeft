@@ -1,5 +1,6 @@
 import * as m from 'mithril'
 import EditableHeading from '../ui/editableHeading'
+import Heading from '../ui/heading'
 import {TopBar} from '../ui/topBar'
 import {Puttable, WorkoutLog, SetLogViewModel, ExercisePrescription, GroupedSetLogVm, createSetLogViewModelsFromPrescriptions} from '../types/exercise'
 import utils from '../helpers/utils'
@@ -76,13 +77,17 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 			css: css,
 		    }),
 		    logViewModels.map((logViewModel, index) => {
-			let numSets = logViewModel.sets.length
 			return m('div', [
 			    m('div', [
-				EditableHeading({
+				Heading({
 				    level: 2,
-				    name: logViewModel.exercise.name,
-				    placeholder: 'Untitled Exercise',
+				    text: logViewModel.exercise.name,
+				    css,
+				}),
+				EditableHeading({
+				    level: 3,
+				    name: 'This workout:',
+				    placeholder: 'This workout:',
 				    setOverlay: () => {
 					let logVmString = JSON.stringify(logViewModel)
 					let logVmClone = JSON.parse(logVmString)
@@ -107,15 +112,12 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    showEditButton: true,
 				    css: css,
 				}),
-				m(SetCount, {sets: numSets, css: css}),
-				m('p', 'This workout:'),
-				logViewModel.sets.map((set) => {
+				logViewModel.sets.map(set => {
+				    let setString = set.prescribedReps + ' reps'
 				    if (set.log) {
-					return m('p', set.log.reps + ' at ' + set.log.amount)
+					setString = set.log.reps + ' at ' + set.log.amount
 				    }
-				    else {
-					return null
-				    }
+				    return m('p', setString)
 				}),
 				m('div', [
 				    m('p', 'Previous workout:'),

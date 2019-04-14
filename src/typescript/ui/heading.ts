@@ -4,6 +4,7 @@ import u from '../helpers/utils'
 interface H1Attrs {
     level: number,
     text: string,
+    css: any,
     classes?: Array<string>,
 }
 interface H1Vnode {
@@ -15,9 +16,9 @@ const H1 = (vnode: H1Vnode) => {
         view: (vnode: H1Vnode) => {
             let allClasses = vnode.attrs.classes || []
             //allClasses.push(vnode.attrs.css.h1)
-
-            return m('h1', {
-                class: u.c(...allClasses)
+	    const headingLevel = 'h' + vnode.attrs.level
+            return m(headingLevel, {
+                class: u.c(...allClasses, vnode.attrs.css[headingLevel])
             }, vnode.attrs.text)
         }
     }

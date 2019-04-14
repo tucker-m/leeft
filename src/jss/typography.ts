@@ -19,15 +19,14 @@ export default {
         fontSize: '1.5rem',
 	fontFamily: 'Fira Sans Extra Condensed',
     },
-    editableH1: {
+    editableHeading: {
         display: 'inline-flex',
         alignItems: 'center',
 	'&>button': {
 	    marginLeft: '.5rem',
 	},
     },
-    placeholderEditableH1: {
-        extend: 'editableH1',
+    placeholderHeading: {
         color: '#969696',
         fontStyle: 'italic',
     },

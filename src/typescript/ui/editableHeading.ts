@@ -16,17 +16,19 @@ const EditableHeading = function(vnode: EditableVnode) {
     const css = vnode.attrs.css
     return {
         view: function(vnode: EditableVnode) {
-	    const tag = 'h' + vnode.attrs.level
             let name = vnode.attrs.name
-            let className = css.editableH1
             if (!name) {
                 name = vnode.attrs.placeholder
-                className = css.placeholderEditableH1
             }
             return m('span', {
-                class: `${css[tag]}`
+                class: css.editableHeading
             }, [
-                Heading({level: vnode.attrs.level, text: name, classes: [className]}),
+                Heading({
+		    level: vnode.attrs.level,
+		    text: name,
+		    css,
+		    classes: !vnode.attrs.name ? [css.placeholderHeading] : []
+		}),
                 vnode.attrs.showEditButton
                     ? m('button', {
                         class: `${css.hollowButton} ${css.small}`,

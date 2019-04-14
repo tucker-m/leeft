@@ -144,6 +144,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					amount: 0,
 				    }
 				    vnode.attrs.setOverlay(ExerciseOverlay, {
+					title: 'Insert new exercise',
 					prescription,
 					updatePrescription: (newPrescription: ExercisePrescription) => {
 					    const vms = createSetLogViewModelsFromPrescriptions([newPrescription])

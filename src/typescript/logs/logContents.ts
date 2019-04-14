@@ -74,7 +74,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 			name: utils.formatDate(log.date),
 			placeholder: '',
 			showEditButton: false,
-			css: css,
+			css,
 		    }),
 		    logViewModels.map((logViewModel, index) => {
 			return m('div', [

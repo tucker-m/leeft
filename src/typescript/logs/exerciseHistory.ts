@@ -15,6 +15,18 @@ export default (vnode) => {
     })
     
     return {
+	onbeforeupdate: vnode => {
+	    if (vnode.attrs.priorTo != priorTo
+		|| vnode.attrs.exerciseName != exerciseName) {
+
+		priorTo = vnode.attrs.priorTo
+		exerciseName = vnode.attrs.exerciseName
+		db.findLogsContainingExercise(exerciseName, priorTo).then(results => {
+		    history = results
+		    m.redraw()
+		})
+	    }
+	},
 	view: (vnode) => {
 	    if (history.length) {
 		const log = history[0]

@@ -173,8 +173,8 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
     })
 }
 
-function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<WorkoutLog[]> {
-    return new Promise<WorkoutLog[]>((resolve, reject) => {
+function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<(WorkoutLog & Saved)[]> {
+    return new Promise<(WorkoutLog & Saved)[]>((resolve, reject) => {
 	db.allDocs({
 	    include_docs: true,
 	    startkey: priorTo,

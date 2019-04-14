@@ -7,6 +7,7 @@ interface EditableVnode {
         name: string,
         placeholder: string,
         showEditButton: boolean,
+	editButtonText?: string,
         css: any,
         setOverlay?: () => void,
     }
@@ -17,6 +18,7 @@ const EditableHeading = function(vnode: EditableVnode) {
     return {
         view: function(vnode: EditableVnode) {
             let name = vnode.attrs.name
+	    const editBtnText = vnode.attrs.editButtonText
             if (!name) {
                 name = vnode.attrs.placeholder
             }
@@ -37,7 +39,7 @@ const EditableHeading = function(vnode: EditableVnode) {
                                 vnode.attrs.setOverlay()
                             }
                         }
-                    }, 'Edit')
+                    }, editBtnText ? editBtnText : 'Edit')
                     : null
                 ],
             )

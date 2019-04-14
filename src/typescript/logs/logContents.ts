@@ -109,6 +109,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					    css,
 					})
 				    },
+				    editButtonText: 'Enter sets',
 				    showEditButton: true,
 				    css: css,
 				}),

@@ -35,6 +35,14 @@ export default (vnode: ViewLogVnode) => {
         m.redraw()
     })
     return {
+	onbeforeupdate: (vnode: ViewLogVnode) => {
+	    if (log._id != vnode.attrs.id) {
+		db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then(result => {
+		    log = result
+		    m.redraw()
+		})
+	    }
+	},
         view: (vnode: ViewLogVnode) => {
 
             return m('div', [

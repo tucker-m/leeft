@@ -14,6 +14,17 @@ const formatDate = (timestamp: number) => {
     return month + ' ' + day + ', ' + year + ' at ' + hour + ':' + minutes.toString().padStart(2, '0') + meridian
 }
 
+const shortDate = (timestamp: number) => {
+    const date = new Date(timestamp)
+    const today = new Date()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const year = date.getFullYear()
+    const currentYear = today.getFullYear()
+
+    return `${month}/${day}${year == currentYear ? '' : '/' + year}`
+}
+
 const c = (...styles: Array<string>) => {
     return styles.join(' ')
 }
@@ -61,6 +72,7 @@ const getWorkoutExercisesElement = (workout: Workout, css: any, classes: Array<s
 
 export default {
     formatDate,
+    shortDate,
     c,
     getNameAndClasses,
     getWorkoutExercisesElement,

@@ -33,17 +33,24 @@ interface WorkoutLog {
     tag: 'workoutlog',
 };
 
-// A logviewmodel is a set that you either
+// A setlogviewmodel is a set that you either
 // did or were supposed to do. It can have
 // a prescribed amount and/or a performed
 // amount.
+interface EnteredLog {
+    reps: number,
+    amount: number,
+}
 interface SetLogViewModel {
     exercise: Exercise,
     prescribedReps?: number,
-    log?: {
-	reps: number,
-	amount: number,
-    },
+    log?: EnteredLog
+}
+interface FilledLog extends SetLogViewModel {
+    log: EnteredLog,
+}
+interface FilledWorkoutLog extends WorkoutLog {
+    sets: FilledLog[]
 }
 
 interface GroupedSetLogVm {
@@ -110,7 +117,10 @@ export {
     Rest,
     WorkoutAndLog,
     WorkoutLog,
+    EnteredLog,
     SetLogViewModel,
+    FilledLog,
+    FilledWorkoutLog,
     GroupedSetLogVm,
     Program,
     Settings,

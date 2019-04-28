@@ -16,7 +16,7 @@ let App = {
     }
 };
 
-let allPrograms: Array<Program & Puttable> = []
+let allPrograms: (Program & Puttable)[] = []
 db.fetchSaveableCollection<Program>('program').then((collection) => {
     allPrograms = collection
     m.redraw()

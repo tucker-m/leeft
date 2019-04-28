@@ -1,21 +1,30 @@
 import * as m from 'mithril'
 import db from '../helpers/db'
 import u from '../helpers/utils'
-import {WorkoutLog, Saved} from '../types/exercise'
+import {FilledWorkoutLog, Saved} from '../types/exercise'
 
-export default (vnode) => {
+interface Attrs {
+    priorTo: string,
+    exerciseName: string,
+    css: any,
+}
+interface HistoryVnode {
+    attrs: Attrs
+}
+const HistoryComponent = (vnode: HistoryVnode) => {
     let priorTo = vnode.attrs.priorTo
     let exerciseName = vnode.attrs.exerciseName
+    const css = vnode.attrs.css
 
     // Get the log history, and save it as a state of this component
-    let history: Array<WorkoutLog & Saved> = []
+    let history: (FilledWorkoutLog & Saved)[] = []
     db.findLogsContainingExercise(exerciseName, priorTo).then(results => {
 	history = results
 	m.redraw()
     })
     
     return {
-	onbeforeupdate: vnode => {
+	onbeforeupdate: (vnode: HistoryVnode) => {
 	    if (vnode.attrs.priorTo != priorTo
 		|| vnode.attrs.exerciseName != exerciseName) {
 
@@ -27,29 +36,24 @@ export default (vnode) => {
 		})
 	    }
 	},
-	view: (vnode) => {
-	    if (history.length) {
-		const log = history[0]
-		return m('div', [
-		    m('p', m('span', [
-			'On ',
-			m('a', {
-			    href: `/logs/${log._id}`,
-			    oncreate: m.route.link,
-			}, u.formatDate(log.date))
-		    ])),
-		    log.sets.filter(set => {
-			return set.exercise.name == exerciseName && set.log
-		    }).map(set => {
-			if (set.log) {
-			    return m('p', `${set.log.reps} at ${set.log.amount}`)
-			}
-			else {
-			    return m('p', '')
-			}
-		    })
-		])
-	    }
+	view: (vnode: HistoryVnode) => {
+	    return m('div', {
+		class: css.historyContainer
+	    }, history.map(log => {
+	    	// Show a log div for each item in the history
+	    	return m('div', {
+	    	    class: css.historyLog
+	    	}, [
+	    	    m('div', {class: css.historyLogHeading}, u.formatDate(log.date)),
+	    	    m('div', {
+	    		class: css.historyLogBody
+	    	    }, log.sets.map(set => {
+	    		return m('p', `${set.log.reps} at ${set.log.amount}`)
+	    	    }))
+	    	])
+	    }))
 	}
     }
 }
+
+export default HistoryComponent

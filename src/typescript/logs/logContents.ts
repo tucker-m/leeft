@@ -122,13 +122,14 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				}),
 				m('div', [
 				    Heading({
-					text: 'Previous workout',
+					text: 'Previous workouts',
 					level: 3,
 					css,
 				    }),
 				    m(ExerciseHistory, {
 					exerciseName: logViewModel.exercise.name,
 					priorTo: log._id,
+					css,
 				    }),
 				]),
 			    ]),

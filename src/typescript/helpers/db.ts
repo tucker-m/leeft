@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, Puttable, ModelName, Workout, Exercise, Settings, SetLogViewModel, WorkoutLog} from '../types/exercise';
+import {Saveable, Saved, Puttable, ModelName, Workout, Exercise, Settings, EnteredLog, FilledLog, FilledWorkoutLog, SetLogViewModel, WorkoutLog} from '../types/exercise';
 import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -57,10 +57,10 @@ const getSettings = () => {
     })
 }
 
-function fetchSaveableCollection<T> (tag: ModelName): Promise<Array<Puttable & T & IObservableObject>> {
-    return new Promise<Array<Puttable & T & IObservableObject>>((resolve, reject) => {
+function fetchSaveableCollection<T> (tag: ModelName): Promise<(Puttable & T & IObservableObject)[]> {
+    return new Promise<(Puttable & T & IObservableObject)[]>((resolve, reject) => {
         getAllItems(tag).then((records) => {
-            const rows: Array<{doc: T & Saved}> = records.rows
+            const rows: {doc: T & Saved}[] = records.rows
             const observableRecords = rows.map((record) => {
                 const doc = record.doc
                 let rev = doc._rev
@@ -84,7 +84,7 @@ function fetchSaveableCollection<T> (tag: ModelName): Promise<Array<Puttable & T
 }
 
 const findLogsByWorkoutIdentifier = (id: string) => {
-    return new Promise<Array<WorkoutLog>>((resolve, reject) => {
+    return new Promise<(WorkoutLog)[]>((resolve, reject) => {
 	db.find({
 	    selector: {'workout.identifier': id}
 	}).then(result => {
@@ -93,7 +93,7 @@ const findLogsByWorkoutIdentifier = (id: string) => {
     })
 }
 
-const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
+const findExercisesByName = (name: string): Promise<(Exercise)[]> => {
     const regex = new RegExp(name.toLowerCase())
     return new Promise((resolve, reject) => {
         db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
@@ -123,7 +123,7 @@ const findExercisesByName = (name: string): Promise<Array<Exercise>> => {
     })
 }
 
-const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise<Array<Workout>> => {
+const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise<(Workout)[]> => {
     return new Promise((resolve, reject) => {
         db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
             let programs = docs.rows
@@ -150,7 +150,7 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
             let stringifiedObjects = filteredPrograms.map((program) => {
                 return JSON.stringify(program)
             })
-            let groupedByWorkout:Array<any> = []
+            let groupedByWorkout: any[] = []
             let removeDuplicates = filteredPrograms.filter((elem, index) => {
                 return index === stringifiedObjects.indexOf(JSON.stringify(elem))
             })
@@ -173,8 +173,14 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
     })
 }
 
-function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<(WorkoutLog & Saved)[]> {
-    return new Promise<(WorkoutLog & Saved)[]>((resolve, reject) => {
+function isFilledLog(setLogVm: SetLogViewModel): setLogVm is FilledLog {
+    return !!setLogVm.log
+}
+interface Array<SetLogViewModel> {
+    filter<FilledLog extends SetLogViewModel>(pred: (a: SetLogViewModel) => a is FilledLog): FilledLog[];
+}
+function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<(FilledWorkoutLog & Saved)[]> {
+    return new Promise<(FilledWorkoutLog & Saved)[]>((resolve, reject) => {
 	db.allDocs({
 	    include_docs: true,
 	    startkey: priorTo,
@@ -183,13 +189,31 @@ function findLogsContainingExercise(exerciseName: string, priorTo: string): Prom
 	    descending: true,
 	    skip: 1,
 	}).then(docs => {
-	    resolve(docs.rows.filter(row => {
-		return row.doc.sets.find(set => {
-		    return set.exercise.name == exerciseName && set.log
+	    // Goal: filter the array of workoutlogs so that
+	    // they only have filled sets in them. This makes
+	    // each workoutlog a filledworkoutlog.
+
+	    interface ResultRow {
+		doc: WorkoutLog & Saved
+	    }
+	    const rows = <ResultRow[]>docs.rows
+	    const logs = rows.map(row => row.doc)
+
+	    const filledWorkoutLogs = logs.map(log => {
+		const filledSetLogs = log.sets.filter(isFilledLog)
+		const filledSetLogsWithExercise = filledSetLogs.filter(set => {
+		    return set.exercise.name === exerciseName
 		})
-	    }).map(row => {
-		return row.doc
-	    }))
+		const filledWorkoutLog: FilledWorkoutLog & Saved = {
+		    ...log,
+		    sets: filledSetLogsWithExercise
+		}
+		return filledWorkoutLog
+	    })
+	    const filledWorkoutLogsWithSets = filledWorkoutLogs.filter(log => {
+		return log.sets.length > 0
+	    })
+	    resolve(filledWorkoutLogsWithSets)
 	})
     })
 }

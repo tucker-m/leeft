@@ -16,9 +16,8 @@ export default {
     },
     historyLogHeading: {
 	display: 'flex',
-	backgroundColor: colors.secondary,
+	backgroundColor: colors.accentBackground,
 	padding: '.25rem',
-	color: 'white',
     },
     historyLogBody: {
 	display: 'flex',

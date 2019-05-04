@@ -78,59 +78,62 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 		    }),
 		    logViewModels.map((logViewModel, index) => {
 			return m('div', [
-			    m('div', [
+			    m('div', {class: css.exerciseLogContainer}, [
 				Heading({
 				    level: 2,
 				    text: logViewModel.exercise.name,
 				    css,
 				}),
-				EditableHeading({
-				    level: 3,
-				    name: 'This workout',
-				    placeholder: 'This workout',
-				    setOverlay: () => {
-					let logVmString = JSON.stringify(logViewModel)
-					let logVmClone = JSON.parse(logVmString)
-					let hideOverlay = () => {
-					    setOverlay({
-						component: null,
-						title: ''
-					    }, {})
-					}
-
-					setOverlay(LogOverlay, {
-					    title: logViewModel.exercise.name,
-					    logViewModel: logVmClone,
-					    hideOverlay,
-					    updateSetLogs: (viewModel: GroupedSetLogVm) => {
-						logViewModels[index] = viewModel
-						log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
-					    },
-					    css,
-					})
-				    },
-				    editButtonText: 'Enter sets',
-				    showEditButton: true,
-				    css: css,
-				}),
-				logViewModel.sets.map(set => {
-				    let setString = set.prescribedReps + ' reps'
-				    if (set.log) {
-					setString = set.log.reps + ' at ' + set.log.amount
-				    }
-				    return m('p', setString)
-				}),
 				m('div', [
-				    Heading({
-					text: 'Previous workouts',
+				    EditableHeading({
 					level: 3,
-					css,
+					name: 'This workout',
+					placeholder: 'This workout',
+					setOverlay: () => {
+					    let logVmString = JSON.stringify(logViewModel)
+					    let logVmClone = JSON.parse(logVmString)
+					    let hideOverlay = () => {
+						setOverlay({
+						    component: null,
+						    title: ''
+						}, {})
+					    }
+					    setOverlay(LogOverlay, {
+						title: logViewModel.exercise.name,
+						logViewModel: logVmClone,
+						hideOverlay,
+						updateSetLogs: (viewModel: GroupedSetLogVm) => {
+						    logViewModels[index] = viewModel
+						    log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
+						},
+						css,
+					    })
+					},
+					editButtonText: 'Enter sets',
+					showEditButton: true,
+					css: css,
 				    }),
-				    m(ExerciseHistory, {
-					exerciseName: logViewModel.exercise.name,
-					priorTo: log._id,
-					css,
-				    }),
+				    m('ul', {class: css.goalList}, logViewModel.sets.map(set => {
+					let setString = `Todo: ${set.prescribedReps} reps`
+					let setClass = css.goalItem
+					if (set.log) {
+					    setString = set.log.reps + ' at ' + set.log.amount
+					    setClass = ''
+					}
+					return m('li', {class: setClass}, setString)
+				    })),
+				    m('div', [
+					Heading({
+					    text: 'Previous workouts',
+					    level: 3,
+					    css,
+					}),
+					m(ExerciseHistory, {
+					    exerciseName: logViewModel.exercise.name,
+					    priorTo: log._id,
+					    css,
+					}),
+				    ]),
 				]),
 			    ]),
 			    m('button', {

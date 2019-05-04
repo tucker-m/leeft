@@ -10,6 +10,8 @@ export default {
     },
     content: {
 	paddingTop: measurements.topBarHeight,
+	marginLeft: '1rem',
+	marginRight: '1rem',
     },
     table: {
         width: '100%',
@@ -63,7 +65,7 @@ export default {
         flexBasis: '35rem',
         border: `1px solid ${colors.primary}`,
         boxShadow: '0 2px 8px 2px rgba(0, 0, 0, .3)',
-        backgroundColor: colors.edit,
+        backgroundColor: colors.accentBackground,
         overflow: 'hidden',
     },
     overlayContentContainer: {

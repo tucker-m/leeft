@@ -9,6 +9,7 @@ import infoBox from './jss/infoBox/infoBox'
 import workoutLogs from './jss/infoBox/workoutLogs'
 import calendar from './jss/calendar'
 import exerciseHistory from './jss/logs/exerciseHistory'
+import logContents from './jss/logs/logContents'
 
 export default {
     ...main,
@@ -22,4 +23,5 @@ export default {
     ...logs,
     ...calendar,
     ...exerciseHistory,
+    ...logContents,
 }

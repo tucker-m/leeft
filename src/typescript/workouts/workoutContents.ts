@@ -11,7 +11,7 @@ import db from '../helpers/db'
 import utils from '../helpers/utils'
 
 interface ContentAttrs {
-    workout: Workout & Puttable,
+    workout: Workout,
     program: Program & Puttable,
     updateWorkout: (newWorkout: Workout) => void,
 }
@@ -38,13 +38,14 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
         view: (vnode: ContentVnode) => {
             const workout = vnode.attrs.workout
             const css = vnode.attrs.css
+	    const program = vnode.attrs.program
 
             return [
 		TopBar({
 		    buttons: topBarButtons,
 		    subTitle: {
-			text: `< ${vnode.attrs.program.name}`,
-			url: `/programs/${vnode.attrs.program._id}`,
+			text: `< ${program.name}`,
+			url: `/programs/${program._id}`,
 		    },
 		    css: css,
 		    editButtonShowing: pageEditable,

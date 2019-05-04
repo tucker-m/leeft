@@ -17,7 +17,6 @@ export default (vnode: ViewLogVnode) => {
 
     let log: WorkoutLog & Puttable = {
         workout: {
-            _id: '',
             name: '',
 	    identifier: Date.now().toString(),
             prescriptions: [],

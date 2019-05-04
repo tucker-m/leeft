@@ -16,12 +16,12 @@ interface ViewWorkoutVnode {
 };
 
 export default (vnode: ViewWorkoutVnode) => {
-    let workout: (Workout & Puttable) | null = null
+    let workout: (Workout) | null = null
     const day = vnode.attrs.day
     let program: (Program & Puttable) | null = null
     db.fetchSaveableRecord<Program>(vnode.attrs.id).then((returnedProgram) => {
         program = returnedProgram
-        const temp = <Workout & Puttable>returnedProgram.schedule[parseInt(day)]
+        const temp = <Workout>returnedProgram.schedule[parseInt(day)]
         workout = temp
         m.redraw()
     })

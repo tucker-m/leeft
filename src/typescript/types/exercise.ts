@@ -25,7 +25,7 @@ interface Exercise extends NamedObject {
 };
 
 interface WorkoutLog {
-    workout: Workout & Puttable,
+    workout: Workout,
     sets: Array<SetLogViewModel>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,

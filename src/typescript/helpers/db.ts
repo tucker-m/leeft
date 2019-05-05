@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, Puttable, ModelName, Workout, Exercise, Settings, EnteredLog, FilledLog, FilledWorkoutLog, SetLogViewModel, WorkoutLog} from '../types/exercise';
+import {Saveable, Saved, Puttable, ModelName, Workout, Program, Exercise, Settings, EnteredLog, FilledLog, FilledWorkoutLog, SetLogViewModel, WorkoutLog} from '../types/exercise';
 import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -266,6 +266,29 @@ function promiseSaveableRecord<T> (object: T & Saveable): Promise<Puttable & T &
     })
 }
 
+function findWorkoutUrlByWorkoutIdentifier(identifier: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+	db.allDocs({
+	    include_docs: true,
+	    startkey: 'program_',
+	    endkey: 'program_\ufff0',
+	}).then(programs => {
+	    programs = programs.rows.map(row => row.doc)
+	    // get the program ID and workout day
+	    let day = -1
+	    const matchingProgram = programs.find(program => {
+		// find the workout's day here
+		const p = <Program>program
+		day = p.schedule.findIndex(workout => {
+		    return workout.tag == 'workout' && (workout.identifier === identifier)
+		})
+		return day > -1
+	    })
+	    resolve(`/programs/${matchingProgram._id}/workouts/${day}`)
+	})
+    })
+}
+
 function deleteSaveableRecord (object: Puttable): void {
     object._deleted = true
 }
@@ -280,5 +303,6 @@ export default {
     fetchSaveableCollection,
     fetchSaveableRecord,
     promiseSaveableRecord,
+    findWorkoutUrlByWorkoutIdentifier,
     deleteSaveableRecord,
 };

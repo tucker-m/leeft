@@ -28,17 +28,24 @@ export default (vnode: ViewLogVnode) => {
         tag: 'workoutlog',
         _id: '',
     }
+    let programUrl = ''
 
     db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then((logResult) => {
 	log = logResult
-        m.redraw()
+	db.findWorkoutUrlByWorkoutIdentifier(log.workout.identifier).then(url => {
+	    programUrl = url
+	    m.redraw()
+	})
     })
     return {
 	onbeforeupdate: (vnode: ViewLogVnode) => {
 	    if (log._id != vnode.attrs.id) {
 		db.fetchSaveableRecord<WorkoutLog>(vnode.attrs.id).then(result => {
 		    log = result
-		    m.redraw()
+		    db.findWorkoutUrlByWorkoutIdentifier(log.workout.identifier).then(url => {
+			programUrl = url
+			m.redraw()
+		    })
 		})
 	    }
 	},
@@ -50,7 +57,8 @@ export default (vnode: ViewLogVnode) => {
 		    contents: {
 			component: LogContent.component,
 			attrs: {
-			    log: log,
+			    log,
+			    programUrl,
 			    updateLog: (viewModels: Array<SetLogViewModel>) => {
 				log.sets = viewModels
 			    },

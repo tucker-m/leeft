@@ -13,6 +13,7 @@ import db from '../helpers/db'
 
 interface attrs {
     log: WorkoutLog & Puttable,
+    programUrl: string,
     updateLog: (logVms: Array<SetLogViewModel>) => void,
 }
 interface LogVnode {
@@ -63,7 +64,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 		    buttons: [],
 		    subTitle: {
 			text: `< ${log.workout.name}`,
-			url: `/`,
+			url: vnode.attrs.programUrl,
 		    },
 		    css: css,
 		    editButtonShowing: false,

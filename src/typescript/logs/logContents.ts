@@ -123,18 +123,11 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					}
 					return m('li', {class: setClass}, setString)
 				    })),
-				    m('div', [
-					Heading({
-					    text: 'Previous workouts',
-					    level: 3,
-					    css,
-					}),
-					m(ExerciseHistory, {
-					    exerciseName: logViewModel.exercise.name,
-					    priorTo: log._id,
-					    css,
-					}),
-				    ]),
+				    m(ExerciseHistory, {
+					exerciseName: logViewModel.exercise.name,
+					priorTo: log._id,
+					css,
+				    }),
 				]),
 			    ]),
 			    m('button', {

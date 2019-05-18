@@ -2,6 +2,7 @@ import * as m from 'mithril'
 import db from '../helpers/db'
 import u from '../helpers/utils'
 import {FilledWorkoutLog, Saved} from '../types/exercise'
+import Heading from '../ui/heading'
 
 interface Attrs {
     priorTo: string,
@@ -37,29 +38,39 @@ const HistoryComponent = (vnode: HistoryVnode) => {
 	    }
 	},
 	view: (vnode: HistoryVnode) => {
-	    return m('div', {
-		class: css.historyContainer
-	    }, history.map(log => {
-	    	// Show a log div for each item in the history
-	    	return m('div', {
-	    	    class: css.historyLog
-	    	}, [
-	    	    m('div', {class: css.historyLogHeading}, u.shortDate(log.date)),
-	    	    m('div', {
-	    		class: css.historyLogBody
-	    	    }, m('table', {class: css.historyTable},
-			 [m('tr', {class: css.historyTableRow}, [
-			     m('th', 'reps'),
-			     m('th', 'amount'),
-			 ])].concat(log.sets.map(set => {
-	    		     return m('tr', {class: css.historyTableRow}, [
-				 m('td', {class: css.historyTableCell}, set.log.reps),
-				 m('td', {class: css.historyTableCell}, set.log.amount)
-			     ])
-			 }))
-		    ))
-	    	])
-	    }))
+	    if (history.length <= 0) {
+		return null
+	    }
+	    return m('div', [
+		Heading({
+		    text: 'Previous workouts',
+		    level: 3,
+		    css,
+		}),
+		m('div', {
+		    class: css.historyContainer
+		}, history.map(log => {
+	    	    // Show a log div for each item in the history
+	    	    return m('div', {
+	    		class: css.historyLog
+	    	    }, [
+	    		m('div', {class: css.historyLogHeading}, u.shortDate(log.date)),
+	    		m('div', {
+	    		    class: css.historyLogBody
+	    		}, m('table', {class: css.historyTable},
+			     [m('tr', {class: css.historyTableRow}, [
+				 m('th', 'reps'),
+				 m('th', 'amount'),
+			     ])].concat(log.sets.map(set => {
+	    			 return m('tr', {class: css.historyTableRow}, [
+				     m('td', {class: css.historyTableCell}, set.log.reps),
+				     m('td', {class: css.historyTableCell}, set.log.amount)
+				 ])
+			     }))
+			    ))
+	    	    ])
+		}))
+	    ])
 	}
     }
 }

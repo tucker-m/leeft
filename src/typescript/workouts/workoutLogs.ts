@@ -23,19 +23,21 @@ const WorkoutLogComponent = (vnode: WorkoutLogVnode) => {
     return {
         view: (vnode: WorkoutLogVnode) => {
             let reverseMe = JSON.parse(JSON.stringify(logs))
-            return m('div', [
-                m('h3', {class: css.workoutLogsHeader}, 'Past Workouts'),
-                reverseMe.reverse().map((log) => {
-                    return m('p', [
-                        m('a', {
-                            class: css.aSecondary,
-			    href: '/logs/' + log._id,
-                            oncreate: m.route.link,
-                        }, utils.formatDate(log.date)),
-                        m('span', ' - ' + log.comments),
-                    ])
-                })
-            ])
+            return logs.length > 0
+		? (m('div', [
+                    m('h3', {class: css.workoutLogsHeader}, 'Past Workouts'),
+                    reverseMe.reverse().map((log) => {
+			return m('p', [
+                            m('a', {
+				class: css.aSecondary,
+				href: '/logs/' + log._id,
+				oncreate: m.route.link,
+                            }, utils.formatDate(log.date)),
+                            m('span', ' - ' + log.comments),
+			])
+                    })
+		]))
+		: m('p', "You haven't done this workout yet.")
         }
     }
 }

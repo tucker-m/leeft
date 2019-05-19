@@ -1,9 +1,11 @@
+import colors from '../variables/colors'
+
 let roundButton = {
     padding: 0,
     boxSizing: 'border-box',
     borderRadius: '50%',
     borderStyle: 'solid',
-    borderWidth: '2px',
+    borderWidth: '1px',
 }
 
 export default {
@@ -11,22 +13,34 @@ export default {
 	display: 'flex',
 	flexDirection: 'column',
     },
+    setWrapper: {
+	'&:not(:last-of-type)': {
+	    marginBottom: '1rem',
+	},
+    },
     setBox: {
 	display: 'flex',
 	flexDirection: 'row',
-	'&:not(:last-of-type)': {
-	    marginBottom: '2rem',
-	},
     },
     setCircleColumn: {
 	display: 'flex',
 	flexDirection: 'column',
-	alignItems: 'center',
+	alignItems: 'flex-start',
+	justifyContent: 'space-between',
 	marginRight: '1rem',
     },
     setInfoColumn: {
 	display: 'flex',
 	flexDirection: 'column',
+    },
+    insertButtonRow: {
+	marginTop: '1rem',
+    },
+    deleteButtonColumn: {
+	display: 'flex',
+	flex: '1',
+	alignItems: 'flex-start',
+	justifyContent: 'flex-end',
     },
     infoRow: {
 	display: 'flex',
@@ -64,22 +78,21 @@ export default {
 	alignItems: 'center',
     },
     insertButton: Object.assign({
-	borderColor: 'aqua',
+	borderColor: colors.secondary,
 	width: '2.2rem',
 	height: '2.2rem',
     }, roundButton),
     setButton: Object.assign({
         backgroundColor: 'white',
-        borderColor: 'blue',
-        color: 'black',
+        borderColor: colors.primary,
+        color: colors.primary,
+	fontSize: '1.5rem',
 	width: '3rem',
 	height: '3rem',
     }, roundButton),
     activeSetButton: {
         extend: 'setButton',
-        borderWidth: '6px',
-        backgroundColor: 'black',
-        borderColor: 'orange',
+        backgroundColor: colors.primary,
         color: 'white',
     }
 }

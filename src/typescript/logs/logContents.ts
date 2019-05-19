@@ -81,40 +81,35 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 		    logViewModels.map((logViewModel, index) => {
 			return m('div', [
 			    m('div', {class: css.exerciseLogContainer}, [
-				Heading({
+				EditableHeading({
 				    level: 2,
-				    text: logViewModel.exercise.name,
+				    name: logViewModel.exercise.name,
+				    placeholder: 'Untitled Exercise',
+				    editButtonText: 'Enter sets',
+				    showEditButton: true,
+				    setOverlay: () => {
+					let logVmString = JSON.stringify(logViewModel)
+					let logVmClone = JSON.parse(logVmString)
+					let hideOverlay = () => {
+					    setOverlay({
+						component: null,
+						title: ''
+					    }, {})
+					}
+					setOverlay(LogOverlay, {
+					    title: logViewModel.exercise.name,
+					    logViewModel: logVmClone,
+					    hideOverlay,
+					    updateSetLogs: (viewModel: GroupedSetLogVm) => {
+						logViewModels[index] = viewModel
+						log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
+					    },
+					    css,
+					})
+				    },
 				    css,
 				}),
 				m('div', [
-				    EditableHeading({
-					level: 3,
-					name: 'This workout',
-					placeholder: 'This workout',
-					setOverlay: () => {
-					    let logVmString = JSON.stringify(logViewModel)
-					    let logVmClone = JSON.parse(logVmString)
-					    let hideOverlay = () => {
-						setOverlay({
-						    component: null,
-						    title: ''
-						}, {})
-					    }
-					    setOverlay(LogOverlay, {
-						title: logViewModel.exercise.name,
-						logViewModel: logVmClone,
-						hideOverlay,
-						updateSetLogs: (viewModel: GroupedSetLogVm) => {
-						    logViewModels[index] = viewModel
-						    log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
-						},
-						css,
-					    })
-					},
-					editButtonText: 'Enter sets',
-					showEditButton: true,
-					css: css,
-				    }),
 				    m('ul', {class: css.goalList}, logViewModel.sets.map(set => {
 					let setString = `Todo: ${set.prescribedReps} reps`
 					let setClass = css.goalItem

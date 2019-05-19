@@ -10,6 +10,7 @@ import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
 import SetCount from './setCount'
 import ExerciseHistory from './exerciseHistory'
 import db from '../helpers/db'
+import InsertExerciseButton from '../ui/insertExerciseButton'
 
 interface attrs {
     log: WorkoutLog & Puttable,
@@ -130,7 +131,8 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    }),
 				]),
 			    ]),
-			    m('button', {
+			    InsertExerciseButton({
+				css,
 				onclick: () => {
 				    const prescription = {
 					exercise: {
@@ -158,8 +160,8 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					    vnode.attrs.setOverlay({component: null, title: ''}, {})
 					},
 				    })
-				},
-			    }, 'Insert new exercise'),
+				}
+			    })
 			])
                     }),
                     m('p', log.comments),

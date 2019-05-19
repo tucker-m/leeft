@@ -10,6 +10,7 @@ import workoutLogs from './jss/infoBox/workoutLogs'
 import calendar from './jss/calendar'
 import exerciseHistory from './jss/logs/exerciseHistory'
 import logContents from './jss/logs/logContents'
+import insertExerciseButton from './jss/ui/insertExerciseButton'
 
 export default {
     ...main,
@@ -24,4 +25,5 @@ export default {
     ...calendar,
     ...exerciseHistory,
     ...logContents,
+    ...insertExerciseButton,
 }

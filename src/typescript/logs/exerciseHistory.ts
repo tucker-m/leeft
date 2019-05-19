@@ -16,6 +16,7 @@ const HistoryComponent = (vnode: HistoryVnode) => {
     let priorTo = vnode.attrs.priorTo
     let exerciseName = vnode.attrs.exerciseName
     const css = vnode.attrs.css
+    let showing = false
 
     // Get the log history, and save it as a state of this component
     let history: (FilledWorkoutLog & Saved)[] = []
@@ -41,12 +42,22 @@ const HistoryComponent = (vnode: HistoryVnode) => {
 	    if (history.length <= 0) {
 		return null
 	    }
+	    if (!showing) {
+		return m('a', {
+		    class: `${css.a} ${css.showHideHistoryLink}`,
+		    onclick: () => { showing = true }
+		}, 'Show exercise history')
+	    }
 	    return m('div', [
 		Heading({
 		    text: 'Previous workouts',
 		    level: 3,
 		    css,
 		}),
+		m('a', {
+		    onclick: () => { showing = false },
+		    class: `${css.a} ${css.showHideHistoryLink}`,
+		}, 'Hide history'),
 		m('div', {
 		    class: css.historyContainer
 		}, history.map(log => {

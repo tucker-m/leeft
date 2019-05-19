@@ -5,6 +5,10 @@ export default {
 	display: 'flex',
 	overflowX: 'scroll',
     },
+    showHideHistoryLink: {
+	display: 'inline-block',
+	margin: '1rem',
+    },
     historyLog: {
 	display: 'flex',
 	flexDirection: 'column',

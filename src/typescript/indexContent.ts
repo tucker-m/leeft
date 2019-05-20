@@ -33,7 +33,10 @@ const component: m.FactoryComponent<any> = (vnode: IndexVnode) => {
 		    css: vnode.attrs.css,
 		}),
 		m('div', {class: vnode.attrs.css.content},
-		  ProgramList({allPrograms: vnode.attrs.allPrograms})),
+		  (vnode.attrs.allPrograms.length == 0)
+		  ? m('p', "You haven't created any programs yet. Click 'New Program' at the top to create one.")
+		  : ProgramList({allPrograms: vnode.attrs.allPrograms})
+		 ),
             ]
 	}
     }

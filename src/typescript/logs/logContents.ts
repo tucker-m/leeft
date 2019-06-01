@@ -52,6 +52,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 	})
 	return flattenedViewModels
     }
+    let pageEditable = false
 
     return {
 	view: (vnode: LogVnode) => {
@@ -62,7 +63,14 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 
 	    return [
                 TopBar({
-		    buttons: [],
+		    buttons: [{
+			text: !pageEditable ? 'Make Changes' : 'Done',
+			action: () => { pageEditable = !pageEditable },
+			secondState: {
+			    text: pageEditable ? 'EditWorkout' : 'Done Editing',
+			    action: () => { pageEditable = !pageEditable },
+			}
+		    }],
 		    subTitle: {
 			text: `< ${log.workout.name}`,
 			url: vnode.attrs.programUrl,
@@ -86,7 +94,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    name: logViewModel.exercise.name,
 				    placeholder: 'Untitled Exercise',
 				    editButtonText: 'Enter sets',
-				    showEditButton: true,
+				    showEditButton: pageEditable,
 				    setOverlay: () => {
 					let logVmString = JSON.stringify(logViewModel)
 					let logVmClone = JSON.parse(logVmString)
@@ -126,37 +134,39 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    }),
 				]),
 			    ]),
-			    InsertExerciseButton({
-				css,
-				onclick: () => {
-				    const prescription = {
-					exercise: {
-					    name: '',
-					    setUnits: 'reps',
-					    tag: 'exercise',
-					},
-					sets: 0,
-					amount: 0,
+			    pageEditable
+				? InsertExerciseButton({
+				    css,
+				    onclick: () => {
+					const prescription = {
+					    exercise: {
+						name: '',
+						setUnits: 'reps',
+						tag: 'exercise',
+					    },
+					    sets: 0,
+					    amount: 0,
+					}
+					vnode.attrs.setOverlay(ExerciseOverlay, {
+					    title: 'Insert new exercise',
+					    prescription,
+					    updatePrescription: (newPrescription: ExercisePrescription) => {
+						const vms = createSetLogViewModelsFromPrescriptions([newPrescription])
+						const groupedVm = {
+						    exercise: newPrescription.exercise,
+						    sets: vms
+						}
+						logViewModels.splice(index + 1, 0, groupedVm)
+						vnode.attrs.updateLog(flattenViewModelsIntoWorkoutLog(logViewModels))
+					    },
+					    css,
+					    hideOverlay: () => {
+						vnode.attrs.setOverlay({component: null, title: ''}, {})
+					    },
+					})
 				    }
-				    vnode.attrs.setOverlay(ExerciseOverlay, {
-					title: 'Insert new exercise',
-					prescription,
-					updatePrescription: (newPrescription: ExercisePrescription) => {
-					    const vms = createSetLogViewModelsFromPrescriptions([newPrescription])
-					    const groupedVm = {
-						exercise: newPrescription.exercise,
-						sets: vms
-					    }
-					    logViewModels.splice(index + 1, 0, groupedVm)
-					    vnode.attrs.updateLog(flattenViewModelsIntoWorkoutLog(logViewModels))
-					},
-					css,
-					hideOverlay: () => {
-					    vnode.attrs.setOverlay({component: null, title: ''}, {})
-					},
-				    })
-				}
-			    })
+				})
+				: null,
 			])
                     }),
                     m('p', log.comments),

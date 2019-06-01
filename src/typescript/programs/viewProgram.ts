@@ -59,9 +59,6 @@ export default (vnode: ViewProgramVnode) => {
             prescriptions: [],
             name: ''
 	})
-	setTimeout(() => {
-	    window.location.href = `#!/programs/${program._id}/workouts/${dayNum - 1}/edit`
-	}, 400)
     }
     const addRestDay = () => {
 	program.schedule.push({tag: 'rest'})

@@ -20,6 +20,7 @@ export default {
     },
     numberColumn: {
 	display: 'flex',
+	flexShrink: 0,
 	boxSizing: 'border-box',
 	justifyContent: 'center',
 	alignItems: 'center',

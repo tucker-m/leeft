@@ -23,14 +23,22 @@ const CalendarItem = (vnode: CalendarItemVnode) => {
 	view: (vnode: CalendarItemVnode) => {
 	    const workout = vnode.attrs.workout
 	    const workoutInfo = u.getNameAndClasses(workout, css)
-
+	    const beingEdited = vnode.attrs.beingEdited
+	    const href = vnode.attrs.workoutUrl + (beingEdited ? '/edit' : '')
 	    return [
 		m('div',
 		  m('a', {
-		      href: vnode.attrs.workoutUrl,
+		      href,
 		      oncreate: m.route.link,
 		      class: u.c(css.workoutTitle, workoutInfo.classes)
-		  }, workoutInfo.name)
+		  }, workoutInfo.name),
+		  vnode.attrs.beingEdited
+		  ? m('a', {
+		      class: u.c(css.button, css.small),
+		      oncreate: m.route.link,
+		      href,
+		  }, 'Edit')
+		  : null,
 		 ),
 		m('div', {class: css.workoutDescription}, m('div', [
 		    m('p', workout.tag == 'workout' ? u.getWorkoutExercisesElement(workout, css) : ''),

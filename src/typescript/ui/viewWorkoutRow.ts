@@ -31,12 +31,14 @@ export default (vnode: RowVnode) => {
 			vnode.attrs.moveUp
 			    ? m('button', {
 				onclick: vnode.attrs.moveUp,
-			    }, 'U')
+				class: `${css.button} ${css.small}`,
+			    }, 'Up')
 			    : null,
 			vnode.attrs.moveDown
 			    ? m('button', {
 				onclick: vnode.attrs.moveDown,
-			    }, 'D')
+				class: `${css.button} ${css.small}`,
+			    }, 'Down')
 			    : null,
 			m('button', {
                             class: `${css.hollowSecondaryButton} ${css.small}`,

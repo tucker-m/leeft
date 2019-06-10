@@ -14,6 +14,7 @@ interface attrs {
     moveUp: (index: number) => void,
     moveDown: (index: number) => void,
     remove: (index: number) => void,
+    updateWorkoutName: (newName: string, index: number) => void,
     addWorkout: () => void,
     addRestDay: () => void,
 }
@@ -35,6 +36,7 @@ const component = (vnode: ContentVnode) => {
 	    const remove = vnode.attrs.remove
 	    const addWorkout = vnode.attrs.addWorkout
 	    const addRestDay = vnode.attrs.addRestDay
+	    const updateWorkoutName = vnode.attrs.updateWorkoutName
 
             return [
 		TopBar({
@@ -89,9 +91,11 @@ const component = (vnode: ContentVnode) => {
 			workouts: vnode.attrs.workoutsWithLogs,
 			programUrl: `/programs/${program._id}`,
 			beingEdited: pageEditable,
+			setOverlay: vnode.attrs.setOverlay,
 			moveUp,
 			moveDown,
 			remove,
+			updateWorkoutName,
 			addWorkout,
 			addRestDay,
 			css,

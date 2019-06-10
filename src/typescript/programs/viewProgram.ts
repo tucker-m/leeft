@@ -63,6 +63,12 @@ export default (vnode: ViewProgramVnode) => {
     const addRestDay = () => {
 	program.schedule.push({tag: 'rest'})
     }
+    const updateWorkoutName = (newName, index) => {
+	const selectedWorkout = program.schedule[index]
+	if (selectedWorkout.tag == 'workout') {
+	    selectedWorkout.name = newName
+	}
+    }
 
     const getWorkoutsWithLogs = (program: Program) => {
 	const workouts = program.schedule
@@ -123,6 +129,7 @@ export default (vnode: ViewProgramVnode) => {
 			    moveUp,
 			    moveDown,
 			    remove,
+			    updateWorkoutName,
 			    addWorkout,
 			    addRestDay,
 			}

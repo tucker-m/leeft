@@ -7,6 +7,7 @@ interface CalendarItemAttrs {
     workout: WorkoutAndLog,
     beingEdited: boolean,
     workoutUrl: string,
+    editTitleOverlay: () => void,
     moveUp?: () => void,
     moveDown?: () => void,
     remove: () => void,
@@ -33,11 +34,17 @@ const CalendarItem = (vnode: CalendarItemVnode) => {
 		      class: u.c(css.workoutTitle, workoutInfo.classes)
 		  }, workoutInfo.name),
 		  vnode.attrs.beingEdited
-		  ? m('a', {
-		      class: u.c(css.button, css.small),
-		      oncreate: m.route.link,
-		      href,
-		  }, 'Edit')
+		  ? [
+		      m('a', {
+			  class: u.c(css.button, css.small),
+			  onclick: vnode.attrs.editTitleOverlay,
+		      }, 'Rename'),
+		      m('a', {
+			  class: u.c(css.button, css.small),
+			  oncreate: m.route.link,
+			  href,
+		      }, 'Edit')
+		  ]
 		  : null,
 		 ),
 		m('div', {class: css.workoutDescription}, m('div', [

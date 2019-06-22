@@ -15,7 +15,7 @@ interface CalendarAttrs {
     remove: (index: number) => void,
     addWorkout: () => void,
     addRestDay: () => void,
-    updateWorkoutName: (newName: string, index: number) => void,
+    updateWorkout: (workout: Workout, index: number) => void,
     css: any,
 }
 interface CalendarVnode {
@@ -50,7 +50,7 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 					  vnode.attrs.setOverlay({component: null, title: ''}, {})
 				      },
 				      updateWorkout: (newWorkout: Workout) => {
-					  vnode.attrs.updateWorkoutName(newWorkout.name, index)
+					  vnode.attrs.updateWorkout(newWorkout, index)
 				      }
 				  })
 			      },

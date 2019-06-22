@@ -1,6 +1,6 @@
 import * as m from 'mithril'
 import db from '../helpers/db'
-import {Saveable, Program, Settings, Puttable, WorkoutAndLog, WorkoutLog} from '../types/exercise'
+import {Saveable, Program, Settings, Puttable, Workout, WorkoutAndLog, WorkoutLog} from '../types/exercise'
 import {RenderPage} from '../ui/page'
 import * as ProgramContents from './programContents'
 
@@ -63,10 +63,10 @@ export default (vnode: ViewProgramVnode) => {
     const addRestDay = () => {
 	program.schedule.push({tag: 'rest'})
     }
-    const updateWorkoutName = (newName, index) => {
+    const updateWorkout = (workout: Workout, index) => {
 	const selectedWorkout = program.schedule[index]
 	if (selectedWorkout.tag == 'workout') {
-	    selectedWorkout.name = newName
+	    program.schedule[index] = workout
 	}
     }
 
@@ -129,7 +129,7 @@ export default (vnode: ViewProgramVnode) => {
 			    moveUp,
 			    moveDown,
 			    remove,
-			    updateWorkoutName,
+			    updateWorkout,
 			    addWorkout,
 			    addRestDay,
 			}

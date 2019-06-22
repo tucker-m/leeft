@@ -69,7 +69,19 @@ const CalendarComponent = (vnode: CalendarVnode) => {
 			  })
 			 )
 		    ])
-		})
+		}),
+		(vnode.attrs.beingEdited)
+		    ? [
+			m('button', {
+			    class: css.hollowButton,
+			    onclick: vnode.attrs.addWorkout,
+			}, 'Add Workout'),
+			m('button', {
+			    class: css.hollowButton,
+			    onclick: vnode.attrs.addRestDay,
+			}, 'Add Rest Day')
+		    ]
+		    : null,
 	    ])
 	}
     }

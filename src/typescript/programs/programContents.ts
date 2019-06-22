@@ -52,16 +52,6 @@ const component = (vnode: ContentVnode) => {
 			text: '< All Programs',
 			url: '#!/'
 		    },
-		    bottomButtons: [
-			{
-			    text: '+ Add Workout',
-			    action: addWorkout,
-			},
-			{
-			    text: '+ Add Rest Day',
-			    action: addRestDay,
-			},
-		    ],
 		    editButtonShowing: pageEditable,
 		    css: css,
 		}),

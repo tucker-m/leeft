@@ -18,7 +18,6 @@ interface TopBarAttrs {
 	text: string,
 	url?: string,
     },
-    bottomButtons?: Array<TopBarButtonAttrs>,
     css: any,
     editButtonShowing?: boolean,
 }
@@ -46,31 +45,10 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                 return TopBarButton(attrs)
             })
 
-	    let bottomButtons
-	    if (vnode.attrs.bottomButtons) {
-		bottomButtons = vnode.attrs.bottomButtons.map((buttonAttr) => {
-                    let attrs = {
-			text: buttonAttr.text,
-			action: buttonAttr.action,
-			css: css,
-                    }
-                    if (buttonAttr.secondState) {
-			attrs['secondState'] = {
-                            text: buttonAttr.secondState.text,
-                            action: buttonAttr.secondState.action,
-			}
-                    }
-		    return m('button', {
-			class: `${css.hollowButton} ${css.small}`,
-			onclick: attrs.action,
-		    }, attrs.text)
-		})
-	    }
-
 	    let subTitleElement
 	    const subTitle = vnode.attrs.subTitle
 	    const beingEdited = vnode.attrs.editButtonShowing
-	    if (!beingEdited && subTitle) {
+	    if (subTitle) {
 		if (subTitle.url) {
 		    subTitleElement = m('a', {
 			href: subTitle.url,
@@ -90,9 +68,6 @@ const TopBarComponent = (vnode: TopBarVnode) => {
                     ),
                 }, [
 		    subTitleElement ? m('div', {class: css.topBarSubTitle}, subTitleElement) : null,
-		    bottomButtons && beingEdited
-			? m('div', {class: css.bottomButtons}, bottomButtons)
-			: null,
 		    m('div', {
 			class: css.topBarHeadingContainer
 		    }, [

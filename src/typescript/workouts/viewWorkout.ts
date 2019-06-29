@@ -1,6 +1,6 @@
 import * as m from 'mithril';
 import db from '../helpers/db';
-import {Saveable, Saved, Puttable, Workout, Program, Exercise, ExercisePrescription} from '../types/exercise';
+import {Saveable, Saved, Puttable, Workout, Program} from '../types/exercise';
 import * as WorkoutContent from './workoutContents'
 import {observable, IObservableObject, set} from 'mobx';
 import {RenderPage} from '../ui/page'

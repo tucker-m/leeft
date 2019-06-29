@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, Puttable, ModelName, Workout, Program, Exercise, Settings, EnteredLog, FilledLog, FilledWorkoutLog, SetLogViewModel, WorkoutLog} from '../types/exercise';
+import {Saveable, Saved, Puttable, ModelName, Workout, Program, Settings, WorkoutLog} from '../types/exercise';
 import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -173,12 +173,6 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
     })
 }
 
-function isFilledLog(setLogVm: SetLogViewModel): setLogVm is FilledLog {
-    return !!setLogVm.log
-}
-interface Array<SetLogViewModel> {
-    filter<FilledLog extends SetLogViewModel>(pred: (a: SetLogViewModel) => a is FilledLog): FilledLog[];
-}
 function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<(FilledWorkoutLog & Saved)[]> {
     return new Promise<(FilledWorkoutLog & Saved)[]>((resolve, reject) => {
 	db.allDocs({

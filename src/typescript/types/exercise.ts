@@ -1,6 +1,4 @@
-type SetUnits = 'reps' | 'seconds';
-
-type ModelName = 'workout' | 'exercise' | 'workoutlog' | 'program' | 'rest' | 'settings'
+type ModelName = 'workout' | 'workoutlog' | 'program' | 'rest' | 'settings'
 
 interface Saveable {
     _deleted?: boolean,
@@ -19,55 +17,32 @@ interface NamedObject {
     name: string,
 }
 
-interface Exercise extends NamedObject {
-    setUnits: SetUnits,
-    tag: 'exercise',
-};
-
 interface WorkoutLog {
     workout: Workout,
-    sets: Array<SetLogViewModel>, // TODO: Group by exercise? Allows for supersets
+    sets: Array<SetLog>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,
     _deleted?: boolean,
     tag: 'workoutlog',
 };
 
-// A setlogviewmodel is a set that you either
-// did or were supposed to do. It can have
-// a prescribed amount and/or a performed
-// amount.
-interface EnteredLog {
-    reps: number,
-    amount: number,
-}
-interface SetLogViewModel {
-    exercise: Exercise,
-    prescribedReps?: number,
-    log?: EnteredLog
-}
-interface FilledLog extends SetLogViewModel {
-    log: EnteredLog,
-}
-interface FilledWorkoutLog extends WorkoutLog {
-    sets: FilledLog[]
+interface SetPrescription {
+    exerciseName: string,
+    reps: boolean | number,
+    weight: boolean | number,
+    time: boolean | number,
 }
 
-interface GroupedSetLogVm {
-    exercise: Exercise,
-    sets: Array<SetLogViewModel>
+interface SetLog {
+    exerciseName: string,
+    reps: false | number,
+    weight: false | number,
+    time: false | number,
 }
-
-
-interface ExercisePrescription {
-    exercise: Exercise,
-    sets: number,
-    amount: number,
-};
 
 interface Workout extends NamedObject {
     identifier: string,
-    prescriptions: Array<ExercisePrescription>,
+    prescriptions: Array<SetPrescription>,
     tag: 'workout',
 };
 
@@ -91,38 +66,18 @@ interface Settings {
     nextWorkoutIndex: number,
 }
 
-const createSetLogViewModelsFromPrescriptions = (prescriptions: Array<ExercisePrescription>) => {
-    let setLogVms: Array<SetLogViewModel> = []
-    prescriptions.forEach((prescription) => {
-	for (let i = 0; i < prescription.sets; i++) {
-	    setLogVms.push({
-		exercise: prescription.exercise,
-		prescribedReps: prescription.amount,
-	    })
-	}
-    })
-    return setLogVms
-}
-
 export {
     Saveable,
     Saved,
     Puttable,
     ModelName,
     NamedObject,
-    Exercise,
-    SetUnits,
-    ExercisePrescription,
+    SetPrescription,
+    SetLog,
     Workout,
     Rest,
     WorkoutAndLog,
     WorkoutLog,
-    EnteredLog,
-    SetLogViewModel,
-    FilledLog,
-    FilledWorkoutLog,
-    GroupedSetLogVm,
     Program,
     Settings,
-    createSetLogViewModelsFromPrescriptions,
 };

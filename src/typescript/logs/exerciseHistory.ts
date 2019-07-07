@@ -1,7 +1,7 @@
 import * as m from 'mithril'
 import db from '../helpers/db'
 import u from '../helpers/utils'
-import {FilledWorkoutLog, Saved} from '../types/exercise'
+import {WorkoutLog, Saved} from '../types/exercise'
 import Heading from '../ui/heading'
 
 interface Attrs {
@@ -19,7 +19,7 @@ const HistoryComponent = (vnode: HistoryVnode) => {
     let showing = false
 
     // Get the log history, and save it as a state of this component
-    let history: (FilledWorkoutLog & Saved)[] = []
+    let history: (WorkoutLog & Saved)[] = []
     db.findLogsContainingExercise(exerciseName, priorTo).then(results => {
 	history = results
 	m.redraw()
@@ -73,10 +73,7 @@ const HistoryComponent = (vnode: HistoryVnode) => {
 				 m('th', 'reps'),
 				 m('th', 'amount'),
 			     ])].concat(log.sets.map(set => {
-	    			 return m('tr', {class: css.historyTableRow}, [
-				     m('td', {class: css.historyTableCell}, set.log.reps),
-				     m('td', {class: css.historyTableCell}, set.log.amount)
-				 ])
+	    			 return m('tr', {class: css.historyTableRow}, 'TODO: UI for showing log w/ different unit types')
 			     }))
 			    ))
 	    	    ])

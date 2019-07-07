@@ -1,10 +1,10 @@
 import * as m from 'mithril'
-import {Exercise, Workout} from '../../../../../types/exercise'
+import {Set, Workout} from '../../../../../types/exercise'
 
 interface DropDownAttrs {
     css: any,
-    updateExercise: (exercise: Exercise) => void,
-    matchingExercises: Array<Exercise>,
+    updateExercise: (exercise: Set) => void,
+    matchingExercises: Array<Set>,
     resultsShowing: boolean
     setResultsShowing: (show: boolean) => void,
 }
@@ -50,8 +50,7 @@ const DropDownComponent = (vnode: DropDownVnode) => {
                                   onclick: () => {
 				      vnode.attrs.updateExercise(matchingExercise)
                                   }
-			      }, matchingExercise.name),
-			      m('span', {class: `${css.unitTag} ${css[matchingExercise.setUnits]}`}, matchingExercise.setUnits),
+			      }, matchingExercise.exerciseName),
                           ])
 		      })
 		      : m('div', {class: css.result}, [
@@ -60,8 +59,7 @@ const DropDownComponent = (vnode: DropDownVnode) => {
                               onclick: () => {
 				  vnode.attrs.updateExercise(matchingExercises[0])
                               }
-			  }, matchingExercises[0].name),
-			  m('span', {class: `${css.unitTag} ${css[matchingExercises[0].setUnits]}`}, matchingExercises[0].setUnits),
+			  }, matchingExercises[0].exerciseName),
 		      ]),
 		     )
                 ]),

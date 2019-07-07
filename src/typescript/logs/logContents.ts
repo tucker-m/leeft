@@ -2,10 +2,9 @@ import * as m from 'mithril'
 import EditableHeading from '../ui/editableHeading'
 import Heading from '../ui/heading'
 import {TopBar} from '../ui/topBar'
-import {Puttable, WorkoutLog, SetLogViewModel, ExercisePrescription, GroupedSetLogVm, createSetLogViewModelsFromPrescriptions} from '../types/exercise'
+import {Puttable, WorkoutLog, Set} from '../types/exercise'
 import utils from '../helpers/utils'
 import {PageDefaultAttrs} from '../ui/page'
-import LogOverlay from './overlays/log'
 import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
 import SetCount from './setCount'
 import ExerciseHistory from './exerciseHistory'
@@ -15,7 +14,6 @@ import InsertExerciseButton from '../ui/insertExerciseButton'
 interface attrs {
     log: WorkoutLog & Puttable,
     programUrl: string,
-    updateLog: (logVms: Array<SetLogViewModel>) => void,
 }
 interface LogVnode {
     attrs: attrs & PageDefaultAttrs
@@ -24,34 +22,6 @@ interface LogVnode {
 const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
     let log = vnode.attrs.log
 
-    const createGroupedViewModelsFromSetLogs = (log: WorkoutLog) => {
-        // this should produce an array, with each
-        // item in the array representing one exercise
-	let groupedLogViewModels:Array<GroupedSetLogVm> = []
-        log.sets.forEach((setLog) => {
-	    let lastIndex = groupedLogViewModels.length - 1
-            let last = groupedLogViewModels[lastIndex]
-	    if (last && (JSON.stringify(setLog.exercise) == JSON.stringify(last.exercise))) {
-		groupedLogViewModels[lastIndex].sets.push(setLog)
-            }
-            else {
-		groupedLogViewModels.push({
-		    exercise: setLog.exercise,
-		    sets: [setLog]
-		})
-	    }
-        })
-        return groupedLogViewModels
-    }
-    const flattenViewModelsIntoWorkoutLog = (viewModels: Array<GroupedSetLogVm>) => {
-	let flattenedViewModels: Array<SetLogViewModel> = []
-	viewModels.forEach((groupedVm) => {
-	    groupedVm.sets.forEach((set) => {
-		flattenedViewModels = flattenedViewModels.concat(set)
-	    })
-	})
-	return flattenedViewModels
-    }
     let pageEditable = false
 
     return {
@@ -59,7 +29,6 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 	    const css = vnode.attrs.css
 	    const setOverlay = vnode.attrs.setOverlay
 	    let log = vnode.attrs.log
-            let logViewModels = createGroupedViewModelsFromSetLogs(log)
 
 	    return [
                 TopBar({
@@ -86,49 +55,45 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 			showEditButton: false,
 			css,
 		    }),
-		    logViewModels.map((logViewModel, index) => {
+		    log.sets.map((set, index) => {
 			return m('div', [
 			    m('div', {class: css.exerciseLogContainer}, [
 				EditableHeading({
 				    level: 2,
-				    name: logViewModel.exercise.name,
+				    name: set.exerciseName,
 				    placeholder: 'Untitled Exercise',
 				    editButtonText: 'Enter sets',
 				    showEditButton: pageEditable,
 				    setOverlay: () => {
-					let logVmString = JSON.stringify(logViewModel)
-					let logVmClone = JSON.parse(logVmString)
+					let setString = JSON.stringify(set)
+					let setClone: Set = JSON.parse(setString)
 					let hideOverlay = () => {
 					    setOverlay({
 						component: null,
 						title: ''
 					    }, {})
 					}
-					setOverlay(LogOverlay, {
-					    title: logViewModel.exercise.name,
-					    logViewModel: logVmClone,
-					    hideOverlay,
-					    updateSetLogs: (viewModel: GroupedSetLogVm) => {
-						logViewModels[index] = viewModel
-						log.sets = flattenViewModelsIntoWorkoutLog(logViewModels)
-					    },
-					    css,
-					})
+					// setOverlay(LogOverlay, {
+					//     title: set.exerciseName,
+					//     set: setClone,
+					//     hideOverlay,
+					//     updateSet: (set: Set) => {
+					// 	log.sets[index] = set
+					//     },
+					//     css,
+					// })
 				    },
 				    css,
 				}),
 				m('div', [
-				    m('ul', {class: css.goalList}, logViewModel.sets.map(set => {
-					let setString = `Todo: ${set.prescribedReps} reps`
-					let setClass = css.goalItem
-					if (set.log) {
-					    setString = set.log.reps + ' at ' + set.log.amount
-					    setClass = ''
-					}
-					return m('li', {class: setClass}, setString)
+				    m('ul', {class: css.goalList}, log.sets.map(setLog => {
+					// TODO: create an interface for
+					// showing different exercise
+					// measurement types
+					return m('li', 'your set here')
 				    })),
 				    m(ExerciseHistory, {
-					exerciseName: logViewModel.exercise.name,
+					exerciseName: set.exerciseName,
 					priorTo: log._id,
 					css,
 				    }),
@@ -150,14 +115,8 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					vnode.attrs.setOverlay(ExerciseOverlay, {
 					    title: 'Insert new exercise',
 					    prescription,
-					    updatePrescription: (newPrescription: ExercisePrescription) => {
-						const vms = createSetLogViewModelsFromPrescriptions([newPrescription])
-						const groupedVm = {
-						    exercise: newPrescription.exercise,
-						    sets: vms
-						}
-						logViewModels.splice(index + 1, 0, groupedVm)
-						vnode.attrs.updateLog(flattenViewModelsIntoWorkoutLog(logViewModels))
+					    updateWorkoutLog: (newSet: Set) => {
+						log.sets.splice(index+1, 0, newSet)
 					    },
 					    css,
 					    hideOverlay: () => {

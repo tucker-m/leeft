@@ -2,7 +2,7 @@ import * as m from 'mithril'
 import EditableHeading from '../ui/editableHeading'
 import WorkoutTable from '../ui/workoutTable'
 import WorkoutLogs from './workoutLogs'
-import {Workout, WorkoutLog, SetLog, SetPrescription, Program, Puttable} from '../types/exercise'
+import {Set, Workout, WorkoutLog, Program, Puttable} from '../types/exercise'
 import EditTitleOverlay from './overlays/editTitle'
 import {TopBar} from '../ui/topBar'
 import {PageDefaultAttrs} from '../ui/page'
@@ -75,23 +75,11 @@ const component: m.FactoryComponent<any> = (vnode: ContentVnode) => {
 			    m('button', {
 				class: css.hollowButton,
 				onclick: preventDefault(() => {
-				    const createSetLogsFromPrescriptions = (prescriptions: SetPrescription[]) => {
-					const logs: SetLog[] = prescriptions.map(prescription => {
-					    const log: SetLog = {
-						exerciseName: prescription.exerciseName,
-						reps: !prescription.reps ? false : 0,
-						weight: !prescription.weight ? false : 0,
-						time: !prescription.time ? false : 0,
-					    }
-					    return log
-					})
-					return logs
-				    }
-
 				    const workoutLog = db.promiseSaveableRecord<WorkoutLog>(
 					{
 					    workout: vnode.attrs.workout,
-					    sets: createSetLogsFromPrescriptions(vnode.attrs.workout.prescriptions),
+					    // TODO: test that sets is being created as expected
+					    sets: vnode.attrs.workout.prescriptions,
 					    date: Date.now(),
 					    comments: '',
 					    tag: 'workoutlog',

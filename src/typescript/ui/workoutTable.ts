@@ -1,16 +1,16 @@
 import * as m from 'mithril'
 import {set} from 'mobx'
-import {ExercisePrescription} from '../types/exercise'
+import {Set} from '../types/exercise'
 import ViewWorkoutRow from './viewWorkoutRow'
 import utils from '../helpers/utils'
 import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
 
 interface TableAttributes {
-    prescriptions: Array<ExercisePrescription>,
+    prescriptions: Array<Set>,
     showEditButtons: boolean,
     css: any,
     setOverlay: (overlay: any, attrs: any) => void,
-    updatePrescriptions: (newPrescriptions: Array<ExercisePrescription>) => void,
+    updatePrescriptions: (newPrescriptions: Array<Set>) => void,
 }
 
 interface TableVnode {
@@ -31,19 +31,16 @@ const TableComponent = (vnode: TableVnode) => {
                         class: css.hollowButton,
                         onclick: () => {
                             const newLength = vnode.attrs.prescriptions.push({
-                                exercise: {
-                                    name: '',
-                                    setUnits: 'reps',
-                                    tag: 'exercise',
-                                },
-                                sets: 0,
-                                amount: 0,
+                                exerciseName: '',
+				reps: false,
+				weight: false,
+				time: false,
                             })
 			    const index = newLength - 1
 			    const prescription = vnode.attrs.prescriptions[index]
 			    vnode.attrs.setOverlay(ExerciseOverlay, {
 				prescription,
-				updatePrescription: (newPrescription: ExercisePrescription) => {
+				updatePrescription: (newPrescription: Set) => {
 				    set(prescription, newPrescription)
 				},
 				hideOverlay: () => {

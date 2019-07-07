@@ -1,6 +1,6 @@
 import * as m from 'mithril'
 import db from '../../helpers/db'
-import {Workout, ExercisePrescription} from '../../types/exercise'
+import {Workout} from '../../types/exercise'
 import {toJS} from 'mobx'
 
 interface EditTitleAttrs {

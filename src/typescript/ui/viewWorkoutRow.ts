@@ -1,11 +1,11 @@
 import * as m from 'mithril';
-import {Exercise, ExercisePrescription} from '../types/exercise';
+import {Set} from '../types/exercise';
 import db from '../helpers/db'
 import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
 import {set} from 'mobx'
 
 interface RowAttrs {
-    prescription: ExercisePrescription,
+    prescription: Set,
     showEditButtons: boolean,
     deleteFunction: () => void,
     css: any,
@@ -45,7 +45,7 @@ export default (vnode: RowVnode) => {
                             onclick: () => {
 				vnode.attrs.setOverlay(ExerciseOverlay, {
                                     prescription,
-                                    updatePrescription: (newPrescription: ExercisePrescription) => {
+                                    updatePrescription: (newPrescription: Set) => {
 					set(prescription, newPrescription)
                                     },
                                     hideOverlay: () => {
@@ -57,13 +57,13 @@ export default (vnode: RowVnode) => {
 			}, 'Edit'),
 		    ])
 		    : null,
-		m('td', {class: css.td}, prescription.exercise.name ?
-                  prescription.exercise.name
+		m('td', {class: css.td}, prescription.exerciseName ?
+                  prescription.exerciseName
                   : m('span', {class: css.empty}, 'Unnamed Exercise'),
 		 ),
                 m('td', {
                     class: css.td,
-                }, prescription.sets + 'x' + prescription.amount + ' ' + prescription.exercise.setUnits),
+                }, 'TODO show prescription values here'),
 		vnode.attrs.showEditButtons
 		    ? m('td', m('button', {
 			class: `${css.small} ${css.hollowDangerButton}`,

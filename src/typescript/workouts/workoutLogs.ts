@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {Saveable, Saved, Puttable, Workout, WorkoutLog, SetLogViewModel, ExercisePrescription} from '../types/exercise'
+import {Saveable, Saved, Puttable, Workout, WorkoutLog } from '../types/exercise'
 import db from '../helpers/db'
 import utils from '../helpers/utils'
 

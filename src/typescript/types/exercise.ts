@@ -19,30 +19,32 @@ interface NamedObject {
 
 interface WorkoutLog {
     workout: Workout,
-    sets: Array<SetLog>, // TODO: Group by exercise? Allows for supersets
+    sets: Array<Set>, // TODO: Group by exercise? Allows for supersets
     date: number,
     comments: string,
     _deleted?: boolean,
     tag: 'workoutlog',
 };
 
-interface SetPrescription {
+interface Set {
     exerciseName: string,
-    reps: boolean | number,
-    weight: boolean | number,
-    time: boolean | number,
-}
-
-interface SetLog {
-    exerciseName: string,
-    reps: false | number,
-    weight: false | number,
-    time: false | number,
+    reps: false | {
+	prescribed: false | number,
+	entered: false | number,
+    },
+    weight: false | {
+	prescribed: false | number,
+	entered: false | number,
+    },
+    time: false | {
+	prescribed: false | number,
+	entered: false | number,
+    },
 }
 
 interface Workout extends NamedObject {
     identifier: string,
-    prescriptions: Array<SetPrescription>,
+    prescriptions: Array<Set>,
     tag: 'workout',
 };
 
@@ -72,8 +74,7 @@ export {
     Puttable,
     ModelName,
     NamedObject,
-    SetPrescription,
-    SetLog,
+    Set,
     Workout,
     Rest,
     WorkoutAndLog,

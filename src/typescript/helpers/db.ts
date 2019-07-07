@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
-import {Saveable, Saved, Puttable, ModelName, Workout, Program, Settings, WorkoutLog} from '../types/exercise';
+import {Saveable, Saved, Puttable, ModelName, Set, Workout, Program, Settings, WorkoutLog} from '../types/exercise';
 import {observable, extendObservable, autorun, IObservableObject, toJS} from 'mobx'
 
 let db: PouchDB;
@@ -93,24 +93,32 @@ const findLogsByWorkoutIdentifier = (id: string) => {
     })
 }
 
-const findExercisesByName = (name: string): Promise<(Exercise)[]> => {
+interface SearchResult {
+    exerciseName: string,
+    reps: boolean,
+    weight: boolean,
+    time: boolean,
+}
+
+// TODO: test this
+const findExercisesByName = (name: string): Promise<SearchResult[]> => {
     const regex = new RegExp(name.toLowerCase())
     return new Promise((resolve, reject) => {
         db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
             let programs = docs.rows
             // loop through programs, picking out all exercises in them
-            let exercises = programs.flatMap((program) => {
+            let exercises: Set[] = programs.map(program => {
 		// Just get the workouts from the programs, not the rest days
-                let workoutsOnly = program.doc.schedule.filter((exercise) => {
+                let workoutsOnly: Workout[] = program.doc.schedule.filter((exercise) => {
                     return exercise.tag == 'workout'
                 })
-                return workoutsOnly.flatMap((workout) => {
-                    return workout.prescriptions.map((prescription) => {
-                        return prescription.exercise
-                    }).filter((exercise) => {
-                        return !!exercise.name.toLowerCase().match(regex)
+                const setArrayArrays = workoutsOnly.map(workout => {
+                    return workout.prescriptions.filter(prescription => {
+                        return !!prescription.exerciseName.toLowerCase().match(regex)
                     })
                 })
+
+		return [].concat.apply([], setArrayArrays)
             })
             const stringifiedExercises = exercises.map((exercise) => {
                 return JSON.stringify(exercise)
@@ -118,7 +126,15 @@ const findExercisesByName = (name: string): Promise<(Exercise)[]> => {
             let removeDuplicates = exercises.filter((exercise, index) => {
                 return stringifiedExercises.indexOf(JSON.stringify(exercise)) == index
             })
-            resolve(removeDuplicates)
+	    const returnMe = removeDuplicates.map(set => {
+		return {
+		    exerciseName: set.exerciseName,
+		    reps: !!set.reps,
+		    weight: !!set.weight,
+		    time: !!set.time,
+		}
+	    })
+            resolve(returnMe)
         })
     })
 }
@@ -173,8 +189,8 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
     })
 }
 
-function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<(FilledWorkoutLog & Saved)[]> {
-    return new Promise<(FilledWorkoutLog & Saved)[]>((resolve, reject) => {
+function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<(WorkoutLog & Saved)[]> {
+    return new Promise<(WorkoutLog & Saved)[]>((resolve, reject) => {
 	db.allDocs({
 	    include_docs: true,
 	    startkey: priorTo,
@@ -183,31 +199,26 @@ function findLogsContainingExercise(exerciseName: string, priorTo: string): Prom
 	    descending: true,
 	    skip: 1,
 	}).then(docs => {
-	    // Goal: filter the array of workoutlogs so that
-	    // they only have filled sets in them. This makes
-	    // each workoutlog a filledworkoutlog.
-
 	    interface ResultRow {
 		doc: WorkoutLog & Saved
 	    }
 	    const rows = <ResultRow[]>docs.rows
 	    const logs = rows.map(row => row.doc)
 
-	    const filledWorkoutLogs = logs.map(log => {
-		const filledSetLogs = log.sets.filter(isFilledLog)
-		const filledSetLogsWithExercise = filledSetLogs.filter(set => {
-		    return set.exercise.name === exerciseName
+	    const logsWithCompletedExercise = logs.filter(log => {
+		// If this log contains any sets that
+		// have the exercise name, and also have
+		// an 'entered' value for either reps, weight,
+		// or time, return true.
+		return !!log.sets.some(set => {
+		    const hasEnteredInfo: boolean =
+			((set.reps && !!set.reps.entered)
+			|| (set.weight && !!set.weight.entered)
+			 || (set.time && !!set.time.entered))
+		    return (set.exerciseName == exerciseName) && hasEnteredInfo
 		})
-		const filledWorkoutLog: FilledWorkoutLog & Saved = {
-		    ...log,
-		    sets: filledSetLogsWithExercise
-		}
-		return filledWorkoutLog
 	    })
-	    const filledWorkoutLogsWithSets = filledWorkoutLogs.filter(log => {
-		return log.sets.length > 0
-	    })
-	    resolve(filledWorkoutLogsWithSets)
+	    resolve(logsWithCompletedExercise)
 	})
     })
 }

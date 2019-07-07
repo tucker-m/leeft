@@ -1,8 +1,8 @@
 import * as m from 'mithril'
-import {Exercise} from '../../types/exercise'
+import {Set} from '../../types/exercise'
 
 interface ResultsAttrs {
-    results: Array<Exercise>,
+    results: Array<Set>,
 }
 interface ComponentVnode {
     attrs: ResultsAttrs
@@ -11,7 +11,7 @@ export default (vnode: ComponentVnode) => {
     return {
         view: (vnode: ComponentVnode) => {
             return vnode.attrs.results.map((result) => {
-                return m('p', result.name)
+                return m('p', result.exerciseName)
             })
         }
     }

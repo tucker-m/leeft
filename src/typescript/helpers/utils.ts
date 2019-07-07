@@ -32,8 +32,6 @@ const c = (...styles: Array<string>) => {
 const getName: (obj: (NamedObject | Rest) & Saveable) => string =
     (obj: NamedObject & Saveable) => {
 	switch (obj.tag) {
-	    case 'exercise':
-		return obj.name ? obj.name : 'Untitled Exercise'
 	    case 'workout':
 		return obj.name ? obj.name : 'Untitled Workout'
 	    case 'rest':
@@ -58,7 +56,7 @@ const getWorkoutExercises = (workout: Workout) => {
     }
     else {
 	return workout.prescriptions.map(prescription => {
-	    return prescription.exercise.name
+	    return prescription.exerciseName
 	}).join(', ')
     }
 }

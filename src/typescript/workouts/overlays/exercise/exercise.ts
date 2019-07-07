@@ -1,12 +1,12 @@
 import * as m from 'mithril'
-import {Exercise, Workout, ExercisePrescription} from '../../../types/exercise'
+import {Workout, Set} from '../../../types/exercise'
 import {toJS} from 'mobx'
 import db from '../../../helpers/db'
 import DropDown from './components/search/dropdown'
 
 interface ExerciseAttrs {
-    prescription: ExercisePrescription,
-    updatePrescription: (newPrescription: ExercisePrescription) => void,
+    prescription: Set,
+    updatePrescription: (newPrescription: Set) => void,
     hideOverlay: () => void,
     deleteOnCancel?: () => void,
     css: any,
@@ -17,10 +17,10 @@ interface ExerciseVnode {
 
 const ExerciseOverlay = (vnode: ExerciseVnode) => {
     const css = vnode.attrs.css
-    let matchingExercises: Array<Exercise> = []
+    let matchingExercises: Array<Set> = []
 
     const prescription = toJS(vnode.attrs.prescription)
-    let exercise = prescription.exercise
+    let exercise = prescription
     let resultsShowing = false
 
     return {
@@ -31,26 +31,37 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                     m('div', {class: css.labelOnTopGroup}, [
                         m('label', {class: css.label}, 'Title'),
                         m('input[type=text]', {
-                            value: exercise.name,
+                            value: exercise.exerciseName,
                             placeholder: 'Unnamed Exercise',
                             oninput: m.withAttr('value', (value) => {
-                                exercise.name = value
-                                if (exercise.name.length == 0) {
+                                exercise.exerciseName = value
+                                if (exercise.exerciseName.length == 0) {
                                     matchingExercises = []
                                 }
                                 else {
-                                    db.findExercisesByName(exercise.name).then((results) => {
-                                        matchingExercises = results
+                                    db.findExercisesByName(exercise.exerciseName).then((results) => {
+                                        matchingExercises = results.map(result => {
+					    const reps = !result.reps ? false : {prescribed: 0, entered: 0}
+					    const weight = !result.weight ? false : {prescribed: 0, entered: 0}
+					    const time = !result.time ? false : {prescribed: 0, entered: 0}
+					    const newSet: Set = {
+						exerciseName: result.exerciseName,
+						reps,
+						weight,
+						time,
+					    }
+					    return newSet
+					})
                                         m.redraw()
                                     })
                                 }
                             }),
                             class: css.textInput,
                         }),
-                        exercise.name.length > 0 && matchingExercises.length > 0 ?
+                        exercise.exerciseName.length > 0 && matchingExercises.length > 0 ?
                             DropDown({
                                 css: css,
-                                updateExercise: (newExercise: Exercise) => {
+                                updateExercise: (newExercise: Set) => {
                                     exercise = newExercise
                                     matchingExercises = []
                                 },
@@ -63,43 +74,15 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                     m('div', {class: css.labelOnTopGroup}, [
                         m('label', {class: css.label}, 'Sets & Reps'),
                         m('div', [
-                            m('input[type=number]', {
-                                class: css.textInput,
-                                value: prescription.sets,
-                                onchange: m.withAttr('value', (value: string) => {
-                                    prescription.sets = parseInt(value)
-                                })
-                            }),
-                            m('label', {class: css.label}, 'sets'),
+			    // TODO: create UI for entering sets and reps
                         ]),
                         m('div', [
-                            m('input[type=number]', {
-                                class: css.textInput,
-                                value: prescription.amount,
-                                onchange: m.withAttr('value', (value) => {
-                                    prescription.amount = parseInt(value)
-                                }),
-                            }),
-                            m('label', {class: css.label}, exercise.setUnits),
+			    // TODO: create UI for entering sets and reps (or other unit type)
                         ]),
                     ]),
                     m('div', {class: css.labelOnLeftGroup}, [
                         m('label', {class: css.label}, 'Measured in'),
-                        m('select', {
-                            class: css.selectInput,
-                            onchange: m.withAttr('value', (value) => {
-                                exercise.setUnits = value
-                            })
-                        }, [
-                            m('option', {
-                                value: 'reps',
-                                selected: exercise.setUnits == 'reps'
-                            }, 'Reps'),
-                            m('option', {
-                                value: 'seconds',
-                                selected: exercise.setUnits == 'seconds'
-                            }, 'Seconds'),
-                        ]),
+			// TODO: create UI for entering sets and reps (or other unit type)
                     ]),
                 ]),
                 m('div', {class: css.bottomButtons}, [

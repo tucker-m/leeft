@@ -63,7 +63,7 @@ const TableComponent = (vnode: TableVnode) => {
 				? m('th', '')
 				: null,
 			    m('th', 'Exercise'),
-                            m('th', 'Amount'),
+                            m('th', 'Sets'),
 			    vnode.attrs.showEditButtons
 				? m('th', '')
 				: null,

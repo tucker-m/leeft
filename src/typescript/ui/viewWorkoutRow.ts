@@ -19,7 +19,19 @@ interface RowVnode {
 
 export default (vnode: RowVnode) => {
     const css = vnode.attrs.css
-    let searchResults = ['one', 'two', 'three']
+    const printUnits = (set: Set) => {
+	let pieces:String[] = []
+	if (!!set.reps && !!set.reps.prescribed) {
+	    pieces.push(`${set.reps.prescribed} reps`)
+	}
+	if (set.weight && set.weight.prescribed) {
+	    pieces.push(`${set.weight.prescribed} pounds`)
+	}
+	if (set.time && set.time.prescribed) {
+	    pieces.push(`${set.time.prescribed} seconds`)
+	}
+	return pieces.join(', ')
+    }
     return {
         view: (vnode: RowVnode) => {
             let prescription = vnode.attrs.prescription
@@ -63,7 +75,7 @@ export default (vnode: RowVnode) => {
 		 ),
                 m('td', {
                     class: css.td,
-                }, 'TODO show prescription values here'),
+                }, printUnits(prescription)),
 		vnode.attrs.showEditButtons
 		    ? m('td', m('button', {
 			class: `${css.small} ${css.hollowDangerButton}`,

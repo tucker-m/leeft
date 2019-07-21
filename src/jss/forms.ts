@@ -18,6 +18,9 @@ export default {
     selectInput: {
         extend: 'textInput',
     },
+    checkbox: {
+        margin: '.25rem .5rem',
+    },
     button: Object.assign({
         backgroundColor: colors.edit,
         color: 'white',

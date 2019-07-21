@@ -59,7 +59,7 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
             return [
                 m('div', [
                     m('div', {class: css.labelOnTopGroup}, [
-                        m('label', {class: css.label}, 'Title'),
+                        m('label', {class: css.label}, 'Exercise name'),
                         m('input[type=text]', {
                             value: exercise.exerciseName,
                             placeholder: 'Unnamed Exercise',
@@ -103,13 +103,17 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                     ]),
                     m('div', {class: css.labelOnLeftGroup}, [
                         m('label', {class: css.label}, 'Measured in'),
-			m('div', [
+			m('div', {class: css.formRow}, [
 			    m('input[type=checkbox]', {
+				class: css.checkbox,
 				onclick: () => {exercise.reps = toggleUnits(exercise.reps)},
 				checked: !!exercise.reps
 			    }),
-			    m('label', 'Reps'),
+			    m('label', {
+				class: css.label,
+			    }, 'Reps'),
 			    m('input[type=text]', {
+				class: css.textInput,
 				onchange: m.withAttr('value', value => {
 				    exercise.reps = setAssignedValue(exercise.reps, value)
 				}),
@@ -118,13 +122,17 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
 				placeholder: '(optional) assigned reps'
 			    }),
 			]),
-			m('div', [
+			m('div', {class: css.formRow}, [
 			    m('input[type=checkbox]', {
+				class: css.checkbox,
 				onclick: () => {exercise.weight = toggleUnits(exercise.weight)},
 				checked: !!exercise.weight
 			    }),
-			    m('label', 'Pounds'),
+			    m('label', {
+				class: css.label,
+			    }, 'Pounds'),
 			    m('input[type=text]', {
+				class: css.textInput,
 				onchange: m.withAttr('value', value => {
 				    exercise.weight = setAssignedValue(exercise.weight, value)
 				}),
@@ -133,13 +141,17 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
 				placeholder: '(optional) assigned pounds'
 			    })
 			]),
-			m('div', [
+			m('div', {class: css.formRow}, [
 			    m('input[type=checkbox]', {
+				class: css.checkbox,
 				onclick: () => {exercise.time = toggleUnits(exercise.time)},
 				checked: !!exercise.time,
 			    }),
-			    m('label', 'Time'),
+			    m('label', {
+				class: css.label,
+			    }, 'Time'),
 			    m('input[type=text]', {
+				class: css.textInput,
 				onchange: m.withAttr('value', value => {
 				    exercise.time = setAssignedValue(exercise.time, value)
 				}),

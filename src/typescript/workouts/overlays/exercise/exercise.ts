@@ -23,6 +23,36 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
     let exercise = prescription
     let resultsShowing = false
 
+    const toggleUnits = (unitObject) => {
+	interface UnitObject {
+	    prescribed: false | number,
+	    entered: false | number
+	}
+	if (unitObject) {
+	    return false
+	}
+	else {
+	    const obj: UnitObject = {
+		prescribed: false,
+		entered: false,
+	    }
+	    return obj
+	}
+    }
+
+    const setAssignedValue = (unitObject, value) => {
+	return Object.assign({}, {
+	    prescribed: value,
+	    entered: unitObject.entered || false,
+	})
+    }
+
+    const getValue = (unitObject) => {
+	return (unitObject && unitObject.prescribed)
+	    ? unitObject.prescribed
+	    : ''
+    }
+
     return {
         view: (vnode: ExerciseVnode) => {
 	    const setResultsShowing = (show: boolean) => { resultsShowing = show }
@@ -75,46 +105,48 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                         m('label', {class: css.label}, 'Measured in'),
 			m('div', [
 			    m('input[type=checkbox]', {
-				onclick: () => {
-				    if (exercise.reps) {
-					exercise.reps = false
-				    }
-				    else {
-					exercise.reps = {
-					    prescribed: false,
-					    entered: false,
-					}
-				    }
-				},
+				onclick: () => {exercise.reps = toggleUnits(exercise.reps)},
 				checked: !!exercise.reps
 			    }),
 			    m('label', 'Reps'),
 			    m('input[type=text]', {
-				onchange: m.withAttr('value', (value) => {
-				    if (!exercise.reps) {
-					exercise.reps = {
-					    prescribed: value,
-					    entered: false
-					}
-				    }
-				    else {
-					exercise.reps.prescribed = value
-				    }
+				onchange: m.withAttr('value', value => {
+				    exercise.reps = setAssignedValue(exercise.reps, value)
 				}),
-				enabled: !!exercise.reps,
-				value: exercise.reps ? exercise.reps.prescribed : '',
+				disabled: !exercise.reps,
+				value: getValue(exercise.reps),
 				placeholder: '(optional) assigned reps'
 			    }),
 			]),
 			m('div', [
-			    m('input[type=checkbox]'),
+			    m('input[type=checkbox]', {
+				onclick: () => {exercise.weight = toggleUnits(exercise.weight)},
+				checked: !!exercise.weight
+			    }),
 			    m('label', 'Pounds'),
-			    m('input[type=text]')
+			    m('input[type=text]', {
+				onchange: m.withAttr('value', value => {
+				    exercise.weight = setAssignedValue(exercise.weight, value)
+				}),
+				disabled: !exercise.weight,
+				value: getValue(exercise.weight),
+				placeholder: '(optional) assigned pounds'
+			    })
 			]),
 			m('div', [
-			    m('input[type=checkbox]'),
+			    m('input[type=checkbox]', {
+				onclick: () => {exercise.time = toggleUnits(exercise.time)},
+				checked: !!exercise.time,
+			    }),
 			    m('label', 'Time'),
-			    m('input[type=text]')
+			    m('input[type=text]', {
+				onchange: m.withAttr('value', value => {
+				    exercise.time = setAssignedValue(exercise.time, value)
+				}),
+				value: getValue(exercise.time),
+				disabled: !exercise.time,
+				placeholder: '(optional) assigned seconds'
+			    })
 			]),
                     ]),
                 ]),

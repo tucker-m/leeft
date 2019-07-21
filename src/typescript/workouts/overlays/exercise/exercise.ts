@@ -71,18 +71,51 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                             })
                             : null,
                     ]),
-                    m('div', {class: css.labelOnTopGroup}, [
-                        m('label', {class: css.label}, 'Sets & Reps'),
-                        m('div', [
-			    // TODO: create UI for entering sets and reps
-                        ]),
-                        m('div', [
-			    // TODO: create UI for entering sets and reps (or other unit type)
-                        ]),
-                    ]),
                     m('div', {class: css.labelOnLeftGroup}, [
                         m('label', {class: css.label}, 'Measured in'),
-			// TODO: create UI for entering sets and reps (or other unit type)
+			m('div', [
+			    m('input[type=checkbox]', {
+				onclick: () => {
+				    if (exercise.reps) {
+					exercise.reps = false
+				    }
+				    else {
+					exercise.reps = {
+					    prescribed: false,
+					    entered: false,
+					}
+				    }
+				},
+				checked: !!exercise.reps
+			    }),
+			    m('label', 'Reps'),
+			    m('input[type=text]', {
+				onchange: m.withAttr('value', (value) => {
+				    if (!exercise.reps) {
+					exercise.reps = {
+					    prescribed: value,
+					    entered: false
+					}
+				    }
+				    else {
+					exercise.reps.prescribed = value
+				    }
+				}),
+				enabled: !!exercise.reps,
+				value: exercise.reps ? exercise.reps.prescribed : '',
+				placeholder: '(optional) assigned reps'
+			    }),
+			]),
+			m('div', [
+			    m('input[type=checkbox]'),
+			    m('label', 'Pounds'),
+			    m('input[type=text]')
+			]),
+			m('div', [
+			    m('input[type=checkbox]'),
+			    m('label', 'Time'),
+			    m('input[type=text]')
+			]),
                     ]),
                 ]),
                 m('div', {class: css.bottomButtons}, [
@@ -98,10 +131,7 @@ const ExerciseOverlay = (vnode: ExerciseVnode) => {
                     m('button', {
                         class: css.button,
                         onclick: () => {
-                            let newPrescription = Object.assign(prescription, {
-                                exercise,
-                            })
-                            vnode.attrs.updatePrescription(newPrescription)
+                            vnode.attrs.updatePrescription(exercise)
                             vnode.attrs.hideOverlay()
                         }
                     }, 'Save'),

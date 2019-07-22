@@ -120,6 +120,7 @@ const findExercisesByName = (name: string): Promise<SearchResult[]> => {
 
 		return [].concat.apply([], setArrayArrays)
             })
+	    exercises = [].concat.apply([], exercises)
             const stringifiedExercises = exercises.map((exercise) => {
                 return JSON.stringify(exercise)
             })

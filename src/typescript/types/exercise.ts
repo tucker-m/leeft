@@ -17,9 +17,14 @@ interface NamedObject {
     name: string,
 }
 
+interface SetGroup {
+    exerciseName: string,
+    sets: Set[]
+}
+
 interface WorkoutLog {
     workout: Workout,
-    sets: Array<Set>, // TODO: Group by exercise? Allows for supersets
+    sets: SetGroup[],
     date: number,
     comments: string,
     _deleted?: boolean,
@@ -27,7 +32,6 @@ interface WorkoutLog {
 };
 
 interface Set {
-    exerciseName: string,
     reps: false | {
 	prescribed: false | number,
 	entered: false | number,
@@ -44,7 +48,7 @@ interface Set {
 
 interface Workout extends NamedObject {
     identifier: string,
-    prescriptions: Array<Set>,
+    prescriptions: SetGroup[],
     tag: 'workout',
 };
 
@@ -79,6 +83,7 @@ export {
     Rest,
     WorkoutAndLog,
     WorkoutLog,
+    SetGroup,
     Program,
     Settings,
 };

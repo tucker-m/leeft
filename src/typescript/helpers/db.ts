@@ -93,50 +93,9 @@ const findLogsByWorkoutIdentifier = (id: string) => {
     })
 }
 
-interface SearchResult {
-    exerciseName: string,
-    reps: boolean,
-    weight: boolean,
-    time: boolean,
-}
-
-// TODO: test this
-const findExercisesByName = (name: string): Promise<SearchResult[]> => {
-    const regex = new RegExp(name.toLowerCase())
-    return new Promise((resolve, reject) => {
-        db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
-            let programs = docs.rows
-            // loop through programs, picking out all exercises in them
-            let exercises: Set[] = programs.map(program => {
-		// Just get the workouts from the programs, not the rest days
-                let workoutsOnly: Workout[] = program.doc.schedule.filter((exercise) => {
-                    return exercise.tag == 'workout'
-                })
-                const setArrayArrays = workoutsOnly.map(workout => {
-                    return workout.prescriptions.filter(prescription => {
-                        return !!prescription.exerciseName.toLowerCase().match(regex)
-                    })
-                })
-
-		return [].concat.apply([], setArrayArrays)
-            })
-	    exercises = [].concat.apply([], exercises)
-            const stringifiedExercises = exercises.map((exercise) => {
-                return JSON.stringify(exercise)
-            })
-            let removeDuplicates = exercises.filter((exercise, index) => {
-                return stringifiedExercises.indexOf(JSON.stringify(exercise)) == index
-            })
-	    const returnMe = removeDuplicates.map(set => {
-		return {
-		    exerciseName: set.exerciseName,
-		    reps: !!set.reps,
-		    weight: !!set.weight,
-		    time: !!set.time,
-		}
-	    })
-            resolve(returnMe)
-        })
+const findExercisesByName = (name: string): Promise<string[]> => {
+    return new Promise<string[]>((resolve, reject) => {
+	resolve(['First', 'Second', 'Third'])
     })
 }
 

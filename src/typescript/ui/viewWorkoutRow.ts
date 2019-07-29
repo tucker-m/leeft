@@ -1,13 +1,12 @@
 import * as m from 'mithril';
-import {Set} from '../types/exercise';
+import {Set, SetGroup} from '../types/exercise';
 import db from '../helpers/db'
 import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
 import {set} from 'mobx'
 
 interface RowAttrs {
-    prescription: Set,
+    setGroup: SetGroup,
     showEditButtons: boolean,
-    deleteFunction: () => void,
     css: any,
     setOverlay: (overlay: any, attrs: any) => void,
     moveUp?: () => void,
@@ -34,7 +33,7 @@ export default (vnode: RowVnode) => {
     }
     return {
         view: (vnode: RowVnode) => {
-            let prescription = vnode.attrs.prescription
+            let setGroup = vnode.attrs.setGroup
             return m('tr', {
                 class: css.tr,
             }, [
@@ -56,9 +55,9 @@ export default (vnode: RowVnode) => {
                             class: `${css.hollowSecondaryButton} ${css.small}`,
                             onclick: () => {
 				vnode.attrs.setOverlay(ExerciseOverlay, {
-                                    prescription,
-                                    updatePrescription: (newPrescription: Set) => {
-					set(prescription, newPrescription)
+                                    setGroup,
+                                    updateSetGroup: (newSetGroup: SetGroup) => {
+					set(setGroup, newSetGroup)
                                     },
                                     hideOverlay: () => {
 					vnode.attrs.setOverlay({component: null, title: ''}, {})
@@ -69,19 +68,13 @@ export default (vnode: RowVnode) => {
 			}, 'Edit'),
 		    ])
 		    : null,
-		m('td', {class: css.td}, prescription.exerciseName ?
-                  prescription.exerciseName
+		m('td', {class: css.td}, setGroup.exerciseName ?
+                  setGroup.exerciseName
                   : m('span', {class: css.empty}, 'Unnamed Exercise'),
 		 ),
                 m('td', {
                     class: css.td,
-                }, printUnits(prescription)),
-		vnode.attrs.showEditButtons
-		    ? m('td', m('button', {
-			class: `${css.small} ${css.hollowDangerButton}`,
-			onclick: vnode.attrs.deleteFunction,
-		    }, 'X'))
-		    : null,
+                }, "TODO: Show each set here"),
             ])
         }
     }

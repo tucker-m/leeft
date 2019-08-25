@@ -2,7 +2,7 @@ import * as m from 'mithril'
 import EditableHeading from '../ui/editableHeading'
 import Heading from '../ui/heading'
 import {TopBar} from '../ui/topBar'
-import {Puttable, WorkoutLog, Set} from '../types/exercise'
+import {Puttable, WorkoutLog, Set, SetGroup} from '../types/exercise'
 import utils from '../helpers/utils'
 import {PageDefaultAttrs} from '../ui/page'
 import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
@@ -115,8 +115,8 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					vnode.attrs.setOverlay(ExerciseOverlay, {
 					    title: 'Insert new exercise',
 					    prescription,
-					    updateWorkoutLog: (newSet: Set) => {
-						log.sets.splice(index+1, 0, newSet)
+					    updateWorkoutLog: (newSetGroup: SetGroup) => {
+						log.sets.splice(index+1, 0, newSetGroup)
 					    },
 					    css,
 					    hideOverlay: () => {

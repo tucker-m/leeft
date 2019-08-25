@@ -65,6 +65,12 @@ export default {
         color: colors.danger,
         borderColor: colors.danger,
     },
+    hollowEditButton: {
+	extend: 'button',
+	backgroundColor: 'white',
+	color: colors.edit,
+	borderColor: colors.edit,
+    },
     small: {
         padding: '.25rem .5rem',
         fontSize: '.9rem',

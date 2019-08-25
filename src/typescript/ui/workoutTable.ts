@@ -21,6 +21,8 @@ const TableComponent = (vnode: TableVnode) => {
     const css = vnode.attrs.css
     return {
         view: (vnode: TableVnode) => {
+	    const {showEditButtons} = vnode.attrs
+
 	    const deleteFunction = (index: number) => {
                 vnode.attrs.prescriptions.splice(index, 1)
 	    }
@@ -31,11 +33,17 @@ const TableComponent = (vnode: TableVnode) => {
 			vnode.attrs.prescriptions.map(setGroup => {
 			    return m('div', {class: css.exerciseGroup}, [
 				m('div', {class: css.exerciseHeadingRow}, [
-				    m('button', {class: css.upBtn}),
-				    m('button', {class: css.downBtn}),
+				    showEditButtons
+					? [
+					    m('button', {class: css.upBtn}),
+					    m('button', {class: css.downBtn}),
+					] : null,
 				    m('span', {class: css.exerciseName}, setGroup.exerciseName || 'Unnamed Exercise'),
-				    m('button', {class: `${css.hollowEditButton} ${css.small}`}, 'Edit'),
-				    m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
+				    showEditButtons
+					? [
+					    m('button', {class: `${css.hollowEditButton} ${css.small}`}, 'Edit'),
+					    m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
+					] : null,
 				]),
 				m('div', {class: css.exerciseSets}, [
 				    m('div', [
@@ -66,16 +74,23 @@ const TableComponent = (vnode: TableVnode) => {
 						}
 					    }
 					    return m('li', {class: css.setLi}, [
-						m('button', {class: css.upBtnSmall}),
-						m('button', {class: css.downBtnSmall}),
+						showEditButtons
+						? [
+						    m('button', {class: css.upBtnSmall}),
+						    m('button', {class: css.downBtnSmall}),
+						] : null,
 						m('span', {class: css.setNumber}, index+1),
 						unitParts,
-						m('button', {class: `${css.hollowEditButton} ${css.small}`}, 'Edit'),
-						m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
+						showEditButtons
+						? [
+						    m('button', {class: `${css.hollowEditButton} ${css.small}`}, 'Edit'),
+						    m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
+						] : null,
 					    ])
 					})),
 					(vnode.attrs.showEditButtons)
 					    ? m('button', {
+						class: css.hollowButton,
 						onclick: () => {
 						    let previousSet = setGroup.sets[setGroup.sets.length - 1] || false
 						    vnode.attrs.setOverlay(AddSetOverlay, {

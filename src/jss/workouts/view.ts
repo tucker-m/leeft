@@ -44,7 +44,7 @@ export default {
 	height: '1rem',
     },
     exerciseSets: {
-	marginLeft: '1rem',
+	marginLeft: '1.5rem',
     },
     setUl: {
 	marginBottom: '1rem',
@@ -52,7 +52,7 @@ export default {
     setLi: {
 	display: 'flex',
 	alignItems: 'center',
-	marginBottom: '.5rem',
+	marginBottom: '1rem',
     },
     setNumber: {
 	boxSizing: 'border-box',
@@ -75,8 +75,8 @@ export default {
 	borderRadius: '.75rem',
 	color: 'white',
 	fontSize: '.9rem',
-	paddingLeft: '.75rem',
-	paddingRight: '.75rem',
+	paddingLeft: '.5rem',
+	paddingRight: '.5rem',
 	marginRight: '1rem',
     },
     repPill: {

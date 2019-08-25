@@ -151,35 +151,8 @@ const findWorkoutsByName = (name: string, avoid: Workout | null = null): Promise
 
 function findLogsContainingExercise(exerciseName: string, priorTo: string): Promise<(WorkoutLog & Saved)[]> {
     return new Promise<(WorkoutLog & Saved)[]>((resolve, reject) => {
-	db.allDocs({
-	    include_docs: true,
-	    startkey: priorTo,
-	    endkey: 'workoutlog_',
-	    inclusive_end: false,
-	    descending: true,
-	    skip: 1,
-	}).then(docs => {
-	    interface ResultRow {
-		doc: WorkoutLog & Saved
-	    }
-	    const rows = <ResultRow[]>docs.rows
-	    const logs = rows.map(row => row.doc)
-
-	    const logsWithCompletedExercise = logs.filter(log => {
-		// If this log contains any sets that
-		// have the exercise name, and also have
-		// an 'entered' value for either reps, weight,
-		// or time, return true.
-		return !!log.sets.some(set => {
-		    const hasEnteredInfo: boolean =
-			((set.reps && !!set.reps.entered)
-			|| (set.weight && !!set.weight.entered)
-			 || (set.time && !!set.time.entered))
-		    return (set.exerciseName == exerciseName) && hasEnteredInfo
-		})
-	    })
-	    resolve(logsWithCompletedExercise)
-	})
+	resolve([
+	])
     })
 }
 

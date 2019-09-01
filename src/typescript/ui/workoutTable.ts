@@ -35,8 +35,12 @@ const TableComponent = (vnode: TableVnode) => {
 				m('div', {class: css.exerciseHeadingRow}, [
 				    showEditButtons
 					? [
-					    m('button', {class: css.upBtn}),
-					    m('button', {class: css.downBtn}),
+					    (index > 0)
+						? m('button', {class: css.upBtn})
+						: null,
+					    (index < vnode.attrs.prescriptions.length - 1)
+						? m('button', {class: css.downBtn})
+						: null,
 					] : null,
 				    m('span', {class: css.exerciseName}, setGroup.exerciseName || 'Unnamed Exercise'),
 				    showEditButtons

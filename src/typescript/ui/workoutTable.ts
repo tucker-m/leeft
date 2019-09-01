@@ -97,7 +97,21 @@ const TableComponent = (vnode: TableVnode) => {
 						unitParts,
 						showEditButtons
 						? [
-						    m('button', {class: `${css.hollowEditButton} ${css.small}`}, 'Edit'),
+						    m('button', {
+							class: `${css.hollowEditButton} ${css.small}`,
+							onclick: () => {
+							    vnode.attrs.setOverlay(AddSetOverlay, {
+								exerciseName: setGroup.exerciseName,
+								previousSet: set,
+								addSet: (changedSet: Set) => {
+								    setGroup.sets.splice(index, 1, changedSet)
+								},
+								hideOverlay: () => {
+								    vnode.attrs.setOverlay({component: null, title: ''}, {})
+								}
+							    })
+							}
+						    }, 'Edit'),
 						    m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
 						] : null,
 					    ])

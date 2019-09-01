@@ -48,7 +48,6 @@ const TableComponent = (vnode: TableVnode) => {
 							setGroup,
 							updateSetGroup: (newSetGroup: SetGroup) => {
 							    vnode.attrs.prescriptions.splice(index, 1, newSetGroup)
-							    vnode.attrs.updatePrescriptions(vnode.attrs.prescriptions)
 							},
 							hideOverlay: () => {
 							    vnode.attrs.setOverlay({component: null, title: ''}, {})

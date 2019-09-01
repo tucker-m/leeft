@@ -56,7 +56,12 @@ const TableComponent = (vnode: TableVnode) => {
 						    })
 						},
 					    }, 'Edit'),
-					    m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
+					    m('button', {
+						class: `${css.hollowDangerButton} ${css.small}`,
+						onclick: () => {
+						    vnode.attrs.prescriptions.splice(index, 1)
+						}
+					    }, 'Delete'),
 					] : null,
 				]),
 				m('div', {class: css.exerciseSets}, [
@@ -112,7 +117,12 @@ const TableComponent = (vnode: TableVnode) => {
 							    })
 							}
 						    }, 'Edit'),
-						    m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
+						    m('button', {
+							class: `${css.hollowDangerButton} ${css.small}`,
+							onclick: () => {
+							    setGroup.sets.splice(index, 1)
+							}
+						    }, 'Delete'),
 						] : null,
 					    ])
 					})),

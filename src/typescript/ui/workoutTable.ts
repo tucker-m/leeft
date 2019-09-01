@@ -30,7 +30,7 @@ const TableComponent = (vnode: TableVnode) => {
             return m('div', {class: css.workoutTable}, [
                 vnode.attrs.prescriptions.length > 0 ?
                     m('div', [
-			vnode.attrs.prescriptions.map(setGroup => {
+			vnode.attrs.prescriptions.map((setGroup, index) => {
 			    return m('div', {class: css.exerciseGroup}, [
 				m('div', {class: css.exerciseHeadingRow}, [
 				    showEditButtons
@@ -41,7 +41,22 @@ const TableComponent = (vnode: TableVnode) => {
 				    m('span', {class: css.exerciseName}, setGroup.exerciseName || 'Unnamed Exercise'),
 				    showEditButtons
 					? [
-					    m('button', {class: `${css.hollowEditButton} ${css.small}`}, 'Edit'),
+					    m('button', {
+						class: `${css.hollowEditButton} ${css.small}`,
+						onclick: () => {
+						    vnode.attrs.setOverlay(ExerciseOverlay, {
+							setGroup,
+							updateSetGroup: (newSetGroup: SetGroup) => {
+							    vnode.attrs.prescriptions.splice(index, 1, newSetGroup)
+							    vnode.attrs.updatePrescriptions(vnode.attrs.prescriptions)
+							},
+							hideOverlay: () => {
+							    vnode.attrs.setOverlay({component: null, title: ''}, {})
+							},
+							css,
+						    })
+						},
+					    }, 'Edit'),
 					    m('button', {class: `${css.hollowDangerButton} ${css.small}`}, 'Delete'),
 					] : null,
 				]),

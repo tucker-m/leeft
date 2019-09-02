@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import {set} from 'mobx'
+import {set as mobxSet} from 'mobx'
 import {Set, SetGroup} from '../types/exercise'
 import utils from '../helpers/utils'
 import ExerciseOverlay from '../workouts/overlays/exercise/exercise'
@@ -143,14 +143,16 @@ const TableComponent = (vnode: TableVnode) => {
 								    class: `${css.hollowEditButton} ${css.small}`,
 								    onclick: () => {
 									vnode.attrs.setOverlay(AddSetOverlay, {
-									    exerciseName: setGroup.exerciseName,
-									    previousSet: set,
+									    title: setGroup.exerciseName,
+									    index,
+									    set,
 									    addSet: (changedSet: Set) => {
 										setGroup.sets.splice(index, 1, changedSet)
 									    },
 									    hideOverlay: () => {
 										vnode.attrs.setOverlay({component: null, title: ''}, {})
-									    }
+									    },
+									    css,
 									})
 								    }
 								}, 'Edit'),
@@ -168,16 +170,22 @@ const TableComponent = (vnode: TableVnode) => {
 					    ? m('button', {
 						class: css.hollowButton,
 						onclick: () => {
-						    let previousSet = setGroup.sets[setGroup.sets.length - 1] || false
+						    let previousSet = setGroup.sets[setGroup.sets.length - 1] || {
+							reps: false,
+							weight: false,
+							time: false,
+						    }
 						    vnode.attrs.setOverlay(AddSetOverlay, {
-							exerciseName: setGroup.exerciseName,
-							previousSet,
+							title: setGroup.exerciseName,
+							index: setGroup.sets.length,
+							set: previousSet,
 							addSet: (set: Set) => {
 							    setGroup.sets.push(set)
 							},
 							hideOverlay: () => {
 							    vnode.attrs.setOverlay({component: null, title: ''}, {})
-							}
+							},
+							css,
 						    })
 						}
 					    }, 'Add set')
@@ -201,7 +209,7 @@ const TableComponent = (vnode: TableVnode) => {
 			    vnode.attrs.setOverlay(ExerciseOverlay, {
 				setGroup: prescription,
 				updateSetGroup: (newPrescription: SetGroup) => {
-				    set(prescription, newPrescription)
+				    mobxSet(prescription, newPrescription)
 				},
 				hideOverlay: () => {
 				    vnode.attrs.setOverlay({component: null, title: ''}, {})

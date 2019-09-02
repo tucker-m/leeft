@@ -11,6 +11,7 @@ import exerciseHistory from './jss/logs/exerciseHistory'
 import logContents from './jss/logs/logContents'
 import insertExerciseButton from './jss/ui/insertExerciseButton'
 import workoutView from './jss/workouts/view'
+import setOverlay from './jss/overlays/exercise/set'
 
 export default {
     ...main,
@@ -26,4 +27,5 @@ export default {
     ...logContents,
     ...insertExerciseButton,
     ...workoutView,
+    ...setOverlay,
 }

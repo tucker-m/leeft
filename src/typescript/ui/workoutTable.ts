@@ -99,8 +99,12 @@ const TableComponent = (vnode: TableVnode) => {
 					    return m('li', {class: css.setLi}, [
 						showEditButtons
 						? [
-						    m('button', {class: css.upBtnSmall}),
-						    m('button', {class: css.downBtnSmall}),
+						    (index > 0)
+							? m('button', {class: css.upBtnSmall})
+							: null,
+						    (index < setGroup.sets.length - 1)
+							? m('button', {class: css.downBtnSmall})
+							: null,
 						] : null,
 						m('span', {class: css.setNumber}, index+1),
 						unitParts,

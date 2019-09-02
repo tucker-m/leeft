@@ -18,7 +18,7 @@ const AddSetOverlay = (vnode: SetVnode) => {
 	time: false,
     }
     const {previousSet} = vnode.attrs
-    if (previousSet) { set = previousSet }
+    if (previousSet) { set = JSON.parse(JSON.stringify(previousSet)) }
     
     return {
 	view: (vnode: SetVnode) => {

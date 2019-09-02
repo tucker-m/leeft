@@ -36,10 +36,22 @@ const TableComponent = (vnode: TableVnode) => {
 				    showEditButtons
 					? [
 					    (index > 0)
-						? m('button', {class: css.upBtn})
+						? m('button', {
+						    class: css.upBtn,
+						    onclick: () => {
+							vnode.attrs.prescriptions.splice(index, 1)
+							vnode.attrs.prescriptions.splice(index - 1, 0, setGroup)
+						    }
+						})
 						: null,
 					    (index < vnode.attrs.prescriptions.length - 1)
-						? m('button', {class: css.downBtn})
+						? m('button', {
+						    class: css.downBtn,
+						    onclick: () => {
+							vnode.attrs.prescriptions.splice(index, 1)
+							vnode.attrs.prescriptions.splice(index + 1, 0, setGroup)
+						    }
+						})
 						: null,
 					] : null,
 				    m('span', {class: css.exerciseName}, setGroup.exerciseName || 'Unnamed Exercise'),
@@ -100,10 +112,22 @@ const TableComponent = (vnode: TableVnode) => {
 						showEditButtons
 						? [
 						    (index > 0)
-							? m('button', {class: css.upBtnSmall})
+							? m('button', {
+							    class: css.upBtnSmall,
+							    onclick: () => {
+								setGroup.sets.splice(index, 1)
+								setGroup.sets.splice(index - 1, 0, set)
+							    }
+							})
 							: null,
 						    (index < setGroup.sets.length - 1)
-							? m('button', {class: css.downBtnSmall})
+							? m('button', {
+							    class: css.downBtnSmall,
+							    onclick: () => {
+								setGroup.sets.splice(index, 1)
+								setGroup.sets.splice(index + 1, 0, set)
+							    }
+							})
 							: null,
 						] : null,
 						m('span', {class: css.setNumber}, index+1),

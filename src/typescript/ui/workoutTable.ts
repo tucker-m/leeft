@@ -83,7 +83,7 @@ const TableComponent = (vnode: TableVnode) => {
 				m('div', {class: css.exerciseSets}, [
 				    m('div', [
 					(setGroup.sets.length == 0)
-					    ? m('p', 'No specific sets given.')
+					    ? m('p', 'No sets specified.')
 					    : [
 						m('ul', {class: css.setUl}, setGroup.sets.map((set, index) => {
 						    let unitParts: any[] = []
@@ -134,7 +134,9 @@ const TableComponent = (vnode: TableVnode) => {
 								    : null,
 							    ] : null,
 							m('span', {class: css.setNumber}, index+1),
-							unitParts,
+							(unitParts.length > 0)
+							    ? unitParts
+							    : m('span', 'No goals or units given for this set.'),
 							showEditButtons
 							    ? [
 								m('button', {

@@ -18,12 +18,15 @@ export default {
 	boxSizing: 'border-box',
 	width: '1rem',
 	height: '1rem',
-	marginRight: '1rem',
 	display: 'inline-block',
 	backgroundPosition: 'center',
 	backgroundSize: 'cover',
 	backgroundColor: 'transparent',
 	border: 'none',
+    },
+    upDownBtnGroup: {
+	width: '3rem',
+	marginRight: '1rem',
     },
     upBtn: {
 	extend: 'arrowBtn',
@@ -33,13 +36,23 @@ export default {
 	extend: 'arrowBtn',
 	backgroundImage: 'url("./chevron-down-solid.svg")',
     },
+    upBtnLarge: {
+	extend: 'upBtn',
+	marginRight: '1rem',
+    },
+    downBtnLarge: {
+	extend: 'downBtn',
+	marginRight: '1rem',
+    },
     upBtnSmall: {
 	extend: 'upBtn',
+	float: 'left',
 	width: '1rem',
 	height: '1rem',
     },
     downBtnSmall: {
 	extend: 'downBtn',
+	float: 'right',
 	width: '1rem',
 	height: '1rem',
     },

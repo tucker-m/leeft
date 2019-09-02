@@ -37,7 +37,7 @@ const TableComponent = (vnode: TableVnode) => {
 					? [
 					    (index > 0)
 						? m('button', {
-						    class: css.upBtn,
+						    class: css.upBtnLarge,
 						    onclick: () => {
 							vnode.attrs.prescriptions.splice(index, 1)
 							vnode.attrs.prescriptions.splice(index - 1, 0, setGroup)
@@ -46,7 +46,7 @@ const TableComponent = (vnode: TableVnode) => {
 						: null,
 					    (index < vnode.attrs.prescriptions.length - 1)
 						? m('button', {
-						    class: css.downBtn,
+						    class: css.downBtnLarge,
 						    onclick: () => {
 							vnode.attrs.prescriptions.splice(index, 1)
 							vnode.attrs.prescriptions.splice(index + 1, 0, setGroup)
@@ -113,7 +113,7 @@ const TableComponent = (vnode: TableVnode) => {
 						    }
 						    return m('li', {class: css.setLi}, [
 							showEditButtons
-							    ? [
+							    ? m('div', {class: css.upDownBtnGroup}, [
 								(index > 0)
 								    ? m('button', {
 									class: css.upBtnSmall,
@@ -132,7 +132,7 @@ const TableComponent = (vnode: TableVnode) => {
 									}
 								    })
 								    : null,
-							    ] : null,
+							    ]) : null,
 							m('span', {class: css.setNumber}, index+1),
 							(unitParts.length > 0)
 							    ? unitParts

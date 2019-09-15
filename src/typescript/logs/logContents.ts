@@ -10,6 +10,7 @@ import SetCount from './setCount'
 import ExerciseHistory from './exerciseHistory'
 import db from '../helpers/db'
 import InsertExerciseButton from '../ui/insertExerciseButton'
+import SetWithUnits from '../ui/setWithUnits'
 
 interface attrs {
     log: WorkoutLog & Puttable,
@@ -55,18 +56,16 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 			showEditButton: false,
 			css,
 		    }),
-		    log.sets.map((set, index) => {
+		    log.sets.map((setGroup, index) => {
 			return m('div', [
 			    m('div', {class: css.exerciseLogContainer}, [
 				EditableHeading({
 				    level: 2,
-				    name: set.exerciseName,
+				    name: setGroup.exerciseName,
 				    placeholder: 'Untitled Exercise',
 				    editButtonText: 'Enter sets',
 				    showEditButton: pageEditable,
 				    setOverlay: () => {
-					let setString = JSON.stringify(set)
-					let setClone: Set = JSON.parse(setString)
 					let hideOverlay = () => {
 					    setOverlay({
 						component: null,
@@ -86,14 +85,14 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 				    css,
 				}),
 				m('div', [
-				    m('ul', {class: css.goalList}, log.sets.map(setLog => {
-					// TODO: create an interface for
-					// showing different exercise
-					// measurement types
-					return m('li', 'your set here')
-				    })),
+				    m(SetWithUnits, {
+					setGroup,
+					showEditButtons: false,
+					setOverlay,
+					css,
+				    }),
 				    m(ExerciseHistory, {
-					exerciseName: set.exerciseName,
+					exerciseName: setGroup.exerciseName,
 					priorTo: log._id,
 					css,
 				    }),

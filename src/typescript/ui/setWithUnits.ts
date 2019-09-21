@@ -82,7 +82,7 @@ export default {
 			}
 		    }, 'Enter log')
 		    : null,
-		(set.reps && set.reps.entered) || (set.weight && set.weight.entered) || (set.time && set.time.entered)
+		(set.reps && set.reps.entered !== false) || (set.weight && set.weight.entered !== false) || (set.time && set.time.entered !== false)
 		    ? m('span', {class: css.setDone}, 'X')
 		    : m('span', {class: css.setNumber}, index+1),
 		(unitParts.length > 0)

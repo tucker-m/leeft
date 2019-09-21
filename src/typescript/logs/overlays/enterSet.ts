@@ -39,7 +39,12 @@ const EnterSetComponent = (vnode: ComponentVnode) => {
 					    entered: 0
 					}
 				    }
-				    set.reps.entered = parseInt(value)
+				    if (value === '') {
+					set.reps.entered = false
+				    }
+				    else {
+					set.reps.entered = parseInt(value)
+				    }
 				})
 			    }),
 			    m('label', 'reps')
@@ -56,7 +61,12 @@ const EnterSetComponent = (vnode: ComponentVnode) => {
 					    entered: 0
 					}
 				    }
-				    set.weight.entered = parseInt(value)
+				    if (value === '') {
+					set.weight.entered = false
+				    }
+				    else {
+					set.weight.entered = parseInt(value)
+				    }
 				})
 			    }),
 			    m('label', 'pounds')
@@ -73,7 +83,12 @@ const EnterSetComponent = (vnode: ComponentVnode) => {
 					    entered: 0
 					}
 				    }
-				    set.time.entered = parseInt(value)
+				    if (value === '') {
+					set.time.entered = false
+				    }
+				    else {
+					set.time.entered = parseInt(value)
+				    }
 				})
 			    }),
 			    m('label', 'seconds')

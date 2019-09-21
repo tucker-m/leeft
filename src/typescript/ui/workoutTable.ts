@@ -87,6 +87,7 @@ const TableComponent = (vnode: TableVnode) => {
 					    ? m('p', 'No sets specified.')
 					    : m(SetWithUnits, {
 						setGroup,
+						showLogButton: false,
 						showEditButtons,
 						setOverlay: vnode.attrs.setOverlay,
 						css,

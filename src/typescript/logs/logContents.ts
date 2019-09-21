@@ -59,35 +59,16 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 		    log.sets.map((setGroup, index) => {
 			return m('div', [
 			    m('div', {class: css.exerciseLogContainer}, [
-				EditableHeading({
+				Heading({
 				    level: 2,
-				    name: setGroup.exerciseName,
-				    placeholder: 'Untitled Exercise',
-				    editButtonText: 'Enter sets',
-				    showEditButton: pageEditable,
-				    setOverlay: () => {
-					let hideOverlay = () => {
-					    setOverlay({
-						component: null,
-						title: ''
-					    }, {})
-					}
-					// setOverlay(LogOverlay, {
-					//     title: set.exerciseName,
-					//     set: setClone,
-					//     hideOverlay,
-					//     updateSet: (set: Set) => {
-					// 	log.sets[index] = set
-					//     },
-					//     css,
-					// })
-				    },
+				    text: setGroup.exerciseName ? setGroup.exerciseName : 'Untitled Exercise',
 				    css,
 				}),
 				m('div', [
 				    m(SetWithUnits, {
 					setGroup,
-					showEditButtons: false,
+					showLogButton: true,
+					showEditButtons: pageEditable,
 					setOverlay,
 					css,
 				    }),

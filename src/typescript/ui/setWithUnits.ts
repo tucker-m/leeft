@@ -1,10 +1,13 @@
 import * as m from 'mithril'
 import {Set, SetGroup} from '../types/exercise'
 import AddSetOverlay from '../workouts/overlays/exercise/set'
+import EnterSetOverlay from '../logs/overlays/enterSet'
+import u from '../helpers/utils'
 
 interface SetAttrs {
     setGroup: SetGroup,
     showEditButtons: boolean,
+    showLogButton: boolean,
     setOverlay: (overlay: any, attrs: any) => void,
     css: any,
 }
@@ -14,7 +17,7 @@ interface SetVnode {
 
 export default {
     view: (vnode: SetVnode) => {
-	const {setGroup, css, showEditButtons} = vnode.attrs
+	const {setOverlay, setGroup, css, showEditButtons, showLogButton} = vnode.attrs
 
 	return m('ul', {class: css.setUl}, setGroup.sets.map((set, index) => {
 	    let unitParts: any[] = []
@@ -64,6 +67,21 @@ export default {
 			    })
 			    : null,
 		    ]) : null,
+		(showLogButton && !showEditButtons)
+		    ? m('button', {
+			class: u.c(css.hollowButton, css.small),
+			onclick: () => {
+			    setOverlay(EnterSetOverlay, {
+				title: setGroup.exerciseName,
+				closeOverlay: () => {
+				    setOverlay({component: null}, {})
+				},
+				css,
+				set
+			    })
+			}
+		    }, 'Enter log')
+		    : null,
 		m('span', {class: css.setNumber}, index+1),
 		(unitParts.length > 0)
 		    ? unitParts
@@ -73,7 +91,7 @@ export default {
 			m('button', {
 			    class: `${css.hollowEditButton} ${css.small}`,
 			    onclick: () => {
-				vnode.attrs.setOverlay(AddSetOverlay, {
+				setOverlay(AddSetOverlay, {
 				    title: setGroup.exerciseName,
 				    index,
 				    set,
@@ -81,7 +99,7 @@ export default {
 					setGroup.sets.splice(index, 1, changedSet)
 				    },
 				    hideOverlay: () => {
-					vnode.attrs.setOverlay({component: null, title: ''}, {})
+					setOverlay({component: null, title: ''}, {})
 				    },
 				    css,
 				})

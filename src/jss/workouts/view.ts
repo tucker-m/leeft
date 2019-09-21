@@ -67,18 +67,29 @@ export default {
 	alignItems: 'center',
 	marginBottom: '1rem',
     },
-    setNumber: {
+    setCircle: {
 	boxSizing: 'border-box',
 	width: '1.5rem',
 	height: '1.5rem',
 	fontSize: '.8rem',
-	color: colors.primary,
 	display: 'inline-flex',
 	borderRadius: '.75rem',
-	border: `2px solid ${colors.primary}`,
+	borderWidth: '2px',
+	borderStyle: 'solid',
 	justifyContent: 'center',
 	alignItems: 'center',
 	marginRight: '1rem',
+    },
+    setNumber: {
+	extend: 'setCircle',
+	color: colors.primary,
+	borderColor: colors.primary,
+    },
+    setDone: {
+	extend: 'setCircle',
+	color: 'white',
+	background: colors.secondary,
+	borderColor: colors.secondary,
     },
     pill: {
 	display: 'inline-flex',

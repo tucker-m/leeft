@@ -82,7 +82,9 @@ export default {
 			}
 		    }, 'Enter log')
 		    : null,
-		m('span', {class: css.setNumber}, index+1),
+		(set.reps && set.reps.entered) || (set.weight && set.weight.entered) || (set.time && set.time.entered)
+		    ? m('span', {class: css.setDone}, 'X')
+		    : m('span', {class: css.setNumber}, index+1),
 		(unitParts.length > 0)
 		    ? unitParts
 		    : m('span', 'No goals or units given for this set.'),

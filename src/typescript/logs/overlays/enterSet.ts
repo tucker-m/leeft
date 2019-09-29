@@ -3,6 +3,7 @@ import {Set} from '../../types/exercise'
 
 interface ComponentAttrs {
     set: Set
+    updateSet: (set: Set) => void,
     css: any,
     closeOverlay: () => void,
 }
@@ -11,7 +12,8 @@ interface ComponentVnode {
 }
 
 const EnterSetComponent = (vnode: ComponentVnode) => {
-    const {set, css, closeOverlay} = vnode.attrs
+    const {css, closeOverlay} = vnode.attrs
+    const set = JSON.parse(JSON.stringify(vnode.attrs.set))
 
     return {
 	view: (vnode: ComponentVnode) => {
@@ -96,8 +98,16 @@ const EnterSetComponent = (vnode: ComponentVnode) => {
 			: null,
 		]),
 		m('button', {
+		    class: css.hollowDangerButton,
 		    onclick: closeOverlay
 		}, 'Close'),
+		m('button', {
+		    class: css.button,
+		    onclick: () => {
+			vnode.attrs.updateSet(set)
+			closeOverlay()
+		    },
+		}, 'Save')
 	    ])
 	}
     }

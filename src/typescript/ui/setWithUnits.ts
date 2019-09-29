@@ -1,4 +1,5 @@
 import * as m from 'mithril'
+import {set as mobxSet} from 'mobx'
 import {Set, SetGroup} from '../types/exercise'
 import AddSetOverlay from '../workouts/overlays/exercise/set'
 import EnterSetOverlay from '../logs/overlays/enterSet'
@@ -87,6 +88,9 @@ export default {
 				    setOverlay({component: null}, {})
 				},
 				css,
+				updateSet: (newSet: Set) => {
+				    mobxSet(set, newSet)
+				},
 				set
 			    })
 			}

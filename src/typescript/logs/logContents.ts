@@ -50,7 +50,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 		}),
 		m('div', {class: css.content}, [
                     EditableHeading({
-			level: 1,
+			level: 2,
 			name: utils.formatDate(log.date),
 			placeholder: '',
 			showEditButton: false,
@@ -60,23 +60,25 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 			return m('div', [
 			    m('div', {class: css.exerciseLogContainer}, [
 				Heading({
-				    level: 2,
+				    level: 1,
 				    text: setGroup.exerciseName ? setGroup.exerciseName : 'Untitled Exercise',
 				    css,
 				}),
-				m('div', [
-				    m(SetWithUnits, {
-					setGroup,
-					showLogButton: true,
-					showEditButtons: pageEditable,
-					setOverlay,
-					css,
-				    }),
-				    m(ExerciseHistory, {
-					exerciseName: setGroup.exerciseName,
-					priorTo: log._id,
-					css,
-				    }),
+				setGroup.sets.length == 0
+				    ? m('p', 'No sets added for this exercise.')
+				    : m('div', [
+					m(SetWithUnits, {
+					    setGroup,
+					    showLogButton: true,
+					    showEditButtons: pageEditable,
+					    setOverlay,
+					    css,
+					}),
+					m(ExerciseHistory, {
+					    exerciseName: setGroup.exerciseName,
+					    priorTo: log._id,
+					    css,
+					}),
 				]),
 			    ]),
 			    pageEditable

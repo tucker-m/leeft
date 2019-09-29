@@ -126,7 +126,7 @@ export default {
 			    onclick: () => {
 				setGroup.sets.splice(index, 1)
 			    }
-			}, 'Delete'),
+			}, 'X'),
 		    ] : null,
 	    ])
 	}))

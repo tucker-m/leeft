@@ -80,7 +80,7 @@ export default {
 		    ]) : null,
 		(showLogButton && !showEditButtons)
 		    ? m('button', {
-			class: u.c(css.hollowButton, css.small),
+			class: u.c(css.enterLogButton),
 			onclick: () => {
 			    setOverlay(EnterSetOverlay, {
 				title: setGroup.exerciseName,
@@ -94,7 +94,7 @@ export default {
 				set
 			    })
 			}
-		    }, 'Enter log')
+		    })
 		    : null,
 		(setIsDone)
 		    ? m('span', {class: css.setDone})

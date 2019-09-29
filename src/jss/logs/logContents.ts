@@ -6,7 +6,7 @@ export default {
 	paddingLeft: '1rem',
 	marginBottom: '1rem',
 	'& li:not(:last-of-type)': {
-	    marginBottom: '.5rem',
+	    marginBottom: '.75rem',
 	},
     },
     goalList: {

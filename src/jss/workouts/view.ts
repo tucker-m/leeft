@@ -59,6 +59,16 @@ export default {
     exerciseSets: {
 	marginLeft: '1.5rem',
     },
+    enterLogButton: {
+	backgroundColor: 'transparent',
+	border: 'none',
+	backgroundImage: "url('./pencil-alt-solid.svg')",
+	backgroundPosition: 'center center',
+	backgroundSize: 'contain',
+	width: '1.5rem',
+	height: '1.5rem',
+	marginRight: '.5rem',
+    },
     setUl: {
 	marginBottom: '1rem',
     },

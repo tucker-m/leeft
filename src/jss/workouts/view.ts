@@ -88,6 +88,9 @@ export default {
     setDone: {
 	extend: 'setCircle',
 	color: 'white',
+	backgroundImage: "url('./check-solid.svg')",
+	backgroundPosition: 'center center',
+	backgroundSize: 'contain',
 	background: colors.secondary,
 	borderColor: colors.secondary,
     },

@@ -93,7 +93,7 @@ export default {
 		    }, 'Enter log')
 		    : null,
 		(setIsDone)
-		    ? m('span', {class: css.setDone}, 'X')
+		    ? m('span', {class: css.setDone})
 		    : m('span', {class: css.setNumber}, index+1),
 		(unitParts.length > 0)
 		    ? unitParts

@@ -30,6 +30,54 @@ const EnterSetComponent = (vnode: ComponentVnode) => {
 			: null,
 		]),
 		m('div', [
+		    m('span', 'Measured in'),
+		    m('input[type=checkbox]', {
+			checked: !!set.reps,
+			onclick: () => {
+			    if (set.reps) {
+				set.reps = false
+			    }
+			    else {
+				set.reps = {
+				    entered: false,
+				    prescribed: false
+				}
+			    }
+			}
+		    }),
+		    m('label', 'reps'),
+		    m('input[type=checkbox]', {
+			checked: !!set.weight,
+			onclick: () => {
+			    if (set.weight) {
+				set.weight = false
+			    }
+			    else {
+				set.weight = {
+				    entered: false,
+				    prescribed: false
+				}
+			    }
+			}
+		    }),
+		    m('label', 'weight'),
+		    m('input[type=checkbox]', {
+			checked: !!set.time,
+			onclick: () => {
+			    if (set.time) {
+				set.time = false
+			    }
+			    else {
+				set.time = {
+				    entered: false,
+				    prescribed: false
+				}
+			    }
+			}
+		    }),
+		    m('label', 'time'),
+		]),
+		m('div', [
 		    set.reps
 			? m('div', [
 			    m('input[type=number]', {

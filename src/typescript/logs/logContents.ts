@@ -11,6 +11,7 @@ import ExerciseHistory from './exerciseHistory'
 import db from '../helpers/db'
 import InsertExerciseButton from '../ui/insertExerciseButton'
 import SetWithUnits from '../ui/setWithUnits'
+import AddSetOverlay from '../workouts/overlays/exercise/set'
 
 interface attrs {
     log: WorkoutLog & Puttable,
@@ -79,7 +80,31 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 					    priorTo: log._id,
 					    css,
 					}),
-				]),
+				    ]),
+				pageEditable
+				    ? m('button', {
+					class: css.button,
+					onclick: () => {
+					    let previousSet = setGroup.sets[setGroup.sets.length - 1] || {
+						reps: false,
+						weight: false,
+						time: false,
+					    }
+					    vnode.attrs.setOverlay(AddSetOverlay, {
+						title: setGroup.exerciseName,
+						index: setGroup.sets.length,
+						set: previousSet,
+						addSet: (set: Set) => {
+						    setGroup.sets.push(set)
+						},
+						hideOverlay: () => {
+						    vnode.attrs.setOverlay({component: null, title: ''}, {})
+						},
+						css,
+					    })
+					},
+				    }, 'Add a set')
+				    : null,
 			    ]),
 			    pageEditable
 				? InsertExerciseButton({

@@ -60,11 +60,7 @@ const component: m.FactoryComponent<any> = (vnode: LogVnode) => {
 		    log.sets.map((setGroup, index) => {
 			return m('div', [
 			    m('div', {class: css.exerciseLogContainer}, [
-				Heading({
-				    level: 1,
-				    text: setGroup.exerciseName ? setGroup.exerciseName : 'Untitled Exercise',
-				    css,
-				}),
+				m('span', {class: css.exerciseName}, setGroup.exerciseName ? setGroup.exerciseName : 'Untitled Exercise'),
 				setGroup.sets.length == 0
 				    ? m('p', 'No sets added for this exercise.')
 				    : m('div', [

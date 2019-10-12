@@ -12,6 +12,7 @@ import logContents from './jss/logs/logContents'
 import insertExerciseButton from './jss/ui/insertExerciseButton'
 import workoutView from './jss/workouts/view'
 import setOverlay from './jss/overlays/exercise/set'
+import index from './jss/index'
 
 export default {
     ...main,
@@ -28,4 +29,5 @@ export default {
     ...insertExerciseButton,
     ...workoutView,
     ...setOverlay,
+    ...index,
 }

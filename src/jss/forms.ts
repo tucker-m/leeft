@@ -1,5 +1,4 @@
 import colors from './variables/colors'
-import shared from './shared'
 
 export default {
     label: {
@@ -21,19 +20,21 @@ export default {
     checkbox: {
         margin: '.25rem .5rem',
     },
-    button: Object.assign({
-        backgroundColor: colors.edit,
+    button: {
+	fontFamily: 'Fira Sans Extra Condensed',
+	fontWeight: 'bold',
+	fontSize: '1rem',
+	borderColor: 'transparent',
+	borderRadius: '20px',
+        backgroundColor: '#714AD4',
         color: 'white',
         padding: '.5rem .75rem',
-	'&:not(:last-of-type)': {
-	    marginRight: '0.5rem',
-	},
-    }, shared.clickable),
+    },
     hollowButton: {
         extend: 'button',
         backgroundColor: 'white',
-        borderColor: colors.primary,
-        color: colors.primary,
+        borderColor: '#714AD4',
+        color: '#714AD4',
     },
     whiteHollowButton: {
 	extend: 'button',

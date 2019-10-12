@@ -1,5 +1,4 @@
 import colors from '../variables/colors'
-import shared from '../shared'
 
 export default {
     subTitle: {

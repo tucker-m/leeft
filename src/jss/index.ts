@@ -1,13 +1,15 @@
 export default {
+    frontPageGroup: {
+	'&:not(:last-child)': {
+	    marginBottom: '2rem',
+	},
+    },
     frontPageRow: {
 	display: 'flex',
 	alignItems: 'center',
 	flexWrap: 'wrap',
 	'& > *:not(:last-child)': {
 	    marginRight: '1rem',
-	},
-	'&:not(:last-child)': {
-	    marginBottom: '2rem',
 	},
     },
     frontPageRowButtons: {

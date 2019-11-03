@@ -21,9 +21,13 @@ export default {
         margin: '.25rem .5rem',
     },
     button: {
+	lineHeight: '19px',
+	boxSizing: 'border-box',
 	fontFamily: 'Fira Sans Extra Condensed',
 	fontWeight: 'bold',
 	fontSize: '1rem',
+	borderStyle: 'solid',
+	borderWidth: '2px',
 	borderColor: 'transparent',
 	borderRadius: '20px',
         backgroundColor: '#714AD4',

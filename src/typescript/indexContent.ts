@@ -24,8 +24,12 @@ const component: m.FactoryComponent<any> = (vnode: IndexVnode) => {
 			m('div', {class: css.frontPageRow}, [
 			    m('h1', {class: u.c(css.h1, css.frontPageHeading)}, 'Workouts'),
 			    m('div', {class: css.frontPageRowButtons}, [
-				m('button', {class: css.button}, '+ New Workout'),
-				m('button', {class: css.hollowButton}, 'View All Workouts'),
+				m('a', {
+				    class: css.button,
+				    href: '/workouts',
+				    oncreate: m.route.link,
+				}, 'View All Workouts'),
+				m('button', {class: css.hollowButton}, '+ New Workout'),
 			    ]),
 			]),
 			m('p', {class: css.frontPageRowSubtext}, 'Make a plan for your gym session'),
@@ -34,8 +38,8 @@ const component: m.FactoryComponent<any> = (vnode: IndexVnode) => {
 			m('div', {class: css.frontPageRow}, [
 			    m('h1', {class: u.c(css.h1, css.frontPageHeading)}, 'History'),
 			    m('div', {class: css.frontPageRowButtons}, [
-				m('button', {class: css.button}, '+ New Log'),
-				m('button', {class: css.hollowButton}, 'View All Logs'),
+				m('button', {class: css.button}, 'View All Logs'),
+				m('button', {class: css.hollowButton}, '+ New Log'),
 			    ]),
 			]),
 			m('p', {class: css.frontPageRowSubtext}, 'Record what you did at the gym'),
@@ -44,8 +48,8 @@ const component: m.FactoryComponent<any> = (vnode: IndexVnode) => {
 			m('div', {class: css.frontPageRow}, [
 			    m('h1', {class: u.c(css.h1, css.frontPageHeading)}, 'Cycles'),
 			    m('div', {class: css.frontPageRowButtons}, [
-				m('button', {class: css.button}, '+ New Cycle'),
-				m('button', {class: css.hollowButton}, 'View All Cycles'),
+				m('button', {class: css.button}, 'View All Cycles'),
+				m('button', {class: css.hollowButton}, '+ New Cycle'),
 			    ]),
 			]),
 			m('p', {class: css.frontPageRowSubtext}, 'Group workouts together to make a schedule'),

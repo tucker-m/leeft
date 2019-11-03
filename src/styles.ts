@@ -13,6 +13,7 @@ import insertExerciseButton from './jss/ui/insertExerciseButton'
 import workoutView from './jss/workouts/view'
 import setOverlay from './jss/overlays/exercise/set'
 import index from './jss/index'
+import workoutList from './jss/workouts/list'
 
 export default {
     ...main,
@@ -30,4 +31,5 @@ export default {
     ...workoutView,
     ...setOverlay,
     ...index,
+    ...workoutList,
 }

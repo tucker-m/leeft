@@ -7,6 +7,7 @@ import ViewProgram from './programs/viewProgram'
 import {observable, IObservableObject} from 'mobx'
 import {RenderPage} from './ui/page'
 import * as IndexContents from './indexContent'
+import Workouts from './workouts/list'
 
 db.init();
 
@@ -39,6 +40,7 @@ const element = document.getElementById('main')
 if (element != null) {
     m.route(element, '/', {
         '/': App,
+	'/workouts': Workouts,
         '/logs/:id': ViewLog,
         '/logs/:id/:edit': ViewLog,
         '/programs/:id': ViewProgram,

@@ -21,7 +21,7 @@ export default {
     },
     frontPageHeading: {
 	fontWeight: 'bold',
-	color: '#4b3c59',
+	color: '#1B1F1D',
     },
     frontPageRowSubtext: {
 	fontFamily: 'Fira Sans Extra Condensed',
@@ -29,4 +29,21 @@ export default {
 	color: '#4b3c59',
 	marginLeft: '.1rem',
     },
+    headingLinks: {
+	display: 'flex',
+	marginTop: '1.5rem',
+	marginBottom: '1.5rem',
+    },
+    headingLink: {
+	fontFamily: 'Fira Sans Extra Condensed',
+	fontSize: '1.2rem',
+	color: '#A19AD9',
+	'&:not(:last-of-type)': {
+	    marginRight: '2rem',
+	}
+    },
+    headingLinkCurrent: {
+	extend: 'headingLink',
+	color: '#1B1F1D',
+    }
 }

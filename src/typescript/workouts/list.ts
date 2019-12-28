@@ -7,7 +7,17 @@ const component = (vnode) => {
     return {
 	view: (vnode) => {
 	    return m('div', [
+		m('div', {class: css.headingLinks}, [
+		    m('a', {class: css.headingLink}, 'Home'),
+		    m('a', {class: css.headingLinkCurrent}, 'All Workouts'),
+		    m('a', {class: css.headingLink}, 'History'),
+		    m('a', {class: css.headingLink}, 'Cycles'),
+		]),
 		m('h1', {class: css.pageTitle}, 'All Workouts'),
+		m('input[type=text]', {
+		    class: css.textInput,
+		    placeholder: 'Search by name or exercises',
+		}),
 		m('label', {class: css.sortLabel}, 'Sort by'),
 		m('select', [
 		    m('option', 'Date created'),
@@ -17,7 +27,10 @@ const component = (vnode) => {
 		m('div', [
 		    m('div', {class: css.frontPageRow}, [
 			m('h2', {class: css.workoutTitle}, 'Hypertrophy Chest'),
-			m('button', {class: css.hollowButton}, 'View/Edit'),
+			m('a', {
+			    class: css.hollowButton,
+			    href: '#!/workouts/demo',
+			}, 'View/Edit'),
 			m('button', {class: css.button}, 'Start'),
 		    ]),
 		    m('span', {class: css.timeStamps}, 'created January 10, 2019'),

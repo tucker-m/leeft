@@ -13,7 +13,7 @@ export default {
 	display: 'flex',
 	flex: '1 1 100%',
 	boxSizing: 'border-box',
-	padding: '1rem',
+	marginTop: '1rem',
 	'&:nth-of-type(2n)': {
 	    backgroundColor: colors.accentBackground,
 	},
@@ -28,10 +28,11 @@ export default {
 	fontWeight: 'bold',
 	width: '2.5rem',
 	height: '2.5rem',
-	border: `3px solid ${colors.four}`,
-	color: colors.four,
+	border: `3px solid #466BEB`,
+	color: '#466BEB',
 	borderRadius: '1.75rem',
 	marginRight: '1rem',
+	marginBottom: '1rem',
     },
     descriptionColumn: {
 	display: 'flex',

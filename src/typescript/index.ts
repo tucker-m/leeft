@@ -8,6 +8,8 @@ import {observable, IObservableObject} from 'mobx'
 import {RenderPage} from './ui/page'
 import * as IndexContents from './indexContent'
 import Workouts from './workouts/list'
+import Logs from './logs/list'
+import ViewWorkoutDemo from './workouts/demo'
 
 db.init();
 
@@ -41,10 +43,12 @@ if (element != null) {
     m.route(element, '/', {
         '/': App,
 	'/workouts': Workouts,
+	'/logs': Logs,
         '/logs/:id': ViewLog,
         '/logs/:id/:edit': ViewLog,
         '/programs/:id': ViewProgram,
         '/programs/:id/workouts/:day': ViewWorkout,
         '/programs/:id/workouts/:day/:edit': ViewWorkout,
+	'/workouts/demo': ViewWorkoutDemo,
     })
 }

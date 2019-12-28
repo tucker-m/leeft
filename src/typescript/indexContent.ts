@@ -19,7 +19,13 @@ const component: m.FactoryComponent<any> = (vnode: IndexVnode) => {
     return {
 	view: (vnode: IndexVnode) => {
 	    return [
-		m('div', {class: vnode.attrs.css.content}, [
+		m('div', {class: css.headingLinks}, [
+		    m('a', {class: css.headingLinkCurrent}, 'Home'),
+		    m('a', {class: css.headingLink}, 'Workouts'),
+		    m('a', {class: css.headingLink}, 'History'),
+		    m('a', {class: css.headingLink}, 'Cycles'),
+		]),
+		m('div', [
 		    m('div', {class: css.frontPageGroup}, [
 			m('div', {class: css.frontPageRow}, [
 			    m('h1', {class: u.c(css.h1, css.frontPageHeading)}, 'Workouts'),
@@ -38,7 +44,10 @@ const component: m.FactoryComponent<any> = (vnode: IndexVnode) => {
 			m('div', {class: css.frontPageRow}, [
 			    m('h1', {class: u.c(css.h1, css.frontPageHeading)}, 'History'),
 			    m('div', {class: css.frontPageRowButtons}, [
-				m('button', {class: css.button}, 'View All Logs'),
+				m('a', {
+				    class: css.button,
+				    href: '#!/logs',
+				}, 'View All Logs'),
 				m('button', {class: css.hollowButton}, '+ New Log'),
 			    ]),
 			]),

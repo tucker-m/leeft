@@ -4,7 +4,7 @@
         "allowJs": true,
         "lib": [
             "dom",
-            "es2017"
+            "es2018"
         ],
         "strictNullChecks": true,
     }

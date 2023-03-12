@@ -9,6 +9,7 @@ const init = function() {
     PouchDB.plugin(PouchDBFind);
 
     db = new PouchDB('leeft');
+    PouchDB.sync('leeft', 'http://localhost:5984/leeft')
 
     db.createIndex({
         index: {
@@ -94,8 +95,25 @@ const findLogsByWorkoutIdentifier = (id: string) => {
 }
 
 const findExercisesByName = (name: string): Promise<string[]> => {
-    return new Promise<string[]>((resolve, reject) => {
-	resolve(['First', 'Second', 'Third'])
+    return new Promise((resolve, reject) => {
+        db.allDocs({include_docs: true, startkey: 'program_', endkey: 'program_\ufff0'}).then((docs) => {
+            let programs = docs.rows
+            let prescriptions = programs.flatMap((program) => {
+		return program.doc.schedule.map((workout) => {
+    			return workout.prescriptions
+		})
+            })
+            let filteredPrescriptions = prescriptions.flat().filter((prescription) => {
+                if (typeof prescription.exerciseName !== 'undefined'
+                  && prescription.exerciseName.toLowerCase().includes(name.toLowerCase())) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            })
+            resolve(filteredPrescriptions.map((item) => { return item.exerciseName }))
+        })
     })
 }
 

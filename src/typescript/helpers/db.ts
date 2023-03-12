@@ -64,7 +64,7 @@ function fetchSaveableCollection<T> (tag: ModelName): Promise<(Puttable & T & IO
             const observableRecords = rows.map((record) => {
                 const doc = record.doc
                 let rev = doc._rev
-                delete doc._rev
+                // delete doc._rev
                 if (typeof doc._deleted == 'undefined') {
                     doc._deleted = false
                 }
@@ -161,7 +161,7 @@ function fetchSaveableRecord<T> (id: string): Promise<Puttable & T & IObservable
         let rev = ''
         db.get(id).then((record: Saved & T) => {
             rev = record._rev
-            delete record._rev
+            // delete record._rev
             if (typeof record._deleted == 'undefined') {
                 record._deleted = false
             }

@@ -9,7 +9,6 @@ const init = function() {
     PouchDB.plugin(PouchDBFind);
 
     db = new PouchDB('leeft');
-    PouchDB.sync('leeft', 'http://localhost:5984/leeft')
 
     db.createIndex({
         index: {

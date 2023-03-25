@@ -1387,7 +1387,6 @@ var db;
 var init = function () {
     pouchdb_1["default"].plugin(pouchdb_find_1["default"]);
     db = new pouchdb_1["default"]('leeft');
-    pouchdb_1["default"].sync('leeft', 'http://localhost:5984/leeft');
     db.createIndex({
         index: {
             fields: ['name']
